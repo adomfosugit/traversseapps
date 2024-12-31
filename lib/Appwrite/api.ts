@@ -7,7 +7,7 @@ import { parseStringify } from "@/lib/utils";
 import { NewUser } from "@/Types";
 import { redirect } from "next/navigation";
 // Authentication 
-const {NEXT_DATABASE_ID, NEXT_PROPERTY_COLLECTION_ID, NEXT_USER_COLLECTION_ID} = process.env
+const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID} = process.env
 export async function createUserAccount(user:NewUser){ 
   try {
     const {account} = await createAdminClient()
@@ -98,36 +98,87 @@ export async function LogOutUser(){
     console.log(error)
   }   
 }
-// Database 
-export async function getPropertyData(){
-  try {
-    const { database } = await createAdminClient()
-    const propertyData = await database.listDocuments(
-        NEXT_DATABASE_ID!,
-        NEXT_PROPERTY_COLLECTION_ID!,
-        [Query.select(['Name','Price','$id','Images']),Query.limit(8) ]
-      
-    )
-    if(!propertyData) throw new Error
-    return propertyData.documents
-  } catch (error) {
-    
-  }
-}
-// Database 
-
-export async function getUserData(email:string){
+// Database
+export async function getserviceProviderData(email:string){
   try {
     const { database } = await createAdminClient()
     const userData = await database.listDocuments(
       NEXT_DATABASE_ID!,
-      NEXT_USER_COLLECTION_ID!,
-      [Query.equal("User_Email", [email])])
+      NEXT_SERVICEPROVIDER_COLLECTION_ID!,
+      [Query.equal("Email", [email])])
     return userData
   } catch (error) {
     console.log(error)
   }
+} 
+export async function createserviceProvider(Name:string, Email:string, Password:string, Phone:string, Country:string, officialAddress:string, profession:string, membershipID:string){
+  try {
+    const checkstatus = await getserviceProviderData(Email)
+    if(!checkstatus){
+     return {error:"User Already Exists"}
+    }
+    const { database } = await createAdminClient()
+    const serviceprovider = await database.createDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_SERVICEPROVIDER_COLLECTION_ID!,
+        ID.unique(),
+        {
+          Name:Name,
+          Email:Email,
+          Password:Password,
+          Phone:Phone,
+          Country:Country,
+          officialAddress:officialAddress,
+          profession:profession,
+          membershipID:membershipID,
+          VerifiedServiceProvider: false
+        }
+      
+    )
+ 
+    return parseStringify(serviceprovider);
+  } catch (error) {
+    console.log(error)
+  }
 }
+async function createServiceProvider(Name, Email, Password, Phone, Country, officialAddress, profession, membershipID) {
+  try {
+    // Check if the service provider already exists
+    const checkstatus = await getserviceProviderData(Email);
+    
+    // If checkstatus is true, it means the user already exists
+    if (checkstatus) {
+      return { error: "User  Already Exists" };
+    }
+
+    // If the user does not exist, proceed to create a new service provider
+    const { database } = await createAdminClient();
+    const serviceprovider = await database.createDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_SERVICEPROVIDER_COLLECTION_ID!,
+      ID.unique(),
+      {
+        Name: Name,
+        Email: Email,
+        Password: Password, // Consider hashing the password before storing it
+        Phone: Phone,
+        Country: Country,
+        officialAddress: officialAddress,
+        profession: profession,
+        membershipID: membershipID,
+        VerifiedServiceProvider: false
+      }
+    );
+
+    return parseStringify(serviceprovider);
+  } catch (error) {
+    console.log(error);
+    return { error: "An error occurred while creating the service provider." };
+  }
+}
+// Database 
+
+
 // Messaging Email
 export async function sendTermsConditions( content:string , userId:string ){
   try {

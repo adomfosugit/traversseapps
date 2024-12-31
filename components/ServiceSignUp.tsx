@@ -8,12 +8,13 @@ import {Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessag
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'next/navigation';
-import { createUserAccount } from '@/lib/Appwrite/api';
+import { createserviceProvider, getserviceProviderData } from '@/lib/Appwrite/api';
 import { toast } from '@/hooks/use-toast';
 import { Check, ChevronsUpDown, Phone } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from './ui/command';
 import { cn } from '@/lib/utils';
+import bcrypt from 'bcryptjs';
 type Props = {}
 const phoneRegex = new RegExp(
     /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
@@ -55,20 +56,27 @@ const ServiceSignUp = (props: Props) => {
     Name: "",
     Email: "",
     Password: "",
+    repeatPassword:"",
     Phone:'',
     Country: "",
     officialAddress: "",
     profession: "",
     membershipID: "",
     
+    
     },
   })
  
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-  
-   console.log(values)
-    
+   const password = await bcrypt.hash(values.Password, 10)
+   const {Name, Email,  Phone, Country, officialAddress, profession, membershipID} = values
+        const responseuser = await createserviceProvider(Name, Email, password, Phone, Country, officialAddress, profession, membershipID)
+        if(responseuser.error) { toast({title: 'Registration failed. User Exists'})
+          return 
+        }
+        {toast({variant:'default',title: 'Registered'})}
+        router.push('/service-provider/sign-in')
   }
   
   
@@ -246,7 +254,7 @@ const ServiceSignUp = (props: Props) => {
             <FormItem>
               <FormLabel>Official Address</FormLabel>
               <FormControl>
-                <Input placeholder="Address" {...field} type='password'/>
+                <Input placeholder="Address" {...field} type='text'/>
               </FormControl>
               <FormMessage />
            
@@ -328,7 +336,7 @@ const ServiceSignUp = (props: Props) => {
             <FormItem>
               <FormLabel>Professional Membership Identification Number</FormLabel>
               <FormControl>
-                <Input placeholder="Profession" {...field} type='password'/>
+                <Input placeholder="Profession" {...field} type='text'/>
               </FormControl>
               <FormMessage />
            

@@ -1,4 +1,5 @@
 'use client';
+import { ShieldCheckIcon } from 'lucide-react';
 import Image from 'next/image';
 
 const WayYouBuild = () => {
@@ -17,29 +18,31 @@ const WayYouBuild = () => {
               <p className="font-inter lg:text-left text-center text-xl text-black font-semibold lg:text-2xl">
                 Remote Property Development
               </p>
-              <p className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg">
+              <p className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex items-center ">
+                <ShieldCheckIcon size={30} className='mr-2 text-[#12b76a]' fill='#d1fadf' />
               The Traverse platform enables anyone around the world to acquire land and build  remotely. 
               </p>
-              <div className="flex items-center mt-4">
-                
+              <div className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex items-center">
+              <ShieldCheckIcon size={30} className=' text-[#12b76a]' fill='#d1fadf' />
                 <p className="ml-2 lg:text-lg">
+                  
                 There are Real Estate Lawyers on our portal ready to handle your due diligence & conveyancing.
                 </p>
               </div>
-              <div className="flex items-center mt-4">
-                
+              <div className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex items-center">
+              <ShieldCheckIcon size={30} className=' text-[#12b76a]' fill='#d1fadf' />
                 <p className="ml-2 lg:text-lg">
                 Certified Architects, Engineers & Building Constructors are ready to build take up your construction. 
                 </p>
               </div>
-              <div className="flex items-center mt-4">
-                
+              <div className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex items-center">
+              <ShieldCheckIcon size={30} className=' text-[#12b76a] ring-none' fill='#d1fadf' />
                 <p className="ml-2 lg:text-lg">
                 Make secured and seamless online payments against your project schedules. 
                 </p>
               </div>
-              <div className="flex items-center mt-4">
-                
+              <div className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex ">
+              <ShieldCheckIcon size={50} className=' text-[#12b76a]' fill='#d1fadf' />
                 <p className="ml-2 lg:text-lg">
                 Personalized user portal to receive regular comprehensive project updates; including buiding designs,  invoices,  pictures and drone video footage.  of your construction project in its entirety.
                 </p>

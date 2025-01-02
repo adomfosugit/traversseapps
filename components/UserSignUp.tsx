@@ -8,7 +8,7 @@ import {Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessag
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'next/navigation';
-import { createUserAccount } from '@/lib/Appwrite/api';
+import { createSUserAccount, createUserAccount } from '@/lib/Appwrite/api';
 import { toast } from '@/hooks/use-toast';
 type Props = {}
 
@@ -34,7 +34,7 @@ const UserSignUp = (props: Props) => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
   
-    const user = await createUserAccount(values)
+    const user = await createSUserAccount(values)
     if(!user) { toast({title: 'Sign Up failed. User Already exists'})
       return 
     }

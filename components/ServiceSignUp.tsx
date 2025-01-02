@@ -8,13 +8,12 @@ import {Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessag
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'next/navigation';
-import { createserviceProvider, getserviceProviderData } from '@/lib/Appwrite/api';
+import { createUserAccount, createserviceProvider, getserviceProviderData } from '@/lib/Appwrite/api';
 import { toast } from '@/hooks/use-toast';
 import { Check, ChevronsUpDown, Phone } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from './ui/command';
 import { cn } from '@/lib/utils';
-import bcrypt from 'bcryptjs';
 type Props = {}
 const phoneRegex = new RegExp(
     /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
@@ -25,8 +24,8 @@ const phoneRegex = new RegExp(
     Email: z
       .string({ required_error: "Email required" })
       .email("Please Enter a Valid Email"),
-    Password: z.string({ required_error: "Password is required" }),
-    repeatPassword: z.string({ required_error: "Please confirm your password" }),
+    Password: z.string({ required_error: "Password is required" }).min(8, "Password must be at least 8 characters long"),
+    repeatPassword: z.string({ required_error: "Please confirm your password" }).min(8, "Password must be at least 8 characters long"),
     Phone: z
       .string()
       .regex(phoneRegex, "Invalid Number!"),
@@ -38,7 +37,7 @@ const phoneRegex = new RegExp(
   })
   .refine((data) => data.Password === data.repeatPassword, {
     message: "Passwords do not match",
-    path: ["repeatPassword"], // Set the error on the `repeatPassword` field
+    path: ["repeatPassword"]
   });
 
 export type TSelectOptions = {
@@ -48,6 +47,7 @@ export type TSelectOptions = {
 
 const ServiceSignUp = (props: Props) => {
   const [inputValue, setInputValue] = useState("")
+  const [countryinputValue, setcountryInputValue] = useState("")
   const router = useRouter()
   const [isLoading, setIsLoading] =  useState<boolean>(false)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,10 +69,8 @@ const ServiceSignUp = (props: Props) => {
  
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-   const password = await bcrypt.hash(values.Password, 10)
-   const {Name, Email,  Phone, Country, officialAddress, profession, membershipID} = values
-        const responseuser = await createserviceProvider(Name, Email, password, Phone, Country, officialAddress, profession, membershipID)
-        if(responseuser.error) { toast({title: 'Registration failed. User Exists'})
+        const responseuser = await createUserAccount(values)
+        if(!responseuser) { toast({title: 'Registration failed User Exists'})
           return 
         }
         {toast({variant:'default',title: 'Registered'})}
@@ -99,7 +97,7 @@ const ServiceSignUp = (props: Props) => {
     { id: 'NA', value: 'None Applicable' },
   ];
   return (
-    <div className='w-full shadow-2xl p-12 h-[600px] overflow-y-scroll '>
+    <div className='w-full  p-12 h-[600px] overflow-y-scroll '>
 
     <div className=' w-full flex flex-col items-start gap-y-[20px]  '>
  
@@ -209,7 +207,7 @@ const ServiceSignUp = (props: Props) => {
                   <Command>
                     <CommandInput
                       placeholder="Search..."
-                      value={inputValue}
+                      value={countryinputValue}
                       onValueChange={(value) => {
                         setInputValue(value)
                         form.setValue("Country", value)
@@ -223,7 +221,7 @@ const ServiceSignUp = (props: Props) => {
                             key={country.id}
                             onSelect={() => {
                               form.setValue("Country", country.value)
-                              setInputValue(country.value)
+                              setcountryInputValue(country.value)
                             }}
                           >
                             <Check

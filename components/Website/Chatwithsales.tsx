@@ -15,7 +15,7 @@ const Chatwithsales = (props: Props) => {
             journey. All professional on the portal  are certified by  
             their respective  professional body. Your location should be
              an impediment to your property acquisition desires. </p>
-          <Button variant={'outline'} className='text-sm ring-1 ring-primary m-2'>Chat with Sales</Button>
+      
     </div>
   )
 }

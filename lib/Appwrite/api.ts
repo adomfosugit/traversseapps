@@ -4,11 +4,53 @@ import { createSessionClient,createAdminClient } from "./Config";
 import {ID, OAuthProvider, Query} from 'node-appwrite'
 import { cookies, headers } from "next/headers";
 import { parseStringify } from "@/lib/utils";
-import { NewUser } from "@/Types";
+import { NewUser, SNewUser } from "@/Types";
 import { redirect } from "next/navigation";
 // Authentication 
 const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID} = process.env
-export async function createUserAccount(user:NewUser){ 
+export async function createUserAccount(user:SNewUser){ 
+  let promise;
+  try {
+    const {account,database} = await createAdminClient()
+    promise = await account.create(ID.unique(), user.Email, user.Password,user.Name)
+    if(!promise) throw new Error('Error Creating User')
+   
+    const service_provider = await database.createDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_SERVICEPROVIDER_COLLECTION_ID!,
+      ID.unique(),
+      {
+        Name:user.Name,
+        Email:user.Email,
+        Password:user.Password,
+        Phone:user.Phone,
+        Country:user.Country,
+        officialAddress:user.officialAddress,
+        profession:user.profession,
+        membershipID:user.membershipID,
+        VerifiedServiceProvider: false
+      }
+    
+  )
+    if(!service_provider) throw new Error('Error Signing Up user')
+    const session = await account.createEmailPasswordSession(user.Email,user.Password);
+    const cookieStore = await cookies()
+  
+    cookieStore.set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+
+    return parseStringify(service_provider)
+  
+  } catch (error) {
+    console.log(error)
+  }   
+}
+export async function createSUserAccount(user:NewUser){ 
+
   try {
     const {account} = await createAdminClient()
     const promise = await account.create( ID.unique(), user.Email, user.Password,user.Name)
@@ -113,10 +155,6 @@ export async function getserviceProviderData(email:string){
 } 
 export async function createserviceProvider(Name:string, Email:string, Password:string, Phone:string, Country:string, officialAddress:string, profession:string, membershipID:string){
   try {
-    const checkstatus = await getserviceProviderData(Email)
-    if(!checkstatus){
-     return {error:"User Already Exists"}
-    }
     const { database } = await createAdminClient()
     const serviceprovider = await database.createDocument(
         NEXT_DATABASE_ID!,
@@ -141,7 +179,7 @@ export async function createserviceProvider(Name:string, Email:string, Password:
     console.log(error)
   }
 }
-async function createServiceProvider(Name, Email, Password, Phone, Country, officialAddress, profession, membershipID) {
+export async function createServiceProvider(Name:string, Email:string, Password:string, Phone:string, Country:string, officialAddress:string, profession:string, membershipID:string) {
   try {
     // Check if the service provider already exists
     const checkstatus = await getserviceProviderData(Email);

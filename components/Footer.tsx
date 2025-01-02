@@ -29,9 +29,7 @@ const Footer = () => {
 
         </div>
       </div>
-      <div className="text-center mt-4 text-sm border-t border-white pt-4">
-        <p>&copy; {new Date().getFullYear()} TraverseApps. All rights reserved.</p>
-      </div>
+      
     </footer>
   );
 };

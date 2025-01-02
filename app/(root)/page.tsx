@@ -7,6 +7,7 @@ import Testimonials from "@/components/Testimonials";
 import WhereWeOperate from "@/components/WhereWeOperate";
 import FAQ from "@/components/FAQ";
 import { motion } from "motion/react"
+import WayYouBuild2 from "@/components/WayYouBuild2";
 export default function Home() {
   return (
     <div>
@@ -15,6 +16,7 @@ export default function Home() {
       <WhyTraverse />
       
       <WayYouBuild />
+      <WayYouBuild2 />
       <Testimonials />
       <WhereWeOperate />
       <FAQ />

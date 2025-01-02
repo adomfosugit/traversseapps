@@ -37,5 +37,9 @@ export const testimonials = [
       question: "How does Traverse work? ",
       answer: "Traverse brings together all the professionals in the built environment on its portal to facilitate your real estate transactions for you. If you are a professional in the built environment (Real Estate Lawyers, Civil Engineers, Contractor, Architect, Land Surveyor, Land Administrator) create an account, get vetted and start taking up job request. Traverse users, from anywhere in the world can create an account to start your property acquisition journey. You get the chance to choose the pathway that works for you, whether you want to acquire a land, build your house, or move an uncompleted project to Traverse . Traverse gives you a personalize experience that makes you feel like you are on the ground."
     },
+    {
+      question: "Can I use Traverse to process my applications at Lands Commission?  ",
+      answer: "Yes.  You can use Traverse to process your Deeds Registration and Land Title Application irrespective of the region in which your land is located. Create an account and upload all the needed land documents, we will assess your case, provide you with the necessary steps required and the cost involved"
+    },
     
   ];

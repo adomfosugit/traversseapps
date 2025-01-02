@@ -42,7 +42,7 @@ const UserSignIn = (props: Props) => {
     
   }
   return (
-    <div className='w-full shadow-2xl p-12 '>
+    <div className='w-full  p-12 '>
 
     <div className=' w-full flex flex-col items-start gap-y-[20px]  '>
  

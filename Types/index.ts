@@ -19,3 +19,15 @@ export type Update = {
     secret:string;
     password1: string;
 }
+export type TLand = {
+    id: string;
+    location: string;
+    imagePath: string;
+    region: string;
+    dimension: number;
+    dimensionUnit: string;
+    description: string;
+    price: number;
+    currency: string;
+  };
+  

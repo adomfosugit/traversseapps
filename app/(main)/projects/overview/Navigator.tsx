@@ -10,16 +10,16 @@ const Navigator = (props: Props) => {
     <NavigationMenu>
   <NavigationMenuList>
     <NavigationMenuItem>
-      <NavigationMenuLink className={`${navigationMenuTriggerStyle()} hover:bg-primary hover:text-white ${pathname === '/home' ? 'bg-primary text-white' : ''}`}  >Home</NavigationMenuLink>
+      <NavigationMenuLink  href='/home' className={`${navigationMenuTriggerStyle()} hover:bg-primary hover:text-white ${pathname === '/home' ? 'bg-primary text-white' : ''}`}  >Home</NavigationMenuLink>
     </NavigationMenuItem>
     <NavigationMenuItem>
-      <NavigationMenuLink className={`${navigationMenuTriggerStyle()} hover:bg-primary hover:text-white ${pathname === '/projects' ? 'bg-primary text-white' : ''}`}  >Projects</NavigationMenuLink>
+      <NavigationMenuLink href='/projects' className={`${navigationMenuTriggerStyle()} hover:bg-primary hover:text-white ${pathname === '/projects' ? 'bg-primary text-white' : ''}`}  >Projects</NavigationMenuLink>
     </NavigationMenuItem>
     <NavigationMenuItem>
-      <NavigationMenuLink className={`${navigationMenuTriggerStyle()} hover:bg-primary hover:text-white ${pathname === '/faq' ? 'bg-primary text-white' : ''}`}  >FAQ</NavigationMenuLink>
+      <NavigationMenuLink href='/faq' className={`${navigationMenuTriggerStyle()} hover:bg-primary hover:text-white ${pathname === '/faq' ? 'bg-primary text-white' : ''}`}  >FAQ</NavigationMenuLink>
     </NavigationMenuItem>
     <NavigationMenuItem>
-      <NavigationMenuLink className={`${navigationMenuTriggerStyle()} hover:bg-primary hover:text-white ${pathname === '/settings' ? 'bg-primary text-white' : ''}`}  >Settings</NavigationMenuLink>
+      <NavigationMenuLink href='/settings' className={`${navigationMenuTriggerStyle()} hover:bg-primary hover:text-white ${pathname === '/settings' ? 'bg-primary text-white' : ''}`}  >Settings</NavigationMenuLink>
     </NavigationMenuItem>
   
  

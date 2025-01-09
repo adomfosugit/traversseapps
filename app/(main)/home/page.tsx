@@ -14,8 +14,8 @@ const page = (props: Props) => {
      
 
 
-      <p className='text-gray-500'>Click the button below to browse Land listings on Traverse</p>
-      <Link href='/landlisting' >
+      <p className='text-gray-500'>Click the button below to start your project </p>
+      <Link href='/startproject' >
       <div className='p-12 w-full lg:w-80 flex justify-center items-center border-2 border-zinc-200 rounded-2xl lg:h-80 hover:border-2 hover:border-zinc-800'><MapPinCheckInside size={100}/></div>
       </Link>
       <p className='font-bold'>Find new listing</p>

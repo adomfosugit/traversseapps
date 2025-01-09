@@ -24,6 +24,44 @@ export const testimonials = [
       comment: "A fantastic experience from start to finish. I will definitely be coming back!"
     }
   ];
+export const projectlist = [
+    {
+      name: "Land Registration",
+      imgSrc: "/assets/landregistration.png", // Replace with the actual image path
+      comment: " I’m based in the UK and I used Traverse for my land acquisition in Ghana. It was a safe, secured and very transparent. ",
+      link: '/landlisting',
+      status:false
+    },
+    {
+      name: "Land Acquisition",
+      imgSrc: "/assets/landacquisition.png", // Replace with the actual image path
+      comment: " This pathway allows you make land acquisition remotely from our vetted land listing ",
+      link: '/landlisting',
+      status:false
+    },
+    {
+      name: "Land Acquisition + Building Construction",
+      imgSrc: "/assets/buildingconstruction.png", // Replace with the actual image path
+      comment: " This pathway allows you make land acquisition and follow through the required construction steps remotely via our approved built environment professionals ",
+      link: '',
+      status:true
+    },
+    {
+      name: "Move an uncompleted project to Traverse ",
+      imgSrc: "/assets/moveuncompleted.png", // Replace with the actual image path
+      comment: " This pathway allows you to continue an uncompleted building project.",
+      link: '',
+      status:true
+    },
+    {
+      name: "Start new construction ",
+      imgSrc: "/assets/startnewcons.png", // Replace with the actual image path
+      comment: " This pathway allows you to start your building project, if you have already completed your land acquisition. ",
+      link: '',
+      status:true
+    },
+ 
+  ];
    export const faqs = [
     {
       question: "What is  Traverse ?",
@@ -44,4 +82,3 @@ export const testimonials = [
     
   ];
 
-  

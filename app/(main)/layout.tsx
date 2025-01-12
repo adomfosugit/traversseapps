@@ -1,8 +1,11 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../(root)/globals.css";
 import Header from "@/components/Website/Header";
 import Navbar from "./projects/overview/Navbar";
+import { getLoggedInUser } from "@/lib/Appwrite/api";
+import { redirect } from "next/navigation";
 
 
 const geistSans = Geist({
@@ -20,11 +23,13 @@ export const metadata: Metadata = {
   description: "Traverse -Revolutinizing building in Africa - Real Estate",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) 
+{
+ 
+  const getUser = await getLoggedInUser()
+  if(!getUser){
+      redirect('/user-entry/sign-in')
+  }
   return (
     <html lang="en">
       <body

@@ -38,7 +38,7 @@ const UserSignIn = (props: Props) => {
     if(!session){
     return toast({title: 'Sign in Failed. Please Sign Up'})
     }
-    router.push('/')
+    router.push('/home')
     
   }
   return (

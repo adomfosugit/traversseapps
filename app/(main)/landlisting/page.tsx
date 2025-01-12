@@ -19,7 +19,7 @@ const page = (props: Props) => {
      <aside className="hidden lg:flex w-1/4 text-sm ">
         <Drawer />
       </aside>
-    <main className='flex flex-col mx-auto max-w-xl mt-12'>
+    <main className='flex flex-col mx-auto max-w-4xl mt-12'>
         <div className='flex justify-between mb-4'>
           <SHeader />
           <Button variant={'outline'} onClick={showSubNav}> <ListFilter/> Filter</Button>

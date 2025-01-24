@@ -19,7 +19,7 @@ const WayYouBuild = () => {
                 Remote Property Development
               </p>
               <p className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex items-center ">
-                <ShieldCheckIcon size={30} className='mr-2 text-[#12b76a]' fill='#d1fadf' />
+               
               The Traverse platform enables anyone around the world to acquire land and build  remotely. 
               </p>
               <div className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex items-center">
@@ -30,19 +30,19 @@ const WayYouBuild = () => {
                 </p>
               </div>
               <div className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex items-center">
-              <ShieldCheckIcon size={30} className=' text-[#12b76a]' fill='#d1fadf' />
+           
                 <p className="ml-2 lg:text-lg">
                 Certified Architects, Engineers & Building Constructors are ready to build take up your construction. 
                 </p>
               </div>
               <div className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex items-center">
-              <ShieldCheckIcon size={30} className=' text-[#12b76a] ring-none' fill='#d1fadf' />
+              
                 <p className="ml-2 lg:text-lg">
                 Make secured and seamless online payments against your project schedules. 
                 </p>
               </div>
               <div className="mt-4 text-gray-500 text-left lg:mr-20 lg:text-lg flex ">
-              <ShieldCheckIcon size={50} className=' text-[#12b76a]' fill='#d1fadf' />
+          
                 <p className="ml-2 lg:text-lg">
                 Personalized user portal to receive regular comprehensive project updates; including buiding designs,  invoices,  pictures and drone video footage.  of your construction project in its entirety.
                 </p>

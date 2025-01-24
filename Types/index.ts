@@ -7,6 +7,10 @@ export type SNewUser = {
     officialAddress:string,
     profession:string,
     membershipID:string
+    membershipAffiliation:string;
+    bankName?:string;
+    accountName?:string;
+    accountNumber?:string;
 }
 export type NewUser = {
     Email : string;

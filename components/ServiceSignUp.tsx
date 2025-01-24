@@ -33,6 +33,7 @@ const phoneRegex = new RegExp(
     officialAddress: z.string({ required_error: "Official address is required" }),
     profession: z.string({ required_error: "Profession is required" }),
     membershipID: z.string({ required_error: "Membership ID is required" }),
+    membershipAffiliation: z.string({ required_error: "Membership ID is required" }),
 
   })
   .refine((data) => data.Password === data.repeatPassword, {
@@ -46,8 +47,9 @@ export type TSelectOptions = {
   };
 
 const ServiceSignUp = (props: Props) => {
-  const [inputValue, setInputValue] = useState("")
-  const [countryinputValue, setcountryInputValue] = useState("")
+  const [inputValue, setInputValue] = useState<string>("")
+  const [countryinputValue, setcountryInputValue] = useState<string>("")
+  const [membershipinputValue, setMembershipInputValue] = useState<string>("")
   const router = useRouter()
   const [isLoading, setIsLoading] =  useState<boolean>(false)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,6 +64,8 @@ const ServiceSignUp = (props: Props) => {
     officialAddress: "",
     profession: "",
     membershipID: "",
+    membershipAffiliation: "",
+    
     
     
     },
@@ -89,11 +93,15 @@ const ServiceSignUp = (props: Props) => {
     { id: 'NA', value: 'Architect' },
     { id: 'LA', value: 'Lawyer' },
     { id: 'LB', value: 'Land broker' },
+    { id: 'LAD', value: 'Land Administrator' },
+    { id: 'CE', value: 'Civil Engineer' },
   ];
 
   const membershipData: TSelectOptions[] = [
     { id: 'NCL', value: 'National Association of Lawyers' },
     { id: 'CA', value: 'Chartered Architects' },
+    { id: 'GS', value: 'Ghana Institute of Surveyors' },
+    { id: 'GE', value: 'Ghana Institute of Engineers' },
     { id: 'NA', value: 'None Applicable' },
   ];
   return (
@@ -338,6 +346,74 @@ const ServiceSignUp = (props: Props) => {
               </FormControl>
               <FormMessage />
            
+            </FormItem>
+          )}
+        />
+                 <FormField
+          control={form.control}
+          name="membershipAffiliation"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Membership Affiliation</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? membershipData.find(
+                            (profession) => profession.value === field.value
+                          )?.value || field.value
+                        : "Select "}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className=" p-0">
+                  <Command>
+                    <CommandInput
+                      placeholder="Search..."
+                      value={membershipinputValue}
+                      onValueChange={(value) => {
+                        setMembershipInputValue(value)
+                        form.setValue("membershipAffiliation", value)
+                      }}
+                    />
+                    <CommandList>
+                      <CommandGroup>
+                        {membershipData.map((profession:TSelectOptions) => (
+                          <CommandItem
+                            value={profession.value}
+                            key={profession.id}
+                            onSelect={() => {
+                              form.setValue("membershipAffiliation", profession.value)
+                              setMembershipInputValue(profession.value)
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                profession.value === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {profession.value}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+             
+              <FormMessage />
             </FormItem>
           )}
         />

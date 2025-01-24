@@ -7,7 +7,7 @@ import { parseStringify } from "@/lib/utils";
 import { NewUser, SNewUser } from "@/Types";
 import { redirect } from "next/navigation";
 // Authentication 
-const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID} = process.env
+const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID} = process.env
 export async function createUserAccount(user:SNewUser){ 
   let promise;
   try {
@@ -20,15 +20,19 @@ export async function createUserAccount(user:SNewUser){
       NEXT_SERVICEPROVIDER_COLLECTION_ID!,
       ID.unique(),
       {
-        Name:user.Name,
+        Name_Entity:user.Name,
         Email:user.Email,
-        Password:user.Password,
         Phone:user.Phone,
         Country:user.Country,
         officialAddress:user.officialAddress,
         profession:user.profession,
         membershipID:user.membershipID,
-        VerifiedServiceProvider: false
+        VerifiedServiceProvider: false,
+        Professional_Membership:user.membershipAffiliation,
+        Bank_Name:user.bankName,
+        Account_number:user.accountNumber,
+        Account_name:user.accountName,
+
       }
     
   )
@@ -147,8 +151,32 @@ export async function getserviceProviderData(email:string){
     const userData = await database.listDocuments(
       NEXT_DATABASE_ID!,
       NEXT_SERVICEPROVIDER_COLLECTION_ID!,
-      [Query.equal("Email", [email])])
-    return userData
+      [Query.equal("Email", `${email}`)])
+    return userData.documents[0]
+  } catch (error) {
+    console.log(error)
+  }
+} 
+export async function getBrokerLands(email:string){
+  try {
+    const { database } = await createAdminClient()
+    const brokerlandData = await database.listDocuments(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_COLLECTION_ID!,
+      [Query.equal("Email", `${email}`)])
+    return brokerlandData
+  } catch (error) {
+    console.log(error)
+  }
+} 
+export async function getLands(){
+  try {
+    const { database } = await createAdminClient()
+    const landData = await database.listDocuments(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_COLLECTION_ID!,)
+      
+    return landData.documents
   } catch (error) {
     console.log(error)
   }

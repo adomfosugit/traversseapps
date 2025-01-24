@@ -22,10 +22,10 @@ const ProjectCard = (props: Props) => {
 
     <Card>
 
-    <CardContent className='w-full p-0 h-45'>
+    <CardContent className='w-full p-0 h-[200px]'>
     
      
-    <Image src={props.imgSrc} alt={props.name} width={50} height={50} className={`w-full h-full ${props.disabled ? 'opacity-50' : ''}`} />
+    <Image src={props.imgSrc} alt={props.name} width={300} height={300} className={`w-full h-full ${props.disabled ? 'opacity-50' : ''}`} />
 
     </CardContent>
  
@@ -34,9 +34,9 @@ const ProjectCard = (props: Props) => {
     </Link>
     <TooltipProvider>
     <Tooltip>
-    <TooltipTrigger> <p className='text-wrap text-primary text-sm text-center mt-2'>{props.name}</p></TooltipTrigger>
+    <TooltipTrigger> <p className='text-wrap text-primary text-sm text-center mt-2 text-center '>{props.name}</p></TooltipTrigger>
     <TooltipContent className='w-[250px] h-[100px] text-wrap text-primary text-xs bg-slate-100'>
-      <p className='p-2'>{props.comment}</p>
+      <p className='p-2 text-center items-center'>{props.comment}</p>
     </TooltipContent>
   </Tooltip>
 </TooltipProvider>

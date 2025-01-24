@@ -25,35 +25,35 @@ const WayYouBuild2 = () => {
               <div className="flex items-center mt-4">
                 
                 <p className="ml-2 lg:text-lg flex items-center">
-                <ShieldCheckIcon size={30} className=' text-[#12b76a] ring-none' fill='#d1fadf' />
+              
                 Create an account on Traverse 
                 </p>
               </div>
               <div className="flex items-center mt-4">
                 
                 <p className="ml-2 lg:text-lg flex items-center">
-                <ShieldCheckIcon size={30} className=' text-[#12b76a] ring-none' fill='#d1fadf' />
+              
                 Upload all documents required for title application
                 </p>
               </div>
               <div className="flex items-center mt-4">
                 
                 <p className="ml-2 lg:text-lg flex items-center">
-                <ShieldCheckIcon size={30} className=' text-[#12b76a] ring-none' fill='#d1fadf' />
+                
                 Answer some few question to enable us understand your situation. 
                 </p>
               </div>
               <div className="flex items-center mt-4">
                 
                 <p className="ml-2 lg:text-lg flex items-center">
-                <ShieldCheckIcon size={30} className=' text-[#12b76a] ring-none' fill='#d1fadf' />
+                
                 A summary of information will be shared with you on the steps required to register your land at  Lands Commission
                 </p>
               </div>
               <div className="flex items-center mt-4 ">
                 
                 <p className="ml-2 lg:text-lg flex items-center">
-                <ShieldCheckIcon size={30} className=' text-[#12b76a] ring-none' fill='#d1fadf' />
+            
                 Personalized user portal to receive regular comprehensive update on registration process. 
                 </p>
               </div>

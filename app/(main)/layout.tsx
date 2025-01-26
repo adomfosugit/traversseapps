@@ -1,4 +1,4 @@
-
+'use dynamic'
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../(root)/globals.css";
@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   description: "Traverse -Revolutinizing building in Africa - Real Estate",
 };
 
+export const dynamic = "force-dynamic";
 export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) 
 {
  

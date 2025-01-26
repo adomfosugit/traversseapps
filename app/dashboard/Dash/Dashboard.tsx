@@ -1,6 +1,6 @@
 'use client';
 
-import useLandModal from '@/app/hooks/useLandModal';
+import useLandModal from '@/hooks/useLandModal';
 import { StarIcon } from '@heroicons/react/24/solid';
 import AggregateCard from './AggregateCard';
 import LandTable, { TSafeLand } from './LandTable';
@@ -23,6 +23,7 @@ export enum EBrokerProfession {
 
 const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
   const landModal = useLandModal();
+
 
   const landCards = [
     {

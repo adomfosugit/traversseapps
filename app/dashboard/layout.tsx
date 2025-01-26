@@ -5,6 +5,7 @@ import "../(root)/globals.css";
 import Header from "@/components/Website/Header";
 import { getLoggedInUser } from "@/lib/Appwrite/api";
 import { redirect } from "next/navigation";
+import LandModal from "@/components/Modal/LandModal";
 
 
 const geistSans = Geist({
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Traverse ",
   description: "Traverse -Revolutinizing building in Africa - Real Estate",
 };
-
+export const dynamic = "force-dynamic";
 export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) 
 {
  
@@ -36,7 +37,14 @@ export default async function RootLayout({children,}: Readonly<{children: React.
       >
      
      <>
-      <main className="mx-36 mt-9">{children}</main>
+      <main className="mx-36 mt-9 ">
+
+        <LandModal />
+
+   
+
+        {children}
+        </main>
     </> 
  
 

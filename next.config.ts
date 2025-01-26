@@ -12,9 +12,6 @@ const nextConfig = {
  // !! WARN !!
  ignoreBuildErrors: true,
 },
- experimental: {
-     serverComponentsExternalPackages: ['node-appwrite'],
-   },
    images:{
      remotePatterns:[
        {

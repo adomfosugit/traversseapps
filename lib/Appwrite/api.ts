@@ -162,7 +162,7 @@ export async function getBrokerLands(email:string){
       NEXT_DATABASE_ID!,
       NEXT_LAND_COLLECTION_ID!,
       [Query.equal("Email", `${email}`)])
-    return brokerlandData
+    return brokerlandData.documents
   } catch (error) {
     console.log(error)
   }

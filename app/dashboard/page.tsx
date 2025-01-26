@@ -11,12 +11,14 @@ const ServiceProviders = async () => {
   const isLandOwner = serviceProvider?.profession === 'Land broker';
 
   let brokerLands, providerProjects;
+  
   if (isLandOwner) {
   brokerLands = await getBrokerLands(currentUser.email);
+  console.log(brokerLands)  
+ 
   } else {
   brokerLands = await getLands();
   }
-
   return (
     <div className="w-full min-h-screen">
        <Dashboard

@@ -86,8 +86,6 @@ export async function loginWithGoogle() {
     return redirect (redirectUrl);
   
 
-
-
 };
 
 export async function signInAccount(Email:string,Password:string){ 

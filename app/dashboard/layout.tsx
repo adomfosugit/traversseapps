@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../(root)/globals.css";
 import Header from "@/components/Website/Header";
-import { getLoggedInUser } from "@/lib/Appwrite/api";
+import { getLoggedInUser, getserviceProviderData } from "@/lib/Appwrite/api";
 import { redirect } from "next/navigation";
 import LandModal from "@/components/Modal/LandModal";
 
@@ -27,8 +27,9 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 {
  
   const getUser = await getLoggedInUser()
-  if(!getUser){
-      redirect('/user-entry/sign-in')
+  const isServiceProvider = await getserviceProviderData(getUser.email)
+  if(!isServiceProvider){
+      redirect('/service-provider/sign-in')
   }
   return (
     <html lang="en">

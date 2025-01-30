@@ -178,7 +178,7 @@ const ServiceSignUp = (props: Props) => {
             <FormItem>
               <FormLabel>Phone</FormLabel>
               <FormControl>
-                <Input placeholder="Phone" {...field} type='password'/>
+                <Input placeholder="Phone" {...field} type='text'/>
               </FormControl>
               <FormMessage />
            

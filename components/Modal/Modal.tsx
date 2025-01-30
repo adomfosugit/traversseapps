@@ -82,6 +82,7 @@ const Modal: React.FC<ModalProps> = ({
           outline-none
           focus:outline-none
           bg-neutral-800/70
+          
          
         "
       >
@@ -97,6 +98,8 @@ const Modal: React.FC<ModalProps> = ({
           h-full 
           lg:h-auto
           md:h-auto
+          
+          
           "
         >
           {/*content*/}

@@ -35,7 +35,7 @@ const UserSignUp = (props: Props) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
   
     const user = await createSUserAccount(values)
-    if(!user) { toast({title: 'Sign Up failed. User Already exists'})
+    if(!user.success) { toast({title: `${user.error}`})
       return 
     }
     {toast({variant:'default',title: 'Sign Up Succesful'})}

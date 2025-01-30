@@ -6,6 +6,7 @@ import { cookies, headers } from "next/headers";
 import { parseStringify } from "@/lib/utils";
 import { NewUser, SNewUser } from "@/Types";
 import { redirect } from "next/navigation";
+
 // Authentication 
 const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID} = process.env
 export async function createUserAccount(user:SNewUser){ 
@@ -68,10 +69,12 @@ export async function createSUserAccount(user:NewUser){
       secure: true,
     });
 
-    return parseStringify(promise)
-  
+    //return parseStringify(promise)
+    return { success: true, data: promise };
   } catch (error) {
     console.log(error)
+    //@ts-ignore
+    return { success: false, error: error?.message || "An unknown error occurred" }; 
   }   
 }
 // add succews and failure urls to this
@@ -86,7 +89,7 @@ export async function loginWithGoogle() {
 
 };
 
-export async function signInAccount(Email:string,Password:string){ 
+//export async function signInAccount(Email:string,Password:string){ 
   try {
     const {account} = await createAdminClient()
     const promise = await account.createEmailPasswordSession(Email,Password);
@@ -99,9 +102,33 @@ export async function signInAccount(Email:string,Password:string){
     });
     return parseStringify(promise)
   } catch (error) {
-    console.log(error)
+    console.log(error?.message)
+   
+    
   }   
+//}
+export async function signInAccount(Email: string, Password: string) {
+  try {
+    const { account } = await createAdminClient();
+    const promise = await account.createEmailPasswordSession(Email, Password);
+
+    const cookieStore = await cookies();
+    cookieStore.set("appwrite-session", promise.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+
+    return { success: true, data: promise };
+  } catch (error) {
+    //@ts-ignore
+    console.log(error?.message);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An unknown error occurred" };  // Explicitly return error
+  }
 }
+
 export async function createAccountRecovery(Email:string){ 
   try {
     const {account} = await createAdminClient()

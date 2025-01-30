@@ -35,8 +35,8 @@ const UserSignIn = (props: Props) => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const session = await signInAccount(values.Email,values.Password)
-    if(!session){
-    return toast({title: 'Sign in Failed. Please Sign Up'})
+    if(!session.success){
+    return toast({title: `${session.error}`})
     }
     router.push('/home')
     

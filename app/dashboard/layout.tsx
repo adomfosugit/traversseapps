@@ -27,9 +27,12 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 {
  
   const getUser = await getLoggedInUser()
+  if(!getUser){
+    redirect('/service-provider/sign-in')
+  }
   const isServiceProvider = await getserviceProviderData(getUser.email)
   if(!isServiceProvider){
-      redirect('/service-provider/sign-in')
+      redirect('/service-provider/sign-up')
   }
   return (
     <html lang="en">
@@ -40,11 +43,11 @@ export default async function RootLayout({children,}: Readonly<{children: React.
      <>
       <main className="mx-36 mt-9 ">
 
-        <LandModal />
 
    
 
         {children}
+        <LandModal />
         </main>
     </> 
  

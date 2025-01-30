@@ -17,5 +17,5 @@ export async function GET(request:any) {
     secure: true,
   });
 
-  return NextResponse.redirect(`${request.nextUrl.origin}/account-recovery`);
+  return NextResponse.redirect(`${request.nextUrl.origin}/dashboard`);
 }

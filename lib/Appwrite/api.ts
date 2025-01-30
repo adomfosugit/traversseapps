@@ -89,24 +89,8 @@ export async function loginWithGoogle() {
 
 };
 
-//export async function signInAccount(Email:string,Password:string){ 
-  try {
-    const {account} = await createAdminClient()
-    const promise = await account.createEmailPasswordSession(Email,Password);
-    const cookieStore = await cookies()
-    cookieStore.set("appwrite-session", promise.secret, {
-      path: "/",
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-    });
-    return parseStringify(promise)
-  } catch (error) {
-    console.log(error?.message)
-   
-    
-  }   
-//}
+ 
+
 export async function signInAccount(Email: string, Password: string) {
   try {
     const { account } = await createAdminClient();

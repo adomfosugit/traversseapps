@@ -3,7 +3,7 @@ import ServiceSignIn from '@/components/ServiceSignIn'
 import React from 'react'
 
 type Props = {}
-
+// auth 
 const page = (props: Props) => {
   return (
     <div className='flex flex-col py-12 w-full'>

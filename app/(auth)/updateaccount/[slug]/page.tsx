@@ -55,14 +55,11 @@ const page = (props: Props) => {
     router.push('/')
   }
   return (
-    <div className='h-[800px] w-full shadow-2xl'>
+    <div className='flex items-center justify-center mx-auto'>
+         <div className='w-full p-12 '>
 
-    <div className='bg-white h-[800px] w-full flex flex-col items-center gap-y-[40px]  '>
-      <div className='h-[70px] bg-black w-[200px]'>
-        <Logo />
-      </div>
-      <div className='w-3/4'>
-      
+    <div className=' w-full flex flex-col items-start gap-y-[20px]  '>
+      <h1 className='text-primary font-bold'>Reset Password </h1>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
@@ -96,9 +93,10 @@ const page = (props: Props) => {
         <Button type="submit" className='w-full'>Submit </Button>
       </form>
     </Form>
-      </div>
     </div>
     </div>
+    </div>
+   
   )
 }
 

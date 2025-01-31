@@ -6,6 +6,7 @@ import Header from "@/components/Website/Header";
 import { getLoggedInUser, getserviceProviderData } from "@/lib/Appwrite/api";
 import { redirect } from "next/navigation";
 import LandModal from "@/components/Modal/LandModal";
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 
 const geistSans = Geist({

@@ -18,6 +18,8 @@ import Counter from '../form-items/Counter';
 import LandArea from './LandArea';
 import ImageUpload from '../form-items/ImageUpload';
 import { Input } from '../ui/input';
+import Geopoint from '../Geopoint';
+import { SearchBox } from "@mapbox/search-js-react";
 
 enum STEPS {
   CATEGORY = 0,
@@ -201,8 +203,8 @@ const LandModal = () => {
          {/* <CountrySelect
           value={location}
           onChange={(value) => setCustomValue('location', value)}
-        />
-      <Map center={location?.latlng} /> */}
+        />*/}
+     <Geopoint lat={5.5593} lng={0.1974} />
       </div>
     );
   }

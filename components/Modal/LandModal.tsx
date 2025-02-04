@@ -14,12 +14,14 @@ import { ImOffice } from 'react-icons/im';
 import { MdAgriculture } from 'react-icons/md';
 import useLandModal from '@/hooks/useLandModal';
 import CategoryInput from '../form-items/CategoryInput';
-import Counter from '../form-items/Counter';
 import LandArea from './LandArea';
 import ImageUpload from '../form-items/ImageUpload';
 import { Input } from '../ui/input';
-import Geopoint from '../Geopoint';
-import { SearchBox } from "@mapbox/search-js-react";
+import Minimap from '../Minimap';
+
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { Label } from '../ui/label';
+
 
 enum STEPS {
   CATEGORY = 0,
@@ -115,10 +117,6 @@ const LandModal = () => {
   const interestType = watch('interestType');
   const imageSrc = watch('imageSrc');
 
-  //const Map = useMemo(
-    //() => dynamic(() => import('../Map'), { ssr: false }),
-    //[location]
-  //);
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldValidate: true,
@@ -200,11 +198,9 @@ const LandModal = () => {
           title="Where is the land located"
           subtitle="Help buyers find the land"
         />
-         {/* <CountrySelect
-          value={location}
-          onChange={(value) => setCustomValue('location', value)}
-        />*/}
-     <Geopoint lat={5.5593} lng={0.1974} />
+       
+        <Minimap />
+      
       </div>
     );
   }
@@ -223,6 +219,19 @@ const LandModal = () => {
         />
         <hr />
         {/* transaction type */}
+        <div>
+          <h1 className='font-medium m-2'>Transaction Type</h1>
+        <RadioGroup defaultValue="comfortable">
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="Primary" id="r1" />
+          <Label htmlFor="r1">Primary transaction (direct sale from Stool, Family, kin etc)</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+          <RadioGroupItem value="Secondary" id="r2" />
+         <Label htmlFor="r2">Secondary transaction (any other sale after primary sale)</Label>
+           </div>         
+        </RadioGroup>
+        </div>
       </div>
     );
   }

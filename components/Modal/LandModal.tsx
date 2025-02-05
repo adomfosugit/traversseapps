@@ -1,11 +1,8 @@
 'use client';
 import { useMemo, useState } from 'react';
 import Modal from './Modal';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'react-hot-toast';
-
 import ModalHeader from './ModalHeader';
 
 import { FaFileContract, FaFileSignature, FaIndustry } from 'react-icons/fa';
@@ -16,11 +13,12 @@ import useLandModal from '@/hooks/useLandModal';
 import CategoryInput from '../form-items/CategoryInput';
 import LandArea from './LandArea';
 import ImageUpload from '../form-items/ImageUpload';
-import { Input } from '../ui/input';
 import Minimap from '../Minimap';
 
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Label } from '../ui/label';
+import Input from '../form-items/Input';
+import DocumentUpload from '../form-items/DocumentUpload';
 
 
 enum STEPS {
@@ -28,8 +26,9 @@ enum STEPS {
   LOCATION = 1,
   INFO = 2,
   IMAGES = 3,
-  DESCRIPTION = 4,
-  PRICE = 5,
+  DOCUMENT = 4,
+  DESCRIPTION = 5,
+  PRICE = 6,
 }
 
 export const categories = [
@@ -108,14 +107,22 @@ const LandModal = () => {
       price: 1,
       title: '',
       description: '',
+      DeedCert : '',
+      Indenture: '',
+      searchresult: '',
+
+
     },
   });
 
-  const category = watch('category');
-  const location = watch('location');
-  const otherLands = watch('otherLands');
+ // const category = watch('category');
+  //const location = watch('location');
+ // const otherLands = watch('otherLands');
   const interestType = watch('interestType');
   const imageSrc = watch('imageSrc');
+  const Indenture = watch('Indenture');
+  const Deedcert = watch('Deedcert');
+  const searchresult = watch('searchresult');
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -251,6 +258,39 @@ const LandModal = () => {
     );
   }
 
+  if (step === STEPS.DOCUMENT) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <ModalHeader
+          title="Land title/Deed certificate"
+          subtitle="Pre-verification document (optional)"
+        />
+        <DocumentUpload
+          value={Deedcert}
+          onChange={(value) => setCustomValue('DeedCert', value)}
+        />
+         <ModalHeader
+          title="Indenture"
+          subtitle="Pre-verification document (optional)"
+        />
+     
+        <DocumentUpload
+          value={Indenture}
+          onChange={(value) => setCustomValue('Indenture', value)}
+        />
+            <ModalHeader
+          title="Search results"
+          subtitle="Pre-verification document (optional)"
+        />
+       
+        <DocumentUpload
+          value={searchresult}
+          onChange={(value) => setCustomValue('searchresult', value)}
+        />
+      </div>
+    );
+  }
+
   if (step === STEPS.DESCRIPTION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
@@ -258,7 +298,7 @@ const LandModal = () => {
           title="How would you describe the land?"
           subtitle="Give a detailed description of the land"
         />
-      {/*  <Input
+       <Input
           id="title"
           label="Title"
           disabled={isLoading}
@@ -274,7 +314,7 @@ const LandModal = () => {
           register={register}
           errors={errors}
           required
-    /> */}
+    /> 
       </div>
     );
   }
@@ -286,7 +326,7 @@ const LandModal = () => {
           title="Set your price"
           subtitle="How much is the land selling for?"
         />
-        {/*<Input
+        <Input
           id="price"
           label="Price"
           formatPrice
@@ -295,7 +335,7 @@ const LandModal = () => {
           disabled={isLoading}
           errors={errors}
           required
-    /> */}
+    /> 
       </div>
     );
   }

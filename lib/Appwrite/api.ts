@@ -2,13 +2,14 @@
 
 import { createSessionClient,createAdminClient } from "./Config";
 import {ID, OAuthProvider, Query} from 'node-appwrite'
+import {InputFile} from 'node-appwrite/file'
 import { cookies, headers } from "next/headers";
 import { parseStringify } from "@/lib/utils";
 import { NewUser, SNewUser } from "@/Types";
 import { redirect } from "next/navigation";
 
 // Authentication 
-const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID} = process.env
+const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BUCKET_ID} = process.env
 export async function createUserAccount(user:SNewUser){ 
   let promise;
   try {
@@ -249,8 +250,30 @@ export async function createServiceProvider(Name:string, Email:string, Password:
     return { error: "An error occurred while creating the service provider." };
   }
 }
-// Database 
+// Database  land  upload documents
+export async function registerLand(landimage: FormData) {
+  try {
+    const file = landimage.get('landimage') as File;
 
+    // Convert the file to a buffer
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const { Storage } = await createAdminClient();
+    // Upload the file to Appwrite Storage
+    const response = await Storage.createFile(
+      NEXT_BUCKET_ID!, // Your Appwrite bucket ID
+      ID.unique(), // Generate a unique file ID
+      InputFile.fromBuffer(buffer, file.name) // Create InputFile from buffer
+    );
+
+    // Return the file URL
+    return {
+      url: `https://cloud.appwrite.io/v1/storage/buckets/${NEXT_BUCKET_ID}/files/${response.$id}/`,
+    };
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return null;
+  }
+}
 
 // Messaging Email
 export async function sendTermsConditions( content:string , userId:string ){

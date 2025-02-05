@@ -1,13 +1,9 @@
 'use client';
 
-import { CldUploadWidget } from 'next-cloudinary';
-import Image from 'next/image';
-import { useCallback, useMemo } from 'react';
+import { useState } from 'react';
 import { TbPhotoPlus } from 'react-icons/tb';
-
-declare global {
-  var cloudinary: any;
-}
+import Image from 'next/image';
+import { registerLand } from '@/lib/Appwrite/api';
 
 interface IImageUploadProps {
   onChange: (value: string[]) => void;
@@ -15,50 +11,69 @@ interface IImageUploadProps {
 }
 
 const ImageUpload = ({ value, onChange }: IImageUploadProps) => {
-  const imageArray: string[] = useMemo(() => [], []);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const handleUpload = useCallback(
-    (result: any) => {
-      imageArray.push(result.info.secure_url);
-      onChange(imageArray);
-    },
-    [onChange, imageArray]
-  );
+  const handleUpload = async (files: FileList) => {
+    setIsUploading(true);
+    const uploadedUrls: string[] = [];
+
+    try {
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append('landimage', file);
+
+        // Call the server action to upload the file to Appwrite
+        const response = await registerLand(formData);
+        if (response?.url) {
+          uploadedUrls.push(response.url);
+        }
+      }
+
+      // Update the parent component with the new image URLs
+      onChange([...value, ...uploadedUrls]);
+    } catch (error) {
+      console.error('Upload failed:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
-    <CldUploadWidget
-      onUpload={handleUpload}
-      uploadPreset="traverse"
-      options={{
-        maxFiles: 10,
-      }}
+    <div
+      className="relative cursor-pointer hover:opacity-70 transition border-dashed border-2 p-20 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-400"
+      onClick={() => document.getElementById('file-input')?.click()}
     >
-      {({ open }) => {
-        return (
-          <div
-            className="relative cursor-pointer hover:opacity-70 transition border-dashed border-2 p-20 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-400"
-            onClick={() => open?.()}
-          >
-            <TbPhotoPlus size={50} />
-            {value?.length < 0 && (
-              <div className="font-semibold text-lg">Click to upload</div>
-            )}
-            <div className="absolute inset-0 w-full h-full grid grid-flow-col gap-2">
-              {value?.length > 0 &&
-                value.map((image, index) => (
-                  <Image
-                    key={index}
-                    alt="Upload"
-                    height={300}
-                    width={300}
-                    style={{ objectFit: 'fill' }}
-                    src={image}
-                  />
-                ))}
-            </div>
-          </div>
-        );
-      }}
-    </CldUploadWidget>
+      <TbPhotoPlus size={50} />
+      {value.length === 0 && (
+        <div className="font-semibold text-lg">Click to upload</div>
+      )}
+      <input
+        id="file-input"
+        type="file"
+        multiple
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={(e) => e.target.files && handleUpload(e.target.files)}
+      />
+      <div className="absolute inset-0 w-full h-full grid grid-flow-col gap-2">
+        {value.length > 0 &&
+          value.map((image, index) => (
+            <Image
+              key={index}
+              alt="Upload"
+              height={300}
+              width={300}
+              style={{ objectFit: 'fill' }}
+              src={image}
+            />
+          ))}
+      </div>
+      {isUploading && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <span className="text-white">Uploading...</span>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -7,7 +7,22 @@ import { cookies, headers } from "next/headers";
 import { parseStringify } from "@/lib/utils";
 import { NewUser, SNewUser } from "@/Types";
 import { redirect } from "next/navigation";
+interface LandFormValues {
+  location: { lat: number; lng: number } | null; 
+  landArea: number; 
+  landtype: string; 
+  interestType: string; 
+  imageSrc: string[]; 
+  price: number; 
+  title: string; 
+  description: string;
+  DeedCert: string; 
+  Indenture: string; 
+  searchresult: string; 
+  transtype:string;
+  landstatus:string;
 
+}
 // Authentication 
 const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BUCKET_ID} = process.env
 export async function createUserAccount(user:SNewUser){ 
@@ -215,32 +230,40 @@ export async function createserviceProvider(Name:string, Email:string, Password:
     console.log(error)
   }
 }
-export async function createServiceProvider(Name:string, Email:string, Password:string, Phone:string, Country:string, officialAddress:string, profession:string, membershipID:string) {
-  try {
-    // Check if the service provider already exists
-    const checkstatus = await getserviceProviderData(Email);
-    
-    // If checkstatus is true, it means the user already exists
-    if (checkstatus) {
-      return { error: "User  Already Exists" };
-    }
 
-    // If the user does not exist, proceed to create a new service provider
+export async function uploadLand(data: LandFormValues) {
+ const  {location,landArea,landtype, interestType,imageSrc,price,title,description,DeedCert, Indenture,searchresult,transtype,landstatus} = data
+  try {
+    // upload land
     const { database } = await createAdminClient();
     const serviceprovider = await database.createDocument(
       NEXT_DATABASE_ID!,
-      NEXT_SERVICEPROVIDER_COLLECTION_ID!,
+      NEXT_LAND_COLLECTION_ID!,
       ID.unique(),
       {
-        Name: Name,
-        Email: Email,
-        Password: Password, // Consider hashing the password before storing it
-        Phone: Phone,
-        Country: Country,
-        officialAddress: officialAddress,
-        profession: profession,
-        membershipID: membershipID,
-        VerifiedServiceProvider: false
+        Type_of_Interest: interestType ,
+        latitude:location?.lat,
+        Longitude: location?.lng,
+        Land_Area: landArea,
+        Transaction_type: transtype,
+        ImageSrc: imageSrc,
+        Land_Document: DeedCert,
+        Search_from_LC: searchresult,
+        Listing_Title: title ,
+        Description: description,
+        Zoning_Regulations: landtype,
+        Price:price,
+        Third_Party_Interest: 'True',
+        Third_Party_Interest_if_yes:'hi',
+        Letigation_Encumberance: 'True',
+        Email: 'broker@traverse.com',
+        Indenture: Indenture,
+        Land_Registration_Status:landstatus
+        
+
+
+
+       
       }
     );
 

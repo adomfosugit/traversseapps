@@ -4,7 +4,6 @@ import Modal from './Modal';
 import { useRouter } from 'next/navigation';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import ModalHeader from './ModalHeader';
-
 import { FaFileContract, FaFileSignature, FaIndustry } from 'react-icons/fa';
 import { GrHomeRounded } from 'react-icons/gr';
 import { ImOffice } from 'react-icons/im';
@@ -14,21 +13,26 @@ import CategoryInput from '../form-items/CategoryInput';
 import LandArea from './LandArea';
 import ImageUpload from '../form-items/ImageUpload';
 import Minimap from '../Minimap';
-
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Label } from '../ui/label';
 import Input from '../form-items/Input';
 import DocumentUpload from '../form-items/DocumentUpload';
+import { uploadLand } from '@/lib/Appwrite/api';
+
 
 
 enum STEPS {
   CATEGORY = 0,
-  LOCATION = 1,
-  INFO = 2,
-  IMAGES = 3,
-  DOCUMENT = 4,
-  DESCRIPTION = 5,
-  PRICE = 6,
+  LANDTYPE =1,
+  LOCATION = 2,
+  INFO = 3,
+  IMAGES = 4,
+  DOCUMENT = 5,
+  DESCRIPTION = 6,
+  LANDSTATUS =7,
+  THIRD_PARTY_INTEREST =8,
+  LETIGATION = 9,
+  PRICE = 10,
 }
 
 export const categories = [
@@ -52,6 +56,24 @@ export const categories = [
     icon: ImOffice,
     description: 'Commercial zone',
   },
+];
+export const status = [
+  {
+    label: 'Land title Certificate',
+    icon:  FaFileContract,
+    description: 'Land Title Certificate',
+  },
+  {
+    label: 'Deed Certificate',
+    icon:  FaFileContract,
+    description: 'Agricultural land',
+  },
+  {
+    label: 'Not Registered',
+    icon:  FaFileContract,
+    description: 'Industrial zone',
+  },
+ 
 ];
 
 export const interestTypes = [
@@ -98,10 +120,9 @@ const LandModal = () => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      category: '',
       location: null,
       landArea: 1,
-      otherLands: 1,
+      landtype:'',
       interestType: '',
       imageSrc: [],
       price: 1,
@@ -110,19 +131,31 @@ const LandModal = () => {
       DeedCert : '',
       Indenture: '',
       searchresult: '',
+      transtype:'',
+      landstatus:'',
+      letigationencumberance: '',
+      thirdpartyifyes:'',
+      thirdpartyinterest: '',
+    
+
+
 
 
     },
   });
 
- // const category = watch('category');
-  //const location = watch('location');
- // const otherLands = watch('otherLands');
+
+  const landtype = watch('landtype');
+  const transtype = watch('transtype');
   const interestType = watch('interestType');
   const imageSrc = watch('imageSrc');
   const Indenture = watch('Indenture');
-  const Deedcert = watch('Deedcert');
+  const DeedCert = watch('DeedCert');
   const searchresult = watch('searchresult');
+  const landstatus = watch('landstatus');
+  const letigationencumberance =watch('letigationencumberance')
+  const thirdpartyinterest =watch('thirdpartyinterest')
+  const thirdpartyifyes =watch('thirdpartyifyes')
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -140,26 +173,21 @@ const LandModal = () => {
     setStep((value) => value + 1);
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (step !== STEPS.PRICE) {
       return onNext();
     }
+  
     setIsLoading(true);
-   // axios
-     // .post('/api/lands', data)
-      //.then(() => {
-        //toast.success('Land successfully created!');
-        //router.refresh();
-        //reset();
-        //setStep(STEPS.CATEGORY);
-        //landModal.onClose();
-      //})
-      //.catch(() => {
-       // toast.error('Something went wrong!');
-      //})
-      //.finally(() => {
-        //setIsLoading(false);
-      //});
+  
+    try {
+      const upload = await uploadLand(data); // Assuming uploadLand is an asynchronous function
+      console.log(data);
+    } catch (error) {
+      console.error('Error uploading land data:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   const actionLabel = useMemo(() => {
     if (step === STEPS.PRICE) {
@@ -198,6 +226,56 @@ const LandModal = () => {
     </div>
   );
 
+  if (step === STEPS.LANDTYPE) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <ModalHeader
+          title="Select your Land Zoning"
+          subtitle="Help buyers find the land"
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
+        {categories.map((item) => (
+          <div key={item.label} className="col-span-1">
+            <CategoryInput
+              onClick={(landtype) => {
+                setCustomValue('landtype', landtype);
+              }}
+              selected={landtype === item.label}
+              icon={item.icon}
+              label={item.label}
+            />
+          </div>
+        ))}
+      </div>
+       
+      </div>
+    );
+  }
+  if (step === STEPS.LANDSTATUS) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <ModalHeader
+          title="Land Registration Status"
+          subtitle="where has your land been registered?"
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
+        {status.map((item) => (
+          <div key={item.label} className="col-span-1">
+            <CategoryInput
+              onClick={(landstatus) => {
+                setCustomValue('landstatus', landstatus);
+              }}
+              selected={landstatus === item.label}
+              icon={item.icon}
+              label={item.label}
+            />
+          </div>
+        ))}
+      </div>
+       
+      </div>
+    );
+  }
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
@@ -205,9 +283,9 @@ const LandModal = () => {
           title="Where is the land located"
           subtitle="Help buyers find the land"
         />
-       
-        <Minimap />
-      
+       {/*@ts-ignore */}
+       <Minimap onChange={(value) => setCustomValue('location', value)}
+      />
       </div>
     );
   }
@@ -226,17 +304,90 @@ const LandModal = () => {
         />
         <hr />
         {/* transaction type */}
+        {/* transaction type */}
         <div>
-          <h1 className='font-medium m-2'>Transaction Type</h1>
-        <RadioGroup defaultValue="comfortable">
+        <h1 className='font-medium m-2'>Transaction Type</h1>
+        <RadioGroup 
+           defaultValue={transtype}
+           onValueChange={(value) => setCustomValue('transtype', value)}
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="Primary" id="r1" />
-          <Label htmlFor="r1">Primary transaction (direct sale from Stool, Family, kin etc)</Label>
+            <Label htmlFor="r1">Primary transaction (direct sale from Stool, Family, kin etc)</Label>
           </div>
           <div className="flex items-center space-x-2">
-          <RadioGroupItem value="Secondary" id="r2" />
-         <Label htmlFor="r2">Secondary transaction (any other sale after primary sale)</Label>
-           </div>         
+            <RadioGroupItem value="Secondary" id="r2" />
+            <Label htmlFor="r2">Secondary transaction (any other sale after primary sale)</Label>
+          </div>         
+        </RadioGroup>
+        </div>
+      </div>
+    );
+  }
+  if (step === STEPS.THIRD_PARTY_INTEREST) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <ModalHeader
+          title="Third Party Interest"
+          subtitle="Does any third party have interest in the land?"
+        />
+        <hr />
+        <div>
+          <RadioGroup
+            defaultValue={thirdpartyinterest} // Use the watched value
+            onValueChange={(value) => setCustomValue('thirdPartyInterest', value)}
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="Yes" id="r1" />
+              <Label htmlFor="r1">Yes</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="No" id="r2" />
+              <Label htmlFor="r2">No</Label>
+            </div>
+          </RadioGroup>
+        </div>
+  
+        {/* Conditionally render the document upload if "Yes" is selected */}
+        {thirdpartyinterest === "Yes" && (
+          <div className="mt-4">
+            <ModalHeader
+              title="Upload Third Party Interest Document"
+              subtitle="Provide a document proving the third-party interest (e.g., lease agreement, contract)"
+            />
+            <DocumentUpload
+              value={thirdpartyifyes}
+              onChange={(value) => setCustomValue('thirdpartyifyes', value)}
+         
+            />
+          </div>
+        )}
+      </div>
+    );
+  }
+  if (step === STEPS.LETIGATION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <ModalHeader
+          title="Letigation or Encumbrance"
+          subtitle="TO the best of my knowledge, I certify that this land is free from any litigation and encumbrance "
+        />
+        
+        <hr />
+        
+        <div>
+        <RadioGroup 
+           defaultValue={letigationencumberance} 
+           onValueChange={(value) => setCustomValue('letigationencumberance', value)}
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="Yes" id="r1" />
+            <Label htmlFor="r1">Yes</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="No" id="r2" />
+            <Label htmlFor="r2">No</Label>
+          </div>         
         </RadioGroup>
         </div>
       </div>
@@ -262,11 +413,11 @@ const LandModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <ModalHeader
-          title="Land title/Deed certificate"
+          title="Land title"
           subtitle="Pre-verification document (optional)"
         />
         <DocumentUpload
-          value={Deedcert}
+          value={DeedCert}
           onChange={(value) => setCustomValue('DeedCert', value)}
         />
          <ModalHeader

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   GoogleMap,
   useLoadScript,
@@ -7,44 +7,55 @@ import {
 } from "@react-google-maps/api";
 import { Input } from "./ui/input";
 
-const Map = () => {
+
+//@ts-ignore
+
+const Map = ({ onChange }) => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [searchLngLat, setSearchLngLat] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const autocompleteRef = useRef(null);
-  const [address, setAddress] = useState("");
 
-  // laod script for google map
+  // Load script for Google Map
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_ACCESS_TOKEN!,
     libraries: ["places"],
   });
 
-  if (!isLoaded) return <div>Loading....</div>;
-  console.log(searchLngLat)
-  // static lat and lng
-  const center = { lat: 5.6, lng: -0.18};
+  // Static lat and lng
+  const center = { lat: 5.6, lng: -0.18 };
 
-  // handle place change on search
+  // Handle place change on search
   const handlePlaceChanged = () => {
+    //@ts-ignore
     const place = autocompleteRef.current.getPlace();
-    setSelectedPlace(place);
-    setSearchLngLat({
-      lat: place.geometry.location.lat(),
-      lng: place.geometry.location.lng(),
-    });
-    setCurrentLocation(null);
+    if (place.geometry) {
+      const location = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+      setSelectedPlace(place);
+      //@ts-ignore
+      setSearchLngLat(location);
+      setCurrentLocation(null);
+      onChange(location); // Notify parent of the new location
+    }
   };
 
-  // get current location
+  // Get current location
   const handleGetLocationClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const { latitude, longitude } = position.coords;
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
           setSelectedPlace(null);
           setSearchLngLat(null);
-          setCurrentLocation({ lat: latitude, lng: longitude });
+          //@ts-ignore
+          setCurrentLocation(location);
+          onChange(location); // Notify parent of the new location
         },
         (error) => {
           console.log(error);
@@ -55,7 +66,7 @@ const Map = () => {
     }
   };
 
-  // on map load
+  //@ts-ignore
   const onMapLoad = (map) => {
     const controlDiv = document.createElement("div");
     const controlUI = document.createElement("div");
@@ -73,36 +84,35 @@ const Map = () => {
     controlUI.addEventListener("click", handleGetLocationClick);
     controlDiv.appendChild(controlUI);
 
-
-    map.controls[window.google.maps.ControlPosition.TOP_CENTER].push(
-      controlDiv
-    );
+    map.controls[window.google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
   };
 
+  if (!isLoaded) return <div>Loading....</div>;
+
   return (
-    <div
-        className="flex flex-col gap-2"
-    >
-      {/* search component  */}
+    <div className="flex flex-col gap-2">
+      {/* Search component */}
       <Autocomplete
         onLoad={(autocomplete) => {
           console.log("Autocomplete loaded:", autocomplete);
+          //@ts-ignore
           autocompleteRef.current = autocomplete;
         }}
         onPlaceChanged={handlePlaceChanged}
         options={{ fields: ["address_components", "geometry", "name"] }}
       >
-        <Input type="text" placeholder="Search for a location"  className="w-full mx-auto"/>
+        <Input type="text" placeholder="Search for a location" className="w-full mx-auto" />
       </Autocomplete>
 
-      {/* map component  */}
+      {/* Map component */}
       <GoogleMap
-        zoom={selectedPlace ? 18 : 12}
-        center={currentLocation ?? searchLngLat ?? center} 
+        zoom={selectedPlace || currentLocation ? 18 : 12}
+        center={currentLocation ?? searchLngLat ?? center}
         mapContainerClassName="map"
         mapContainerStyle={{ width: "100%", height: "300px", margin: "auto" }}
         onLoad={onMapLoad}
       >
+        {/* @ts-ignore */}
         {selectedPlace && <Marker position={searchLngLat} />}
         {currentLocation && <Marker position={currentLocation} />}
       </GoogleMap>

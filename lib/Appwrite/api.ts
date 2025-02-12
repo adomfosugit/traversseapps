@@ -24,7 +24,7 @@ interface LandFormValues {
 
 }
 // Authentication 
-const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BUCKET_ID} = process.env
+const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS} = process.env
 export async function createUserAccount(user:SNewUser){ 
   let promise;
   try {
@@ -232,11 +232,11 @@ export async function createserviceProvider(Name:string, Email:string, Password:
 }
 
 export async function uploadLand(data: LandFormValues) {
- const  {location,landArea,landtype, interestType,imageSrc,price,title,description,DeedCert, Indenture,searchresult,transtype,landstatus} = data
+ const  {location,landArea,landtype, interestType,imageSrc,price,title,description,DeedCert,thirdpartyinterest,thirdpartyifyes, Indenture,searchresult,transtype,landstatus, userEmail} = data
   try {
     // upload land
     const { database } = await createAdminClient();
-    const serviceprovider = await database.createDocument(
+    const landupload = await database.createDocument(
       NEXT_DATABASE_ID!,
       NEXT_LAND_COLLECTION_ID!,
       ID.unique(),
@@ -253,10 +253,10 @@ export async function uploadLand(data: LandFormValues) {
         Description: description,
         Zoning_Regulations: landtype,
         Price:price,
-        Third_Party_Interest: 'True',
-        Third_Party_Interest_if_yes:'hi',
+        Third_Party_Interest: thirdpartyinterest,
+        Third_Party_Interest_if_yes: thirdpartyifyes,
         Letigation_Encumberance: 'True',
-        Email: 'broker@traverse.com',
+        Email: userEmail,
         Indenture: Indenture,
         Land_Registration_Status:landstatus
         
@@ -267,7 +267,7 @@ export async function uploadLand(data: LandFormValues) {
       }
     );
 
-    return parseStringify(serviceprovider);
+    return parseStringify(landupload);
   } catch (error) {
     console.log(error);
     return { error: "An error occurred while creating the service provider." };
@@ -284,6 +284,29 @@ export async function registerLand(landimage: FormData) {
     // Upload the file to Appwrite Storage
     const response = await Storage.createFile(
       NEXT_BUCKET_ID!, // Your Appwrite bucket ID
+      ID.unique(), // Generate a unique file ID
+      InputFile.fromBuffer(buffer, file.name) // Create InputFile from buffer
+    );
+
+    // Return the file URL
+    return {
+      url: `https://cloud.appwrite.io/v1/storage/buckets/${NEXT_BUCKET_ID}/files/${response.$id}/`,
+    };
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return null;
+  }
+}
+export async function registerLandDoc(landimage: FormData) {
+  try {
+    const file = landimage.get('landimage') as File;
+
+    // Convert the file to a buffer
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const { Storage } = await createAdminClient();
+    // Upload the file to Appwrite Storage
+    const response = await Storage.createFile(
+      NEXT_BUCKET_ID_DOCS!, // Your Appwrite bucket ID
       ID.unique(), // Generate a unique file ID
       InputFile.fromBuffer(buffer, file.name) // Create InputFile from buffer
     );

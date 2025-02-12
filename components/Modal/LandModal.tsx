@@ -17,7 +17,7 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Label } from '../ui/label';
 import Input from '../form-items/Input';
 import DocumentUpload from '../form-items/DocumentUpload';
-import { uploadLand } from '@/lib/Appwrite/api';
+import { uploadLand, getLoggedInUser } from '@/lib/Appwrite/api';
 
 
 
@@ -136,11 +136,6 @@ const LandModal = () => {
       letigationencumberance: '',
       thirdpartyifyes:'',
       thirdpartyinterest: '',
-    
-
-
-
-
     },
   });
 
@@ -181,6 +176,9 @@ const LandModal = () => {
     setIsLoading(true);
   
     try {
+      const userEmail = await getLoggedInUser()
+      data.userEmail = userEmail.email;
+      data.price = parseFloat(data.price);
       const upload = await uploadLand(data); // Assuming uploadLand is an asynchronous function
       console.log(data);
     } catch (error) {
@@ -334,8 +332,8 @@ const LandModal = () => {
         <hr />
         <div>
           <RadioGroup
-            defaultValue={thirdpartyinterest} // Use the watched value
-            onValueChange={(value) => setCustomValue('thirdPartyInterest', value)}
+          value={thirdpartyinterest} // Use value instead of defaultValue
+          onValueChange={(value) => setCustomValue('thirdpartyinterest', value)}
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="Yes" id="r1" />
@@ -370,23 +368,23 @@ const LandModal = () => {
       <div className="flex flex-col gap-8">
         <ModalHeader
           title="Letigation or Encumbrance"
-          subtitle="TO the best of my knowledge, I certify that this land is free from any litigation and encumbrance "
+          subtitle="To the best of my knowledge, I certify that this land is free from any litigation and encumbrance "
         />
         
         <hr />
         
         <div>
         <RadioGroup 
-           defaultValue={letigationencumberance} 
+           value={letigationencumberance} 
            onValueChange={(value) => setCustomValue('letigationencumberance', value)}
         >
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="Yes" id="r1" />
-            <Label htmlFor="r1">Yes</Label>
+            <RadioGroupItem value="Yes" id="r3" />
+            <Label htmlFor="r3">Yes</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="No" id="r2" />
-            <Label htmlFor="r2">No</Label>
+            <RadioGroupItem value="No" id="r4" />
+            <Label htmlFor="r4">No</Label>
           </div>         
         </RadioGroup>
         </div>
@@ -414,7 +412,7 @@ const LandModal = () => {
       <div className="flex flex-col gap-8">
         <ModalHeader
           title="Land title"
-          subtitle="Pre-verification document (optional)"
+          subtitle="Pre-verification document "
         />
         <DocumentUpload
           value={DeedCert}
@@ -422,7 +420,7 @@ const LandModal = () => {
         />
          <ModalHeader
           title="Indenture"
-          subtitle="Pre-verification document (optional)"
+          subtitle="Pre-verification document "
         />
      
         <DocumentUpload
@@ -431,7 +429,7 @@ const LandModal = () => {
         />
             <ModalHeader
           title="Search results"
-          subtitle="Pre-verification document (optional)"
+          subtitle="Pre-verification document "
         />
        
         <DocumentUpload
@@ -477,16 +475,16 @@ const LandModal = () => {
           title="Set your price"
           subtitle="How much is the land selling for?"
         />
-        <Input
-          id="price"
-          label="Price"
-          formatPrice
-          type="number"
-          register={register}
-          disabled={isLoading}
-          errors={errors}
-          required
-    /> 
+   <Input
+  id="price"
+  label="Price"
+  type="number"
+  step="0.01"  // Ensure decimals are allowed
+  register={register}
+  disabled={isLoading}
+  errors={errors}
+  required
+/>
       </div>
     );
   }

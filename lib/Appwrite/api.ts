@@ -335,3 +335,4 @@ export async function sendTermsConditions( content:string , userId:string ){
     
   }
 }
+

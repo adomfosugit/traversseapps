@@ -18,6 +18,7 @@ import { Label } from '../ui/label';
 import Input from '../form-items/Input';
 import DocumentUpload from '../form-items/DocumentUpload';
 import { uploadLand, getLoggedInUser } from '@/lib/Appwrite/api';
+import { toast } from '@/hooks/use-toast';
 
 
 
@@ -128,9 +129,9 @@ const LandModal = () => {
       price: 1,
       title: '',
       description: '',
-      DeedCert : '',
-      Indenture: '',
-      searchresult: '',
+      DeedCert : null,
+      Indenture: null,
+      searchresult: null,
       transtype:'',
       landstatus:'',
       letigationencumberance: '',
@@ -176,15 +177,29 @@ const LandModal = () => {
     setIsLoading(true);
   
     try {
-      const userEmail = await getLoggedInUser()
+      const userEmail = await getLoggedInUser();
       data.userEmail = userEmail.email;
       data.price = parseFloat(data.price);
-      const upload = await uploadLand(data); // Assuming uploadLand is an asynchronous function
-      console.log(data);
+  
+      const upload = await uploadLand(data);
+  
+      // Check if the upload was successful
+      if (upload.success) {
+        toast({ title: `Land Successfully uploaded` });
+        reset(); // Reset the form
+        router.push('/dashboard'); // Navigate to dashboard
+       
+      } else {
+        // Handle upload failure
+        toast({ title: `Upload Unsuccessful: ${upload.error}` });
+      }
     } catch (error) {
       console.error('Error uploading land data:', error);
+      toast({ title: `Upload Unsuccessful: An unexpected error occurred. Please try again later.` });
     } finally {
       setIsLoading(false);
+      landModal.onClose()
+      
     }
   };
   const actionLabel = useMemo(() => {

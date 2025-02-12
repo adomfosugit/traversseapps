@@ -7,7 +7,7 @@ import { getLoggedInUser, getserviceProviderData } from "@/lib/Appwrite/api";
 import { redirect } from "next/navigation";
 import LandModal from "@/components/Modal/LandModal";
 import 'mapbox-gl/dist/mapbox-gl.css';
-
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +46,7 @@ export default async function RootLayout({children,}: Readonly<{children: React.
 
 
    
-
+      <Toaster />
         {children}
         <LandModal />
         </main>

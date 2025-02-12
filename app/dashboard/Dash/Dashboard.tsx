@@ -44,7 +44,7 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
     {
       id: '4',
       number: '0.0',
-      numberDescription: '$',
+      numberDescription: 'GHS',
       description: 'Amount earned',
     },
 

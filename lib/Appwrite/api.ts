@@ -232,45 +232,43 @@ export async function createserviceProvider(Name:string, Email:string, Password:
 }
 
 export async function uploadLand(data: LandFormValues) {
- const  {location,landArea,landtype, interestType,imageSrc,price,title,description,DeedCert,thirdpartyinterest,thirdpartyifyes, Indenture,searchresult,transtype,landstatus, userEmail} = data
+  const { location, landArea, landtype, interestType, imageSrc, price, title, description, DeedCert, thirdpartyinterest, thirdpartyifyes, Indenture, searchresult, transtype, landstatus, userEmail,letigationencumberance } = data;
+
   try {
-    // upload land
+    // Upload land
     const { database } = await createAdminClient();
     const landupload = await database.createDocument(
       NEXT_DATABASE_ID!,
       NEXT_LAND_COLLECTION_ID!,
       ID.unique(),
       {
-        Type_of_Interest: interestType ,
-        latitude:location?.lat,
+        Type_of_Interest: interestType,
+        latitude: location?.lat,
         Longitude: location?.lng,
         Land_Area: landArea,
         Transaction_type: transtype,
         ImageSrc: imageSrc,
         Land_Document: DeedCert,
         Search_from_LC: searchresult,
-        Listing_Title: title ,
+        Listing_Title: title,
         Description: description,
         Zoning_Regulations: landtype,
-        Price:price,
+        Price: price,
         Third_Party_Interest: thirdpartyinterest,
         Third_Party_Interest_if_yes: thirdpartyifyes,
-        Letigation_Encumberance: 'True',
+        Letigation_Encumberance: letigationencumberance,
         Email: userEmail,
         Indenture: Indenture,
-        Land_Registration_Status:landstatus
-        
-
-
-
-       
+        Land_Registration_Status: landstatus
       }
     );
 
-    return parseStringify(landupload);
+    // Return success and data
+    return { success: true, data: parseStringify(landupload) };
   } catch (error) {
     console.log(error);
-    return { error: "An error occurred while creating the service provider." };
+    // Return success false and error message
+    return { success: false, error: error.message || "An error occurred while uploading the land." };
   }
 }
 // Database  land  upload documents

@@ -268,7 +268,7 @@ export async function uploadLand(data: LandFormValues) {
   } catch (error) {
     console.log(error);
     // Return success false and error message
-    return { success: false, error: error.message || "An error occurred while uploading the land." };
+    return { success: false, error: error?.message || "An error occurred while uploading the land." };
   }
 }
 // Database  land  upload documents
@@ -318,6 +318,7 @@ export async function registerLandDoc(landimage: FormData) {
     return null;
   }
 }
+
 
 // Messaging Email
 export async function sendTermsConditions( content:string , userId:string ){

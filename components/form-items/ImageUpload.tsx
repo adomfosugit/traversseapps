@@ -59,11 +59,12 @@ const ImageUpload = ({ value, onChange }: IImageUploadProps) => {
         {value.length > 0 &&
           value.map((image, index) => (
             <Image
+              priority
               key={index}
               alt="Upload"
               height={300}
               width={300}
-              style={{ objectFit: 'fill' }}
+              style={{ objectFit: 'contain' }}
               src={image}
             />
           ))}

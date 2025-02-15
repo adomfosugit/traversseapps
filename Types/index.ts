@@ -26,12 +26,16 @@ export type Update = {
 export type TLand = {
     id: string;
     location: string;
-    imagePath: string;
+    ImageSrc: string[];
+    Listing_Title: string;
     region: string;
     dimension: number;
     dimensionUnit: string;
-    description: string;
-    price: number;
+    Description: string;
+    Price: number;
     currency: string;
+    Land_Area:number;
+    Zoning_Regulations:string;
+
   };
   

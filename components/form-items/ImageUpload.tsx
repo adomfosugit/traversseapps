@@ -65,7 +65,7 @@ const ImageUpload = ({ value, onChange }: IImageUploadProps) => {
               height={300}
               width={300}
               style={{ objectFit: 'contain' }}
-              src={image}
+              src={`${image}/view?project=6771516200333a41d2ef&mode=admin`}
             />
           ))}
       </div>

@@ -204,6 +204,19 @@ export async function getLands(){
     console.log(error)
   }
 } 
+export async function getLandById(id:string){
+  try {
+    const { database } = await createAdminClient()
+    const landData = await database.getDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_COLLECTION_ID!,
+      id)
+      
+    return landData
+  } catch (error) {
+    console.log(error)
+  }
+} 
 export async function createserviceProvider(Name:string, Email:string, Password:string, Phone:string, Country:string, officialAddress:string, profession:string, membershipID:string){
   try {
     const { database } = await createAdminClient()
@@ -267,7 +280,7 @@ export async function uploadLand(data: LandFormValues) {
     return { success: true, data: parseStringify(landupload) };
   } catch (error) {
     console.log(error);
-    // Return success false and error message
+    //@ts-ignore
     return { success: false, error: error?.message || "An error occurred while uploading the land." };
   }
 }
@@ -288,8 +301,23 @@ export async function registerLand(landimage: FormData) {
 
     // Return the file URL
     return {
-      url: `https://cloud.appwrite.io/v1/storage/buckets/${NEXT_BUCKET_ID}/files/${response.$id}/`,
+      url: `https://cloud.appwrite.io/v1/storage/buckets/${NEXT_BUCKET_ID}/files/${response.$id}/view?project=6771516200333a41d2ef&mode=admin`,
     };
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return null;
+  }
+}
+export async function filePreviewer(fileId:number){
+  try {
+    const { Storage } = await createAdminClient();
+    // Upload the file to Appwrite Storage
+    const response = await Storage.getFilePreview(
+      NEXT_BUCKET_ID!, // Your Appwrite bucket ID
+      ID.unique(), // Generate a unique file ID
+      fileId
+    );
+      return response
   } catch (error) {
     console.error('Error uploading file:', error);
     return null;

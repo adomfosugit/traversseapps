@@ -8,12 +8,12 @@ import {
 import { Input } from "./ui/input";
 
 
-//@ts-ignore
-
+//@ts -ignore
 const Map = ({ onChange }) => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [searchLngLat, setSearchLngLat] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState(null); // New state for marker position
   const autocompleteRef = useRef(null);
 
   // Load script for Google Map
@@ -38,6 +38,7 @@ const Map = ({ onChange }) => {
       //@ts-ignore
       setSearchLngLat(location);
       setCurrentLocation(null);
+      setMarkerPosition(location); // Set marker position to the searched location
       onChange(location); // Notify parent of the new location
     }
   };
@@ -55,6 +56,8 @@ const Map = ({ onChange }) => {
           setSearchLngLat(null);
           //@ts-ignore
           setCurrentLocation(location);
+          //@t-ignore
+          setMarkerPosition(location); // Set marker position to the current location
           onChange(location); // Notify parent of the new location
         },
         (error) => {
@@ -64,6 +67,18 @@ const Map = ({ onChange }) => {
     } else {
       console.log("Geolocation is not supported by this browser.");
     }
+  };
+
+  // Handle marker drag end
+  //@ts-ignore
+  const handleMarkerDragEnd = (event) => {
+    const newPosition = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+    //@ts-ignore
+    setMarkerPosition(newPosition); // Update marker position
+    onChange(newPosition); // Notify parent of the new location
   };
 
   //@ts-ignore
@@ -112,9 +127,14 @@ const Map = ({ onChange }) => {
         mapContainerStyle={{ width: "100%", height: "300px", margin: "auto" }}
         onLoad={onMapLoad}
       >
-        {/* @ts-ignore */}
-        {selectedPlace && <Marker position={searchLngLat} />}
-        {currentLocation && <Marker position={currentLocation} />}
+        {/* Draggable Marker */}
+        {markerPosition && (
+          <Marker
+            position={markerPosition}
+            draggable={true}
+            onDragEnd={handleMarkerDragEnd}
+          />
+        )}
       </GoogleMap>
     </div>
   );

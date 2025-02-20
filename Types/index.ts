@@ -24,7 +24,7 @@ export type Update = {
     password1: string;
 }
 export type TLand = {
-    id: string;
+    $id: string;
     location: string;
     ImageSrc: string[];
     Listing_Title: string;

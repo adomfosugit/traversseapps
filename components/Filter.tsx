@@ -19,7 +19,7 @@ const Filter = (props: Props) => {
           </div>
         <div className=' flex gap-x-2'>
             <Button variant={'secondary'} className='ring-1 ring-red-600 text-red-600 '>Reset</Button>
-            <Button className='bg-green-700 ring-1 ring-green-700'>Apply</Button>
+            <Button className='bg-green-700 ring-1 ring-green-700 hover:bg-green-800'>Apply</Button>
         </div>
     
     </div>

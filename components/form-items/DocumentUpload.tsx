@@ -4,6 +4,8 @@ import { useState, useRef } from 'react';
 import { TbPhotoPlus } from 'react-icons/tb';
 import Image from 'next/image';
 import { registerLand } from '@/lib/Appwrite/api';
+import { DocumentCheckIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 interface IDocumentUploadProps {
   onChange: (value: string) => void;
@@ -34,7 +36,7 @@ const DocumentUpload = ({ value, onChange }: IDocumentUploadProps) => {
 
   return (
     <div
-      className="relative cursor-pointer hover:opacity-70 transition border-dashed border-2 p-2 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-400"
+      className="relative cursor-pointer hover:opacity-70 transition  p-2 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-400"
       onClick={() => fileInputRef.current?.click()}
     >
       {!value && (
@@ -57,7 +59,7 @@ const DocumentUpload = ({ value, onChange }: IDocumentUploadProps) => {
       />
 
       {value && (
-        <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+        <div className="absolute inset-0 w-full h-full flex  items-center justify-center mx-auto">
           {value.endsWith('.pdf') ? (
             <iframe
               src={value}
@@ -65,13 +67,11 @@ const DocumentUpload = ({ value, onChange }: IDocumentUploadProps) => {
               title="Uploaded Document"
             />
           ) : (
-            <Image
-              alt=""
-              height={20}
-              width={20}
-              style={{ objectFit: 'contain' }}
-              src={value}
-            />
+              <Link href = {value} className='text-primary flex  w-full p-3'> 
+            <div className='w-full  ring-2 ring-primary  flex flex-row justify-center   '>
+              <p className='flex flex-row gap-x-2'>View Document</p>
+             </div> 
+             </Link>
           )}
         </div>
       )}

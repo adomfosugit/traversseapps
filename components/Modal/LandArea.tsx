@@ -26,8 +26,8 @@ const LandArea = ({ title, subtitle, onChange }: ILandAreaProps) => {
           onChange={(e) => onAdd(e)}
           className="font-light text-neutral-600 border rounded-md border-traverse-yellow outline-traverse-yellow w-20 p-2"
         />
-        <div className="w-10 h-10 rounded-full border-[1px] border-neutral-400 flex items-center justify-center text-neutral-600 cursor-pointer hover:opacity-80 transition">
-          m<sup>2</sup>
+        <div className="w-12 h-12 rounded-full border-[2px] border-primary flex items-center justify-center text-primary cursor-pointer hover:opacity-80 transition">
+          acres
         </div>
       </div>
     </div>

@@ -12,15 +12,15 @@ const LandCard:React.FC<ILandCardProps> = ({land}) => {
   
     return(
         <Link
-        href={'/'}
+        href={ `/landlisting/${land.$id}`}
         className=" mt-7 w-full flex h-auto bg-gray-100 rounded-lg hover:border hover:border-traverse-yellow"
       >
         <Image
-          src={land.ImageSrc[0]}
+          src={`${land.ImageSrc[0]}/view?project=6771516200333a41d2ef&mode=admin`}
           alt={'Land Image'}
-          className="w-2/6 h-auto hidden md:block rounded-l-lg"
-          width={100}
-          height={100}
+          className="w-2/6 h-[200px] hidden md:block rounded-l-lg"
+          width={200}
+          height={200}
         />
         <div className="w-4/6 flex-col ml-3 mt-3 mr-4">
           <div className="flex">

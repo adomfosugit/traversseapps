@@ -26,7 +26,7 @@ const page = async (props: Props) =>  {
           <SHeader />
        {/*   <Button variant={'outline'} onClick={showSubNav}> <ListFilter/> Filter</Button> */}
         </div>
-      {/*  {showfilter ?   <Filter /> : ''} */}
+       <Filter /> 
       
         {land?.map((item,index)=> (
             //@ts-ignore

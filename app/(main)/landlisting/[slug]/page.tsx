@@ -24,7 +24,7 @@ const PlotSelectionDetailPage = async ({
     return <EmptyState />;
   }
 
-  return <Detail land={land} currentUser={currentUser} />;
+  return <Detail land={land} currentUser={currentUser} />
 };
 
 export default PlotSelectionDetailPage;

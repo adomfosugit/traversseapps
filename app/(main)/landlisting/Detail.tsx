@@ -1,24 +1,57 @@
 'use client';
-
-import { LandCost } from '@prisma/client';
-import {DASH_DETAIL_PAYMENT, DASH_PROJECT_DETAIL} from '../../../../../config/constants';
-import useBidModal from '../../../../hooks/useBidModal';
-import {TSafeBid,TSafeDocument,TSafeLand,TSafeUser} from '../../../../types';
-import Header from '../../../overview/Header';
-import AdditionalInfo from './AdditionalInfo';
-import CostBreakdown from './CostBreakdown';
-import Documents from './Documents';
-
+//import {TSafeBid,TSafeDocument,TSafeLand,TSafeUser} from '../../../../types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
 import { useCallback, useEffect } from 'react';
-import Gallery from '../../../../service-providers/dashboard/projects/landDetail/[landId]/Gallery';
+import Gallery from './[slug]/Gallery';
+import Header2 from '@/app/dashboard/Dash/Header2';
+import Documents from './Document';
+import CostBreakdown, { LandCost } from './[slug]/CostBreakdown';
+import AdditionalInfo from './[slug]/AdditionalInfo';
+import useBidModal from '@/app/hooks/useBidModal';
 
+export type LandFormValues = {
+  $id:string;
+  location: { lat: number; lng: number } | null; 
+  Land_Area: number; 
+  landtype: string; 
+  Type_of_Interest: string; 
+  imageSrc: string[]; 
+  Price: number; 
+  title: string; 
+  Description: string;
+  DeedCert: string; 
+  Indenture: string; 
+  searchresult: string; 
+  transtype:string;
+  landstatus:string;
+  Email:string;
+  Listing_Title:string
+  Land_Document:string;
+  Search_from_LC:string;
+  ImageSrc:string[];
+  Zoning_Regulations:string;
+
+
+
+}
+export type TSafeUser = { 
+  id:string;
+  email:string;
+}
+export type TSafeBid = {
+
+  Land_owner_Id:string;
+  LandId:string;
+  Offer_Price:string;
+  Original_Price:string;
+  Owner_Decision: 'Accepted';
+  BidderEmail:string;
+
+}
 interface IDetailProps {
-  land: TSafeLand & {
-    bids: TSafeBid[];
-    user: TSafeUser;
-    documents: TSafeDocument[];
+  land: LandFormValues & {
+    bid: TSafeBid[];
     landCost: LandCost | null;
     totalCost: number;
   };
@@ -35,10 +68,10 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
   const params = useSearchParams();
   const router = useRouter();
 
-  const userOfferAcceptedArray = land.bids.map(
+  const userOfferAcceptedArray = land.bid.map(
     (bid) =>
-      bid.bidderId === currentUser?.id && bid.ownerDecision === 'Accepted'
-  );
+      bid.BidderEmail === currentUser?.id && bid.Owner_Decision === 'Accepted'
+ );
 
   const userOfferAccepted = userOfferAcceptedArray.includes(true);
 
@@ -50,14 +83,14 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
 
     const updatedQuery: any = {
       ...currentQuery,
-      lId: land?.id,
-      loId: land?.userId,
-      oP: land?.price,
+      lId: land?.$id,
+      loId: land?.Email,
+      oP: land?.Price,
     };
 
     const url = qs.stringifyUrl(
       {
-        url: `${DASH_PROJECT_DETAIL}/${land.id}`,
+        url: `landlisting/${land.$id}`,
         query: updatedQuery,
       },
       { skipNull: true }
@@ -69,15 +102,15 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
   useEffect(() => {}, [currentUser]);
 
   return (
-    <div className="">
+    <div className="flex mx-auto items-center justify-center flex-col w-full h-full">
       <div className="mx-10">
-        <Header
+        <Header2
           backText="Back"
-          title={land.title}
-          subText={land.description}
+          title={land.Listing_Title}
+          subText={land.Description}
           buttonText={userOfferAccepted ? 'Continue' : undefined}
           linkPath={
-            userOfferAccepted ? `${DASH_DETAIL_PAYMENT}/${land?.id}` : undefined
+            userOfferAccepted ? `/${land?.$id}` : undefined
           }
           secondaryActionText={!userOfferAccepted ? 'Make an offer' : undefined}
           secondaryAction={() => {
@@ -88,14 +121,21 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
         <Gallery land={land} />
         <AdditionalInfo land={land} />
         <div className="grid grid-cols-2 gap-4 mt-10">
-          <div className="bg-gray-100 ">
-            <Documents documents={land.documents} />
+
+          <div className="bg-gray-100 flex flex-col p-6">
+              <p className='text-center text-xl font-bold'> Land Document</p>
+            <div className='flex flex-row mx-auto'>
+            <Documents documents={land.Land_Document} title={'Land Document'} />
+            <Documents documents={land.Search_from_LC} title= {'Search Document'} />
+            </div>
+          
           </div>
           <div className="bg-gray-100 ">
-            <CostBreakdown
+          <CostBreakdown
+/// add landcost
               landCost={land.landCost}
-              totalCost={land.totalCost}
-            />
+              totalCost={land.Price}
+        /> 
           </div>
         </div>
       </div>

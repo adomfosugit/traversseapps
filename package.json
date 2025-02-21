@@ -38,6 +38,7 @@
     "next-cloudinary": "^6.16.0",
     "node-appwrite": "^14.1.0",
     "npx": "^10.2.2",
+    "query-string": "^9.1.1",
     "react-google-autocomplete": "^2.7.4",
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.5.1",

@@ -21,7 +21,10 @@ interface LandFormValues {
   searchresult: string; 
   transtype:string;
   landstatus:string;
-
+  thirdpartyinterest: string
+  thirdpartyifyes: string
+  userEmail: string
+  letigationencumberance:string
 }
 // Authentication 
 const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS} = process.env

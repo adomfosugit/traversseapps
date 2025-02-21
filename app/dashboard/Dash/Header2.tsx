@@ -59,10 +59,10 @@ const Header2 = ({
         </div>
         <div className="w-1/4 flex flex-row items-center gap-4">
           {secondaryAction && secondaryActionText && (
-            <Button onClick={handleSecondaryClick} variant={'outline'}>{secondaryActionText}</Button>
+            <Button onClick={handleSecondaryClick} variant={'outline'} className='p-4 bg-primary text-white  w-[250px]'>{secondaryActionText}</Button>
           )}
           {buttonText && buttonAction && (
-            <Button onClick={handleButtonClick} >{buttonText}</Button>
+            <Button onClick={handleButtonClick}  className='p-3 bg-primary' >{buttonText}</Button>
           )}
         </div>
       </div>

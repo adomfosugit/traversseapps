@@ -24,6 +24,8 @@ const PlotSelectionDetailPage = async ({
     return <EmptyState />;
   }
 
+  
+// @ts-ignore
   return <Detail land={land} currentUser={currentUser} />
 };
 

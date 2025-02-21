@@ -4,13 +4,12 @@ import { LandFormValues, TSafeUser } from "../Detail";
 
 
 interface IAdditionalInfoProps {
-  land: LandFormValues & {
-    user: TSafeUser;
+  land: LandFormValues
+ 
   };
-  currentUser?: TSafeUser | null;
-}
 
-const AdditionalInfo = ({ land, currentUser }: IAdditionalInfoProps) => {
+
+const AdditionalInfo = ({ land }: IAdditionalInfoProps) => {
   return (
     <div className="h-auto  w-full bg-gray-100">
       <p className="ml-4 text-gray-600 font-semibold py-8">

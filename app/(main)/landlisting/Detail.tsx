@@ -1,5 +1,5 @@
 'use client';
-//import {TSafeBid,TSafeDocument,TSafeLand,TSafeUser} from '../../../../types';
+
 import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
 import { useCallback, useEffect } from 'react';
@@ -9,6 +9,8 @@ import Documents from './Document';
 import CostBreakdown, { LandCost } from './[slug]/CostBreakdown';
 import AdditionalInfo from './[slug]/AdditionalInfo';
 import useBidModal from '@/app/hooks/useBidModal';
+
+
 
 export type LandFormValues = {
   $id:string;
@@ -90,7 +92,7 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
 
     const url = qs.stringifyUrl(
       {
-        url: `landlisting/${land.$id}`,
+        url: ``,
         query: updatedQuery,
       },
       { skipNull: true }

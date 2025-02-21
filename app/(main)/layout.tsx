@@ -38,7 +38,7 @@ export default async function RootLayout({children,}: Readonly<{children: React.
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navbar />
-        <BidModal />
+        <BidModal/>
         {children}
 
       </body>

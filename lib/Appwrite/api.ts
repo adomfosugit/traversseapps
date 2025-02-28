@@ -27,7 +27,7 @@ interface LandFormValues {
   letigationencumberance:string
 }
 // Authentication 
-const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS} = process.env
+const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BIDDER_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS} = process.env
 export async function createUserAccount(user:SNewUser){ 
   let promise;
   try {
@@ -281,6 +281,39 @@ export async function uploadLand(data: LandFormValues) {
 
     // Return success and data
     return { success: true, data: parseStringify(landupload) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while uploading the land." };
+  }
+}
+type BidType = {
+  landOwnerId:string;
+  landId:string;
+  offer:number;
+  originalPrice:number;
+  BidderEmail:string;
+}
+export async function submitBid(data : BidType) {
+  try {
+    // Upload land
+    const { database } = await createAdminClient();
+    const bidupload = await database.createDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_BIDDER_COLLECTION_ID!,
+      ID.unique(),
+      {
+       Land_owner_Id: data.landOwnerId,
+       LandId: data.landId,
+       Offer_Price: data.offer,
+       BidderEmail:data.BidderEmail,
+       Original_Price: data.originalPrice
+
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify(bidupload) };
   } catch (error) {
     console.log(error);
     //@ts-ignore

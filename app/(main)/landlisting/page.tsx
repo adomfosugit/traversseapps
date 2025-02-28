@@ -18,9 +18,9 @@ const page = async (props: Props) =>  {
   return (
 
     <div className='flex '>
-     <aside className="hidden lg:flex w-1/4 text-sm ">
+    {/*} <aside className="hidden lg:flex w-1/4 text-sm ">
         <Drawer />
-      </aside>
+      </aside> */}
     <main className='flex flex-col mx-auto max-w-4xl mt-12'>
         <div className='flex justify-between mb-4'>
           <SHeader />

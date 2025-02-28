@@ -180,7 +180,7 @@ const LandModal = () => {
       const userEmail = await getLoggedInUser();
       data.userEmail = userEmail.email;
       data.price = parseFloat(data.price);
-  
+    
       const upload = await uploadLand(data);
   
       // Check if the upload was successful

@@ -9,6 +9,8 @@ import Documents from './Document';
 import CostBreakdown, { LandCost } from './[slug]/CostBreakdown';
 import AdditionalInfo from './[slug]/AdditionalInfo';
 import useBidModal from '@/app/hooks/useBidModal';
+import Map from '@/components/DisplayMap';
+
 
 
 
@@ -33,6 +35,8 @@ export type LandFormValues = {
   Search_from_LC:string;
   ImageSrc:string[];
   Zoning_Regulations:string;
+  latitude:number;
+  Longitude:number;
 
 
 
@@ -69,11 +73,13 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
   const bidModal = useBidModal();
   const params = useSearchParams();
   const router = useRouter();
+  console.log(land.location)
 
   const userOfferAcceptedArray = land.bid.map(
     (bid) =>
-      bid.BidderEmail === currentUser?.id && bid.Owner_Decision === 'Accepted'
+      bid.BidderEmail === currentUser?.email && bid.Owner_Decision === 'Accepted'
  );
+
 
   const userOfferAccepted = userOfferAcceptedArray.includes(true);
 
@@ -120,7 +126,12 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
             bidModal.onOpen();
           }}
         />
+        <div className='mb-5'>
         <Gallery land={land} />
+        <Map latitude={land.latitude} longitude={land.Longitude} />
+       
+
+        </div>
         <AdditionalInfo land={land} />
         <div className="grid grid-cols-2 gap-4 mt-10">
 

@@ -62,7 +62,7 @@ const Header2 = ({
             <Button onClick={handleSecondaryClick} variant={'outline'} className='p-4 bg-primary text-white  w-[250px]'>{secondaryActionText}</Button>
           )}
           {buttonText && buttonAction && (
-            <Button onClick={handleButtonClick}  className='p-3 bg-primary' >{buttonText}</Button>
+            <Button onClick={handleButtonClick}  className='p-3 bg-primary'>{buttonText}</Button>
           )}
         </div>
       </div>

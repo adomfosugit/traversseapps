@@ -288,38 +288,59 @@ export async function uploadLand(data: LandFormValues) {
   }
 }
 type BidType = {
-  landOwnerId:string;
-  landId:string;
-  offer:number;
-  originalPrice:number;
-  BidderEmail:string;
-}
-export async function submitBid(data : BidType) {
+  landOwnerId: string;
+  landId: string;
+  offer: number;
+  originalPrice: number;
+  BidderEmail: string;
+};
+
+export async function submitBid(data: BidType) {
   try {
-    // Upload land
     const { database } = await createAdminClient();
+
+    // Step 1: Create the bid document in the bids collection
     const bidupload = await database.createDocument(
       NEXT_DATABASE_ID!,
       NEXT_BIDDER_COLLECTION_ID!,
       ID.unique(),
       {
-       Land_owner_Id: data.landOwnerId,
-       LandId: data.landId,
-       Offer_Price: data.offer,
-       BidderEmail:data.BidderEmail,
-       Original_Price: data.originalPrice
+        Land_owner_Id: data.landOwnerId,
+        LandId: data.landId,
+        Offer_Price: data.offer,
+        BidderEmail: data.BidderEmail,
+        Original_Price: data.originalPrice,
+        Owner_Decision: false, // Default to false (pending owner decision)
+      }
+    );
 
+    // Step 2: Update the corresponding land document to include the new bid
+    const landUpdate = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_COLLECTION_ID!,
+      data.landId, // The ID of the land document
+      {
+        bids: [
+          ...(await database.getDocument(NEXT_DATABASE_ID!, NEXT_LAND_COLLECTION_ID!, data.landId)).bids || [], // Existing bids
+          {
+            BidderEmail: data.BidderEmail,
+            Offer_Price: data.offer,
+            Original_Price: data.originalPrice,
+            Owner_Decision: false, // Default to false (pending owner decision)
+          },
+        ],
       }
     );
 
     // Return success and data
-    return { success: true, data: parseStringify(bidupload) };
+    return { success: true, data: parseStringify({ bidupload, landUpdate }) };
   } catch (error) {
     console.log(error);
     //@ts-ignore
-    return { success: false, error: error?.message || "An error occurred while uploading the land." };
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+
 // Database  land  upload documents
 export async function registerLand(landimage: FormData) {
   try {

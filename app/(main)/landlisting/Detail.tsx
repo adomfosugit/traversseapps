@@ -1,5 +1,4 @@
 'use client';
-
 import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
 import { useCallback, useEffect } from 'react';
@@ -10,9 +9,6 @@ import CostBreakdown, { LandCost } from './[slug]/CostBreakdown';
 import AdditionalInfo from './[slug]/AdditionalInfo';
 import useBidModal from '@/app/hooks/useBidModal';
 import Map from '@/components/DisplayMap';
-
-
-
 
 export type LandFormValues = {
   $id:string;
@@ -37,9 +33,7 @@ export type LandFormValues = {
   Zoning_Regulations:string;
   latitude:number;
   Longitude:number;
-
-
-
+  bid: TSafeBid[]
 }
 export type TSafeUser = { 
   id:string;
@@ -51,7 +45,7 @@ export type TSafeBid = {
   LandId:string;
   Offer_Price:string;
   Original_Price:string;
-  Owner_Decision: 'Accepted';
+  Owner_Decision: Boolean;
   BidderEmail:string;
 
 }
@@ -73,13 +67,12 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
   const bidModal = useBidModal();
   const params = useSearchParams();
   const router = useRouter();
-  console.log(land.location)
 
+  // Check if the current user has an accepted offer
   const userOfferAcceptedArray = land.bid.map(
     (bid) =>
-      bid.BidderEmail === currentUser?.email && bid.Owner_Decision === 'Accepted'
- );
-
+      bid.BidderEmail === currentUser?.email && bid.Owner_Decision === true
+  );
 
   const userOfferAccepted = userOfferAcceptedArray.includes(true);
 
@@ -98,7 +91,7 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
 
     const url = qs.stringifyUrl(
       {
-        url: ``,
+        url: `/landlisting/${land?.$id}`,
         query: updatedQuery,
       },
       { skipNull: true }
@@ -106,6 +99,13 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
 
     router.push(url);
   }, [land, params, router]);
+
+  // Handle "Continue" button click
+  const handleContinueClick = useCallback(() => {
+    if (userOfferAccepted) {
+      router.push(`/${land?.$id}`);
+    }
+  }, [userOfferAccepted, land, router]);
 
   useEffect(() => {}, [currentUser]);
 
@@ -117,9 +117,8 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
           title={land.Listing_Title}
           subText={land.Description}
           buttonText={userOfferAccepted ? 'Continue' : undefined}
-          linkPath={
-            userOfferAccepted ? `/${land?.$id}` : undefined
-          }
+          buttonAction={userOfferAccepted ? handleContinueClick : undefined} // Pass buttonAction
+          linkPath={userOfferAccepted ? `/${land?.$id}` : undefined}
           secondaryActionText={!userOfferAccepted ? 'Make an offer' : undefined}
           secondaryAction={() => {
             handleOfferClick();
@@ -127,28 +126,23 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
           }}
         />
         <div className='mb-5'>
-        <Gallery land={land} />
-        <Map latitude={land.latitude} longitude={land.Longitude} />
-       
-
+          <Gallery land={land} />
+          <Map latitude={land.latitude} longitude={land.Longitude} />
         </div>
         <AdditionalInfo land={land} />
         <div className="grid grid-cols-2 gap-4 mt-10">
-
           <div className="bg-gray-100 flex flex-col p-6">
-              <p className='text-center text-xl font-bold'> Land Document</p>
+            <p className='text-center text-xl font-bold'> Land Document</p>
             <div className='flex flex-row mx-auto'>
-            <Documents documents={land.Land_Document} title={'Land Document'} />
-            <Documents documents={land.Search_from_LC} title= {'Search Document'} />
+              <Documents documents={land.Land_Document} title={'Land Document'} />
+              <Documents documents={land.Search_from_LC} title={'Search Document'} />
             </div>
-          
           </div>
           <div className="bg-gray-100 ">
-          <CostBreakdown
-/// add landcost
+            <CostBreakdown
               landCost={land.landCost}
               totalCost={land.Price}
-        /> 
+            />
           </div>
         </div>
       </div>

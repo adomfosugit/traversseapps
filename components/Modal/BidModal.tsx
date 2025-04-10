@@ -73,7 +73,7 @@ const BidModal = () => {
         toast.error('Error retrieving data, please refresh and try again');
         return;
       }
-  
+      //@ts-ignore
       const submitbid = await submitBid(data);
   
       // Check if the bid submission was successful

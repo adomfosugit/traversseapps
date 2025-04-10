@@ -7,6 +7,7 @@ import Navbar from "./projects/overview/Navbar";
 import { getLoggedInUser } from "@/lib/Appwrite/api";
 import { redirect } from "next/navigation";
 import BidModal from "@/components/Modal/BidModal";
+import { Toaster } from "@/components/ui/toaster";
 
 
 const geistSans = Geist({
@@ -36,8 +37,10 @@ export default async function RootLayout({children,}: Readonly<{children: React.
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      >   
+
         <Navbar />
+        <Toaster />
         <BidModal/>
         {children}
 

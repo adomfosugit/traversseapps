@@ -320,13 +320,15 @@ export async function submitBid(data: BidType) {
       NEXT_LAND_COLLECTION_ID!,
       data.landId, // The ID of the land document
       {
-        bids: [
+        bid: [
           ...(await database.getDocument(NEXT_DATABASE_ID!, NEXT_LAND_COLLECTION_ID!, data.landId)).bids || [], // Existing bids
           {
+            Land_owner_Id: data.landOwnerId,
+            LandId:data.landId,
             BidderEmail: data.BidderEmail,
             Offer_Price: data.offer,
             Original_Price: data.originalPrice,
-            Owner_Decision: false, // Default to false (pending owner decision)
+            Owner_Decision: null, // Default to false (pending owner decision)
           },
         ],
       }

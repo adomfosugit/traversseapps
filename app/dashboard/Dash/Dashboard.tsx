@@ -7,6 +7,7 @@ import LandTable, { TSafeLand } from './LandTable';
 import Header2 from './Header2';
 import Header from './Header';
 import ServiceTable from './ServiceTable';
+import { BiDesktop } from 'react-icons/bi';
 
 
 interface IDashboardProps {
@@ -23,17 +24,18 @@ export enum EBrokerProfession {
 
 const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
   const landModal = useLandModal();
+  
 
 
   const landCards = [
     {
       id: '1',
-      number: '0',
+      number: brokerLands?.length,
       description: 'Total no. of lands',
     },
     {
       id: '2',
-      number: '0',
+      number: brokerLands?.reduce((total, land) => total + (land?.bid?.length || 0), 0) || 0,
       description: 'Offers available',
     },
     {

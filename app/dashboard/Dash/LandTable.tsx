@@ -1,6 +1,7 @@
 import { EyeIcon } from '@heroicons/react/24/outline';
 import TableNav from './TableNav';
 import Link from 'next/link';
+import { TSafeBid } from '@/app/(main)/landlisting/Detail';
 
 
 export type TSafeLand = {
@@ -9,9 +10,11 @@ export type TSafeLand = {
  Longitude: number;
  Land_Area: number;
  Price:number;
+ bid:TSafeBid[];
  ImageSrc:  Array<string> 
  Listing_Title: string;
  $createdAt: string;
+ 
 
 }
 interface ILandTableProps {

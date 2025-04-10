@@ -47,7 +47,7 @@ export type TSafeBid = {
   Original_Price:string;
   Owner_Decision: Boolean;
   BidderEmail:string;
-
+  $createdAt:Date
 }
 interface IDetailProps {
   land: LandFormValues & {
@@ -74,6 +74,9 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
       bid.BidderEmail === currentUser?.email && bid.Owner_Decision === true
   );
 
+  const userBids = land.bid.filter((bid) => bid.BidderEmail === currentUser?.email && bid.LandId === land.$id);
+  console.log(userBids)
+  
   const userOfferAccepted = userOfferAcceptedArray.includes(true);
 
   const handleOfferClick = useCallback(() => {
@@ -130,6 +133,30 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
           <Map latitude={land.latitude} longitude={land.Longitude} />
         </div>
         <AdditionalInfo land={land} />
+
+
+        {userBids.length > 0 && (
+        <div>
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bid ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {userBids.map((bid) => (
+                <tr key={bid.LandId}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">{bid.LandId}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">{new Date(bid.$createdAt).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm ">{userOfferAccepted ? 'Accepted' : 'Declined'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
         <div className="grid grid-cols-2 gap-4 mt-10">
           <div className="bg-gray-100 flex flex-col p-6">
             <p className='text-center text-xl font-bold'> Land Document</p>

@@ -14,27 +14,72 @@ import {
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command"
 
 const frameworks = [
-  {
-    value: "value",
-    label: "Kumasi",
-  },
-  {
-    value: "2",
-    label: "Accra",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
+  
+    {
+      value: "ashanti",
+      label: "Ashanti Region",
+    },
+    {
+      value: "greater-accra",
+      label: "Greater Accra Region",
+    },
+    {
+      value: "central",
+      label: "Central Region",
+    },
+    {
+      value: "eastern",
+      label: "Eastern Region",
+    },
+    {
+      value: "western",
+      label: "Western Region",
+    },
+    {
+      value: "western-north",
+      label: "Western North Region",
+    },
+    {
+      value: "volta",
+      label: "Volta Region",
+    },
+    {
+      value: "oti",
+      label: "Oti Region",
+    },
+    {
+      value: "northern",
+      label: "Northern Region",
+    },
+    {
+      value: "savannah",
+      label: "Savannah Region",
+    },
+    {
+      value: "north-east",
+      label: "North East Region",
+    },
+    {
+      value: "upper-east",
+      label: "Upper East Region",
+    },
+    {
+      value: "upper-west",
+      label: "Upper West Region",
+    },
+    {
+      value: "bono",
+      label: "Bono Region",
+    },
+    {
+      value: "ahafo",
+      label: "Ahafo Region",
+    },
+    {
+      value: "bono-east",
+      label: "Bono East Region",
+    }
+  ]
 type Props = {
     name:string
 }
@@ -68,6 +113,7 @@ export function FilterOps(props:Props) {
                 <CommandItem
                   key={framework.value}
                   value={framework.value}
+                  //@ts-ignore
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
                     setOpen(false)

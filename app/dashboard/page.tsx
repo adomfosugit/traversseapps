@@ -23,6 +23,7 @@ const ServiceProviders = async () => {
     <div className="w-full min-h-screen">
        <Dashboard
         currentUser={currentUser}
+        //@ts-ignore
         brokerLands={brokerLands}
         brokerProfession={serviceProvider?.profession}
       />

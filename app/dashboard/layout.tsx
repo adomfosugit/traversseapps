@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import LandModal from "@/components/Modal/LandModal";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Toaster } from "@/components/ui/toaster";
+import BidModal from "@/components/Modal/BidModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,9 +46,9 @@ export default async function RootLayout({children,}: Readonly<{children: React.
       <main className="mx-36 mt-9 ">
 
 
-   
-      <Toaster />
+        <Toaster />
         {children}
+        <BidModal />
         <LandModal />
         </main>
     </> 

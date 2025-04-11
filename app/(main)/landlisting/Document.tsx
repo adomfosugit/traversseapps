@@ -23,7 +23,7 @@ const Documents = ({ documents,title }: IDocumentsProps) => {
      
             <Link href= {`${documents}/view?project=6771516200333a41d2ef&mode=admin`}>
             <AiOutlineFilePdf
-              size={200}
+              size={100}
               className="text-rose-500 hover:border hover:border-traverse-yellow"
             />
             <p className="text-light text-blue-800 text-sm text-nowrap text-center">

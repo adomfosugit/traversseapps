@@ -14,6 +14,7 @@ export type TSafeLand = {
  ImageSrc:  Array<string> 
  Listing_Title: string;
  $createdAt: string;
+ $id:string;
  
 
 }
@@ -58,7 +59,7 @@ const LandTable = ({ lands }: ILandTableProps) => {
                   <EyeIcon className="w-4 h-4 my-auto mr-2" />{' '}
                   <Link
 
-                    href={`/`}
+                    href={`/dashboard/Projects/${land?.$id}`}
                     className="font-medium "
                   >
                     View land

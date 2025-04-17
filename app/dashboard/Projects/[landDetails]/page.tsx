@@ -1,4 +1,4 @@
-import ProjectDetail from '@/app/(main)/landlisting/ServiceProviderLandDetail';
+import ProjectDetail from '@/app/dashboard/Projects/[landDetails]/ServiceProviderLandDetail';
 import EmptyState from '@/components/EmptyState';
 import { getLandById, getLoggedInUser } from '@/lib/Appwrite/api';
 
@@ -29,7 +29,7 @@ const page = async ({
 // @ts-ignore
 
   return (
-    
+    //@ts-ignore
   <ProjectDetail land={land} currentUser={currentUser} />)
 };
 

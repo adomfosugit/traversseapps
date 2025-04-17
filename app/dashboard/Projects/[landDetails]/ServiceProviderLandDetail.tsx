@@ -1,18 +1,13 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
-import { useCallback, useEffect } from 'react';
-import Gallery from './[slug]/Gallery';
 import Header2 from '@/app/dashboard/Dash/Header2';
-import Documents from './Document';
-import CostBreakdown, { LandCost } from './[slug]/CostBreakdown';
-import AdditionalInfo from './[slug]/AdditionalInfo';
-import useBidModal from '@/app/hooks/useBidModal';
-import Map from '@/components/DisplayMap';
+import Documents from '../../../(main)/landlisting/Document';
+import CostBreakdown, { LandCost } from '../../../(main)/landlisting/[slug]/CostBreakdown';
+import AdditionalInfo from '../../../(main)/landlisting/[slug]/AdditionalInfo';
 import { Button } from '@/components/ui/button';
-import BidModal from '@/components/Modal/BidModal';
 import useCounterBidModal from '@/hooks/useCounterBidModal';
-import useLandModal from '@/hooks/useLandModal';
+import { updateBidStatus } from '@/lib/Appwrite/api';
 
 
 
@@ -54,7 +49,8 @@ export type TSafeBid = {
   Original_Price:string;
   Owner_Decision: Boolean;
   BidderEmail:string;
-  $createdAt:Date
+  $createdAt:Date;
+  $id:string
 }
 interface IDetailProps {
   land: LandFormValues & {
@@ -71,15 +67,59 @@ export type TDetailQuery = {
 };
 
 const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
-  const bidModal = useBidModal()
-  const userBids = land.bid.filter((bid) => bid.Land_owner_Id === currentUser?.email && bid.LandId === land.$id);
+  const bidModal = useCounterBidModal()
+  const router = useRouter();
+  const params = useSearchParams();
+  const userBids = land.bid// land.bid.filter((bid) => bid.Land_owner_Id === currentUser?.email && bid.LandId === land.$id);
   console.log(bidModal.isOpen)
   
-  const handleCounterBid = () => {
+  const handleCounterBid1 = () => {
     console.log('Counter bid button clicked');
     bidModal.onOpen();
   };
-  
+  const handleAcceptBid = async (bidId: string) => {
+    const response = await updateBidStatus(bidId, true);
+    if (response.success) {
+      // Refresh the page or update state to reflect the change
+      router.refresh();
+      // You might want to add a toast notification here
+      console.log('Bid accepted successfully');
+    } else {
+      console.error('Failed to accept bid');
+    }
+  };
+
+  const handleDeclineBid = async (bidId: string) => {
+    const response = await updateBidStatus(bidId, false);
+    if (response.success) {
+      // Refresh the page or update state to reflect the change
+      router.refresh();
+      // You might want to add a toast notification here
+      console.log('Bid declined successfully');
+    } else {
+      console.error('Failed to decline bid');
+    }
+  };
+
+  const handleCounterBid = (bid: TSafeBid) => {
+    console.log('Counter bid button clicked');
+    
+    // Create query parameters with the necessary land and bid details
+    const query = {
+      lId: land.$id,                // land ID
+      BId: bid.$id,      // land owner ID
+      oP: bid.Offer_Price // offer price (converted to number)
+    };
+
+    // Stringify the query and update the URL
+    const url = qs.stringifyUrl({
+      url: window.location.href,
+      query
+    }, { skipNull: true });
+
+    router.push(url);
+    bidModal.onOpen();
+  };
    
 
 
@@ -99,6 +139,7 @@ const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
             <thead>
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bid ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bidder</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Offer Price</th>
               </tr>
@@ -106,17 +147,31 @@ const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
             <tbody className="bg-white divide-y divide-gray-200">
               {userBids.map((bid) => (
                 <tr key={bid.LandId}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">{bid.LandId}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">{bid.$id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">{bid.BidderEmail}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">{new Date(bid.$createdAt).toLocaleDateString()}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm ">${bid.Offer_Price}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+        <Button 
+          variant='destructive'
+          onClick={() => handleDeclineBid(bid.$id)}
+          disabled={bid.Owner_Decision !== null} // Disable if decision already made
+        >
+          {bid.Owner_Decision === false ? 'Declined' : 'Decline'}
+        </Button>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm">
+        <Button 
+          variant={'outline'} 
+          onClick={() => handleCounterBid(bid)} 
+          className='ring-1 ring-green-500'
+          disabled={bid.Owner_Decision !== null} // Disable if decision already made
+        >
+          Counter bid
+        </Button>
+      </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                    <Button className='bg-green-500 hover:bg-green-800'>Accept</Button>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                    <Button variant='destructive'>Decline</Button>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                    <Button variant={'outline'} onClick={handleCounterBid} className='ring-1 ring-green-500'>Counter bid</Button>
+                    <Button variant={'outline'} onClick={() => handleCounterBid(bid)} className='ring-1 ring-green-500'>Counter bid</Button>
                   </td>
                   
                   

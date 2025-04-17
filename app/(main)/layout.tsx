@@ -8,6 +8,7 @@ import { getLoggedInUser } from "@/lib/Appwrite/api";
 import { redirect } from "next/navigation";
 import BidModal from "@/components/Modal/BidModal";
 import { Toaster } from "@/components/ui/toaster";
+import CounterBidModal from "@/components/Modal/CounterBid";
 
 
 const geistSans = Geist({
@@ -42,6 +43,7 @@ export default async function RootLayout({children}: Readonly<{children: React.R
         <Navbar />
         <Toaster />
         <BidModal/>
+        <CounterBidModal />
         {children}
 
       </body>

@@ -48,6 +48,7 @@ export type TSafeBid = {
   Owner_Decision: Boolean;
   BidderEmail:string;
   $createdAt:Date
+  CounterBid:number;
 }
 interface IDetailProps {
   land: LandFormValues & {
@@ -76,7 +77,6 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
 
   const userBids = land.bid.filter((bid) => bid.BidderEmail === currentUser?.email && bid.LandId === land.$id);
   console.log(userBids)
-  
   const userOfferAccepted = userOfferAcceptedArray.includes(true);
 
   const handleOfferClick = useCallback(() => {
@@ -143,6 +143,8 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bid ID</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Offer Price</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CounterBid</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -151,6 +153,8 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm">{bid.LandId}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">{new Date(bid.$createdAt).toLocaleDateString()}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm ">{userOfferAccepted ? 'Accepted' : 'Declined'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm ">{bid.Offer_Price}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm ">{bid.CounterBid}</td>
                 </tr>
               ))}
             </tbody>

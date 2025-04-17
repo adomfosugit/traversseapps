@@ -287,62 +287,118 @@ export async function uploadLand(data: LandFormValues) {
     return { success: false, error: error?.message || "An error occurred while uploading the land." };
   }
 }
+
 type BidType = {
   landOwnerId: string;
   landId: string;
   offer: number;
   originalPrice: number;
   BidderEmail: string;
+  counterBid?:number
+  owner_descision?: boolean;
+  $id:string
 };
 
 export async function submitBid(data: BidType) {
   try {
     const { database } = await createAdminClient();
 
+    // Generate a unique ID for the bid first
+    const bidId = ID.unique();
+
     // Step 1: Create the bid document in the bids collection
-    const bidupload = await database.createDocument(
+    const bidDocument = await database.createDocument(
       NEXT_DATABASE_ID!,
       NEXT_BIDDER_COLLECTION_ID!,
-      ID.unique(),
+      bidId, // Use the pre-generated ID
       {
         Land_owner_Id: data.landOwnerId,
         LandId: data.landId,
         Offer_Price: data.offer,
         BidderEmail: data.BidderEmail,
         Original_Price: data.originalPrice,
-        Owner_Decision: false, // Default to false (pending owner decision)
+        Owner_Decision: data.owner_descision, // Default to false (pending owner decision)
       }
     );
 
-    // Step 2: Update the corresponding land document to include the new bid
+    // Step 2: Get the current land document to access existing bids
+    const currentLandDoc = await database.getDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_COLLECTION_ID!,
+      data.landId
+    );
+
+    // Step 3: Update the land document with the new bid added to the bids array
     const landUpdate = await database.updateDocument(
       NEXT_DATABASE_ID!,
       NEXT_LAND_COLLECTION_ID!,
-      data.landId, // The ID of the land document
+      data.landId,
       {
-        bid: [
-          ...(await database.getDocument(NEXT_DATABASE_ID!, NEXT_LAND_COLLECTION_ID!, data.landId)).bids || [], // Existing bids
-          {
-            Land_owner_Id: data.landOwnerId,
-            LandId:data.landId,
-            BidderEmail: data.BidderEmail,
-            Offer_Price: data.offer,
-            Original_Price: data.originalPrice,
-            Owner_Decision: null, // Default to false (pending owner decision)
-          },
-        ],
+        bid: [bidId],
       }
     );
 
     // Return success and data
-    return { success: true, data: parseStringify({ bidupload, landUpdate }) };
+    return { success: true, data: parseStringify({ bidDocument, landUpdate }) };
   } catch (error) {
     console.log(error);
     //@ts-ignore
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+export async function updateBidStatus(bidId: string, decision: boolean) {
+  try {
+    const { database } = await createAdminClient();
+    
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_BIDDER_COLLECTION_ID!,
+      bidId,
+      {
+        Owner_Decision: decision
+      }
+    );
 
+    return { success: true, data: updatedBid };
+  } catch (error) {
+    console.error('Error updating bid status:', error);
+    return { success: false, error };
+  }
+}
+type BidType1 = {
+  landOwnerId?: string;
+  landId?: string;
+  offer?: number;
+  originalPrice?: number;
+  BidderEmail?: string;
+  counterBid?:number
+  Owner_Decision?: boolean;
+  $id:string
+};
+
+export async function updateBid(data: BidType1) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const bidupload = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_BIDDER_COLLECTION_ID!,
+      data.$id,
+      {
+        Owner_Decision: data.Owner_Decision,
+        CounterBid: data.counterBid
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ bidupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
 // Database  land  upload documents
 export async function registerLand(landimage: FormData) {
   try {

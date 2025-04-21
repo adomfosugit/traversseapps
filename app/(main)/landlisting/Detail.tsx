@@ -49,6 +49,7 @@ export type TSafeBid = {
   BidderEmail:string;
   $createdAt:Date
   CounterBid:number;
+  $id:string;
 }
 interface IDetailProps {
   land: LandFormValues & {
@@ -150,9 +151,11 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
             <tbody className="bg-white divide-y divide-gray-200">
               {userBids.map((bid) => (
                 <tr key={bid.LandId}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">{bid.LandId}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">{bid.$id}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">{new Date(bid.$createdAt).toLocaleDateString()}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm ">{userOfferAccepted ? 'Accepted' : 'Declined'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                   {bid.Owner_Decision === null ? 'Pending' : bid.Owner_Decision ? 'Accepted' : 'Declined'}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm ">{bid.Offer_Price}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm ">{bid.CounterBid}</td>
                 </tr>

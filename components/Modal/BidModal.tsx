@@ -67,6 +67,7 @@ const BidModal = () => {
       data.BidderEmail = BidderEmail.email;
       data.landId = landId;
       data.offer = parseFloat(data.offer)
+      data.Owner_Decision = null
   
       // Validate required fields
       if (!data.landOwnerId || !data.originalPrice || !data.landId) {
@@ -82,7 +83,7 @@ const BidModal = () => {
         return;
       }
       router.refresh()
-      toast.success('Bid submitted successfully!');
+      toast('Bid submitted successfully!');
      
   
     } catch (error) {

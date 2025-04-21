@@ -304,20 +304,20 @@ export async function submitBid(data: BidType) {
     const { database } = await createAdminClient();
 
     // Generate a unique ID for the bid first
-    const bidId = ID.unique();
+    
 
     // Step 1: Create the bid document in the bids collection
     const bidDocument = await database.createDocument(
       NEXT_DATABASE_ID!,
       NEXT_BIDDER_COLLECTION_ID!,
-      bidId, // Use the pre-generated ID
+      ID.unique(), 
       {
         Land_owner_Id: data.landOwnerId,
         LandId: data.landId,
         Offer_Price: data.offer,
         BidderEmail: data.BidderEmail,
         Original_Price: data.originalPrice,
-        Owner_Decision: data.owner_descision, // Default to false (pending owner decision)
+        Owner_Decision: null, 
       }
     );
 
@@ -334,7 +334,7 @@ export async function submitBid(data: BidType) {
       NEXT_LAND_COLLECTION_ID!,
       data.landId,
       {
-        bid: [bidId],
+        bid: [...(currentLandDoc.bid || []), bidDocument.$id]
       }
     );
 

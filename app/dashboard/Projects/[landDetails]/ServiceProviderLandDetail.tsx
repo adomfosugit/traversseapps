@@ -152,27 +152,34 @@ const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm">{new Date(bid.$createdAt).toLocaleDateString()}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm ">${bid.Offer_Price}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-        <Button 
-          variant='destructive'
-          onClick={() => handleDeclineBid(bid.$id)}
-          disabled={bid.Owner_Decision !== null} // Disable if decision already made
-        >
-          {bid.Owner_Decision === false ? 'Declined' : 'Decline'}
-        </Button>
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm">
-        <Button 
-          variant={'outline'} 
-          onClick={() => handleCounterBid(bid)} 
-          className='ring-1 ring-green-500'
-          disabled={bid.Owner_Decision !== null} // Disable if decision already made
-        >
-          Counter bid
-        </Button>
-      </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                    <Button variant={'outline'} onClick={() => handleCounterBid(bid)} className='ring-1 ring-green-500'>Counter bid</Button>
-                  </td>
+  <Button 
+    variant="default"
+    onClick={() => handleAcceptBid(bid.$id)}
+    disabled={bid.Owner_Decision !== null}
+  >
+    {bid.Owner_Decision === true ? 'Accepted' : 'Accept'}
+  </Button>
+</td>
+<td className="px-6 py-4 whitespace-nowrap text-sm">
+  <Button 
+    variant="destructive"
+    onClick={() => handleDeclineBid(bid.$id)}
+    disabled={bid.Owner_Decision !== null}
+  >
+    {bid.Owner_Decision === false ? 'Declined' : 'Decline'}
+  </Button>
+</td>
+<td className="px-6 py-4 whitespace-nowrap text-sm">
+  <Button 
+    variant="outline" 
+    onClick={() => handleCounterBid(bid)} 
+    className="ring-1 ring-green-500"
+    disabled={bid.Owner_Decision !== null}
+  >
+    Counter bid
+  </Button>
+</td>
+
                   
                   
                 </tr>

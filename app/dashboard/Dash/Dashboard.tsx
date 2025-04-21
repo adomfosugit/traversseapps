@@ -99,6 +99,7 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
         {landCards.map((card) => (
           <AggregateCard
             key={card.id}
+            {/* @ts-ignore */}
             number={card.number}
             numberDescription={card.numberDescription}
             icon={card.icon}

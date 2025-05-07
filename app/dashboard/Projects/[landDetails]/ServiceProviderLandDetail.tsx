@@ -7,7 +7,8 @@ import CostBreakdown, { LandCost } from '../../../(main)/landlisting/[slug]/Cost
 import AdditionalInfo from '../../../(main)/landlisting/[slug]/AdditionalInfo';
 import { Button } from '@/components/ui/button';
 import useCounterBidModal from '@/hooks/useCounterBidModal';
-import { updateBidStatus } from '@/lib/Appwrite/api';
+import { createLandProject, updateBidStatus } from '@/lib/Appwrite/api';
+import { toast } from '@/hooks/use-toast';
 
 
 
@@ -69,20 +70,17 @@ export type TDetailQuery = {
 const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
   const bidModal = useCounterBidModal()
   const router = useRouter();
-  const params = useSearchParams();
+
   const userBids = land.bid// land.bid.filter((bid) => bid.Land_owner_Id === currentUser?.email && bid.LandId === land.$id);
   console.log(bidModal.isOpen)
   
-  const handleCounterBid1 = () => {
-    console.log('Counter bid button clicked');
-    bidModal.onOpen();
-  };
-  const handleAcceptBid = async (bidId: string) => {
+
+  const handleAcceptBid = async (bidId: string, BidderEmail:string) => {
     const response = await updateBidStatus(bidId, true);
     if (response.success) {
-      // Refresh the page or update state to reflect the change
+      await createLandProject(bidId, BidderEmail)
       router.refresh();
-      // You might want to add a toast notification here
+      toast({title:'Bid accepted successfully'})
       console.log('Bid accepted successfully');
     } else {
       console.error('Failed to accept bid');
@@ -91,10 +89,8 @@ const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
 
   const handleDeclineBid = async (bidId: string) => {
     const response = await updateBidStatus(bidId, false);
-    if (response.success) {
-      // Refresh the page or update state to reflect the change
+    if (response.success) {   
       router.refresh();
-      // You might want to add a toast notification here
       console.log('Bid declined successfully');
     } else {
       console.error('Failed to decline bid');
@@ -103,15 +99,12 @@ const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
 
   const handleCounterBid = (bid: TSafeBid) => {
     console.log('Counter bid button clicked');
-    
-    // Create query parameters with the necessary land and bid details
     const query = {
-      lId: land.$id,                // land ID
-      BId: bid.$id,      // land owner ID
-      oP: bid.Offer_Price // offer price (converted to number)
+      lId: land.$id,                
+      BId: bid.$id,     
+      oP: bid.Offer_Price 
     };
 
-    // Stringify the query and update the URL
     const url = qs.stringifyUrl({
       url: window.location.href,
       query
@@ -154,7 +147,7 @@ const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
   <Button 
     variant="default"
-    onClick={() => handleAcceptBid(bid.$id)}
+    onClick={() => handleAcceptBid(bid.$id,bid.BidderEmail)}
     disabled={bid.Owner_Decision !== null}
   >
     {bid.Owner_Decision === true ? 'Accepted' : 'Accept'}
@@ -190,6 +183,7 @@ const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
         </div>
       )}
         </div>
+        {/* @ts-ignore */}
         <AdditionalInfo land={land} />
 
 

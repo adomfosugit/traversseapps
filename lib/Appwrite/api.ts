@@ -27,7 +27,7 @@ interface LandFormValues {
   letigationencumberance:string
 }
 // Authentication 
-const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BIDDER_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS} = process.env
+const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_LAND_PROJECT,NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BIDDER_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS} = process.env
 export async function createUserAccount(user:SNewUser){ 
   let promise;
   try {
@@ -399,6 +399,45 @@ export async function updateBid(data: BidType1) {
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+export async function createLandProject(AcceptedBid: string, BidderEmail:string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const bidupload = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      ID.unique(),
+      {
+        Bid: AcceptedBid,
+        BidderEmail: BidderEmail
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ bidupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
+
+export async function getLandProject(Email:string){
+  try {
+    const { database } = await createAdminClient()
+    const landData = await database.listDocuments(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      [Query.equal("BidderEmail", Email)]  
+    
+    )
+      
+    return landData.documents
+  } catch (error) {
+    console.log(error)
+  }
+} 
 // Database  land  upload documents
 export async function registerLand(landimage: FormData) {
   try {

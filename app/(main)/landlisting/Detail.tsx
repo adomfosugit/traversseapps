@@ -107,7 +107,7 @@ const Detail = ({ land, currentUser }: IDetailProps) => {
   // Handle "Continue" button click
   const handleContinueClick = useCallback(() => {
     if (userOfferAccepted) {
-      router.push(`/${land?.$id}`);
+      router.push(`/projects`);
     }
   }, [userOfferAccepted, land, router]);
 

@@ -404,13 +404,14 @@ export async function createLandProject(AcceptedBid: string, BidderEmail:string)
     const { database } = await createAdminClient();
 
     // Step 1: Update the bid document in the bids collection
-    const bidupload = await database.updateDocument(
+    const bidupload = await database.createDocument(
       NEXT_DATABASE_ID!,
       NEXT_LAND_PROJECT!,
       ID.unique(),
       {
-        Bid: AcceptedBid,
-        BidderEmail: BidderEmail
+        bid: AcceptedBid,
+        BidderEmail: BidderEmail,
+        Status:'Pre-Purchase',
       }
     );
 
@@ -422,6 +423,33 @@ export async function createLandProject(AcceptedBid: string, BidderEmail:string)
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+export async function updateBidStatus1(bidId: string, decision: boolean, BidderEmail: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid's Owner_Decision
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_BIDDER_COLLECTION_ID!,
+      bidId,
+      {
+        Owner_Decision: decision
+      }
+    );
+
+    // Step 2: Create a land project (since decision is always true)
+    const AcceptedBid = bidId;
+    const landProjectResult = await createLandProject(AcceptedBid, BidderEmail);
+
+    return { success: true, data: updatedBid, landProject: landProjectResult };
+  } catch (error) {
+    console.error('Error updating bid status:', error);
+    return { success: false, error };
+  }
+}
+
+
+
 
 export async function getLandProject(Email:string){
   try {

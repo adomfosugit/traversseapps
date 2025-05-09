@@ -7,7 +7,7 @@ import CostBreakdown, { LandCost } from '../../../(main)/landlisting/[slug]/Cost
 import AdditionalInfo from '../../../(main)/landlisting/[slug]/AdditionalInfo';
 import { Button } from '@/components/ui/button';
 import useCounterBidModal from '@/hooks/useCounterBidModal';
-import { createLandProject, updateBidStatus } from '@/lib/Appwrite/api';
+import { createLandProject, updateBidStatus, updateBidStatus1 } from '@/lib/Appwrite/api';
 import { toast } from '@/hooks/use-toast';
 
 
@@ -76,12 +76,11 @@ const ProjectDetail = ({ land, currentUser }: IDetailProps) => {
   
 
   const handleAcceptBid = async (bidId: string, BidderEmail:string) => {
-    const response = await updateBidStatus(bidId, true);
-    if (response.success) {
-      await createLandProject(bidId, BidderEmail)
+    const response = await updateBidStatus1(bidId, true, BidderEmail);
+    if (response.success) {      
+      console.log(response.landProject);
       router.refresh();
       toast({title:'Bid accepted successfully'})
-      console.log('Bid accepted successfully');
     } else {
       console.error('Failed to accept bid');
     }

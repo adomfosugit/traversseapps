@@ -27,11 +27,15 @@ const page = async (props: Props) =>  {
        {/*   <Button variant={'outline'} onClick={showSubNav}> <ListFilter/> Filter</Button> */}
         </div>
        <Filter /> 
-      
+       <div className='grid grid-cols-4 gap-4'>
         {land?.map((item,index)=> (
             //@ts-ignore
         <LandCard key={index} land={item} />
         ))}
+
+
+       </div>
+      
     </main>
     
     </div>

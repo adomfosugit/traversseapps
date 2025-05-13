@@ -466,6 +466,21 @@ export async function getLandProject(Email:string){
     console.log(error)
   }
 } 
+export async function getLandProjectByID(id:string){
+  try {
+    const { database } = await createAdminClient()
+    const landData = await database.getDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      id
+    )
+      
+    return landData
+  } catch (error) {
+    console.log(error)
+  }
+} 
+
 // Database  land  upload documents
 export async function registerLand(landimage: FormData) {
   try {

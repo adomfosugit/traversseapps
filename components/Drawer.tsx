@@ -1,9 +1,14 @@
 
 import { landPurchaseStages } from './Stages';
 import SubMenu from './SubMenu';
+type Path = {
+ path:{
+  slug:string
+ }
+}
 
-
-const Drawer = () => {
+const Drawer = ({path}:Path) => {
+  
   const landStages = landPurchaseStages;
   return (
     <div
@@ -11,7 +16,7 @@ const Drawer = () => {
       aria-labelledby="drawer-label"
     >
       {landStages.map((stage) => (
-        <SubMenu key={stage.id} item={stage} />
+        <SubMenu key={stage.id} item={stage} path= {path.slug} />
       ))}
     </div>
   );

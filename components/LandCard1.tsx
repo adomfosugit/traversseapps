@@ -22,12 +22,12 @@ const LandCard:React.FC<ILandCardProps> = ({land,agreedPrice}) => {
           width={200}
           height={200}
         />
-        <div className="w-full flex-col ml-3 mt-3 mr-4">
+        <div className="w-[800px] flex-col ml-3 mt-3 mr-4">
           <div className="flex justify-between items-center ">
             <div className="flex flex-col">
-              <p className="ml-3 font-sm">{land.Listing_Title} </p>
-              <p className="ml-3 font-sm">{land.Land_Area} acres</p>
-              <p className="ml-3 font-sm">{land.Description} </p>
+              <p className="ml-3  font-bold">{land.Listing_Title} </p>
+              <p className="ml-3 text-sm">{land.Land_Area} acres</p>
+              <p className="ml-3 text-sm">{land.Description} </p>
             </div>
           </div>
           <div className="flex text-traverse-yellow my-2 font-semibold">

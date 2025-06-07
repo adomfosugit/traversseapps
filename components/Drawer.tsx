@@ -4,10 +4,11 @@ import SubMenu from './SubMenu';
 type Path = {
  path:{
   slug:string
- }
+ },
+ stages: Record<string, boolean | null>; 
 }
 
-const Drawer = ({path}:Path) => {
+const Drawer = ({path,stages}:Path) => {
   
   const landStages = landPurchaseStages;
   return (
@@ -16,7 +17,7 @@ const Drawer = ({path}:Path) => {
       aria-labelledby="drawer-label"
     >
       {landStages.map((stage) => (
-        <SubMenu key={stage.id} item={stage} path= {path.slug} />
+        <SubMenu key={stage.id} item={stage} path= {path.slug}  highlight={stages}/>
       ))}
     </div>
   );

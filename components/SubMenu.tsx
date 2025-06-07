@@ -12,10 +12,14 @@ import { TDrawerStage } from './Stages';
 interface ISubMenuProps {
   item: TDrawerStage;
   path: string;
+  highlight: Record<string, boolean | null>; // key = stage.path
 }
-const SubMenu = ({ item,path }: ISubMenuProps) => {
+
+const SubMenu = ({ item, path, highlight }: ISubMenuProps) => {
   const [subNav, setSubNav] = useState(false);
   const showSubNav = () => setSubNav(!subNav);
+  
+
   return (
     <>
       <button
@@ -32,16 +36,27 @@ const SubMenu = ({ item,path }: ISubMenuProps) => {
           ) : null}
         </div>
       </button>
+
       {subNav &&
-        item.subNavigation.map((item, index) => {
+        item.subNavigation?.map((subItem, index) => {
+          const isEnabled = !!highlight[subItem.path];
+
           return (
             <Link
-              href={`${path}?q=${item.path}`}
+              href={isEnabled ? `${path}?q=${subItem.path}` : '#'}
               key={index}
-              className="ml-16 flex text-primary m-4 text-sm hover:text-traverse-primary"
+              className={`ml-16 flex m-4 text-sm items-center ${
+                isEnabled
+                  ? 'text-primary hover:text-traverse-primary'
+                  : 'text-gray-400 cursor-not-allowed pointer-events-none'
+              }`}
             >
-              <CheckCircleIcon className="w-4 h-4" />
-              <p className="ml-2">{item.title}</p>
+              <CheckCircleIcon
+                className={`w-4 h-4 ${
+                  isEnabled ? 'text-green-600' : 'text-gray-400'
+                }`}
+              />
+              <p className="ml-2">{subItem.title}</p>
             </Link>
           );
         })}

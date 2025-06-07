@@ -3,7 +3,7 @@ import BillingDetails from '@/components/BillingDetails'
 import Drawer from '@/components/Drawer'
 import LandCard from '@/components/LandCard1'
 import { Sitevisit } from '@/components/Sitevist'
-import { getLandById, getLandProjectByID } from '@/lib/Appwrite/api'
+import { getLandById, getLandProjectByID, getLoggedInUser } from '@/lib/Appwrite/api'
 
 type PageParams = {
   params: { slug: string },
@@ -51,20 +51,22 @@ const getHeaderContent = (pageID?: string) => {
 }
 
 const page = async({ params, searchParams }: PageParams) => {
-  const landProjectID = params
+  const landProjectID = await params
+  const user = await getLoggedInUser()
   const pageID = searchParams?.q
   const LandProjectDetails = await getLandProjectByID(landProjectID.slug)
   const LandID = LandProjectDetails?.bid.LandId 
   const LandDetails = await getLandById(LandID)
 
   const headerContent = getHeaderContent(pageID)
+  
 
   return (
     <div className='flex gap-x-5'>
       <aside className="hidden lg:flex w-1/4 text-sm">
-        <Drawer path={landProjectID}/>
+        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,Site_plan_preparation: LandProjectDetails?.Site_plan_preparation,LC_search: LandProjectDetails?.LC_search,legal_advice: LandProjectDetails?.legal_advice,}} />
       </aside> 
-      <main className='flex flex-col mx-auto gap-y-6'>
+      <main className='flex flex-col mx-auto gap-y-3'>
         <Header2 
           backText='Back' 
           title={headerContent.title} 
@@ -74,7 +76,7 @@ const page = async({ params, searchParams }: PageParams) => {
         {/* @ts-ignore */}
         <LandCard land={LandDetails} agreedPrice={LandProjectDetails?.bid.Offer_Price}/>
 
-        {pageID === 'Pay_prepurchase' && <BillingDetails />}
+        {pageID === 'Pay_prepurchase' && <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />}
         {pageID === 'Site_visit' && <Sitevisit />}
       </main>
     </div>

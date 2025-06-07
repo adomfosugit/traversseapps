@@ -27,7 +27,7 @@ interface LandFormValues {
   letigationencumberance:string
 }
 // Authentication 
-const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_LAND_PROJECT,NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BIDDER_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS} = process.env
+const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_LAND_PROJECT,NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BIDDER_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS, NEXT_PUBLIC_JOBLISTING} = process.env
 export async function createUserAccount(user:SNewUser){ 
   let promise;
   try {
@@ -412,6 +412,8 @@ export async function createLandProject(AcceptedBid: string, BidderEmail:string)
         bid: AcceptedBid,
         BidderEmail: BidderEmail,
         Status:'Pre-Purchase',
+        Land_selection:true,
+        Pay_prepurchase:true,
       }
     );
 
@@ -421,6 +423,64 @@ export async function createLandProject(AcceptedBid: string, BidderEmail:string)
     console.log(error);
     //@ts-ignore
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
+export async function createJob(land: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const jobupload = await database.createDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      ID.unique(),
+      {
+        Job_Executer : 'Surveyor',
+        LandID : land,
+        Available : true
+
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ jobupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
+export async function updateLandProjectSiteVisit(landId: string, projectId: string) {
+  try {
+    const { database } = await createAdminClient()
+
+    const landUpdate = await database.updateDocument(
+      process.env.NEXT_DATABASE_ID!,
+      process.env.NEXT_LAND_PROJECT!,
+      projectId,
+      { Site_visit: true }
+    )
+
+    const jobResult = await createJob(landId)
+    if (!jobResult.success) {
+      throw new Error(jobResult.error)
+    }
+
+    return {
+      success: true,
+      data: {
+        landUpdate,
+        jobUpload: jobResult.data,
+      },
+    }
+  } catch (error) {
+    console.error("Update Site Visit Error:", error)
+    return {
+      success: false,
+      error:
+        //@ts-ignore
+        error?.message || 'An error occurred during site visit update.',
+    }
   }
 }
 export async function updateBidStatus1(bidId: string, decision: boolean, BidderEmail: string) {

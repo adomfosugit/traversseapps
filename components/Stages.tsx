@@ -23,7 +23,7 @@ export const landPurchaseStages: TDrawerStage[] = [
     subNavigation: [
       {
         title: 'Land Selection',
-        path: 'land_selection',
+        path: 'Land_selection',
       },
       {
         title: 'Pay Pre-Purchase Stage Fees',

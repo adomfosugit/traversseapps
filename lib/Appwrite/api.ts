@@ -450,6 +450,21 @@ export async function createJob(land: string) {
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+export async function getJobListing(Profession:string){
+  try {
+    const { database } = await createAdminClient()
+    const JobData = await database.listDocuments(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      [Query.equal("Job_Executer", Profession)]  
+    
+    )
+      
+    return JobData.documents
+  } catch (error) {
+    console.log(error)
+  }
+} 
 export async function updateLandProjectSiteVisit(landId: string, projectId: string) {
   try {
     const { database } = await createAdminClient()

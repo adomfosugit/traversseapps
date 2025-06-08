@@ -66,7 +66,7 @@ const page = async({ params, searchParams }: PageParams) => {
       <aside className="hidden lg:flex w-1/4 text-sm">
         <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,Site_plan_preparation: LandProjectDetails?.Site_plan_preparation,LC_search: LandProjectDetails?.LC_search,legal_advice: LandProjectDetails?.legal_advice,}} />
       </aside> 
-      <main className='flex flex-col mx-auto gap-y-3'>
+      <main className='flex flex-col mx-auto gap-y-10'>
         <Header2 
           backText='Back' 
           title={headerContent.title} 
@@ -76,7 +76,7 @@ const page = async({ params, searchParams }: PageParams) => {
         {/* @ts-ignore */}
         <LandCard land={LandDetails} agreedPrice={LandProjectDetails?.bid.Offer_Price}/>
 
-        {pageID === 'Pay_prepurchase' && <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />}
+        {pageID === 'Pay_prepurchase' && (LandProjectDetails?.Site_visit ? <div className='ring-2 p-2 ring-green-600 bg-green-200 w-[800px] rounded-xl'> Pre-purchases Fees Paid</div>   :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
         {pageID === 'Site_visit' && <Sitevisit />}
       </main>
     </div>

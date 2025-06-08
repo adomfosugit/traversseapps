@@ -10,10 +10,16 @@ import ServiceTable from './ServiceTable';
 import { BiDesktop } from 'react-icons/bi';
 //Fix the dashboard works
 
-
+export type TsafeJoblist = {
+  Job_Executer:string;
+  LandID: string;
+  Available: boolean;
+  $id:string
+}
 interface IDashboardProps {
   brokerLands?: TSafeLand[] | null;
   brokerProfession?: string;
+  projectListings? : TsafeJoblist[] | null 
 }
 
 export enum EBrokerProfession {
@@ -23,15 +29,16 @@ export enum EBrokerProfession {
   ARCHITECT = 'Architect',
 }
 
-const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
+const Dashboard = ({brokerLands,brokerProfession, projectListings}:IDashboardProps) => {
   const landModal = useLandModal();
+  console.log('project', projectListings)
   
 
 
   const landCards = [
     {
       id: '1',
-      number: brokerLands?.length,
+      number: brokerLands?.length ,
       description: 'Total no. of lands',
     },
     {
@@ -61,7 +68,7 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
   const cards = [
     {
       id: '1',
-      number: '0',
+      number:  projectListings?.length,
       description: 'Total no. of projects',
     },
     {
@@ -100,6 +107,7 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
         {landCards.map((card) => (
           <AggregateCard
             key={card.id}
+          //  @ts-ignore
             number={card.number}
             numberDescription={card.numberDescription}
             icon={card.icon}
@@ -115,15 +123,12 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
     <div>
       <Header
         title="Home"
-        subText="Your dashboard with information about your work with Traverse"
-    
-
-       
-      />
+        subText="Your dashboard with information about your work with Traverse" />
       <div className="mt-14 grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-4">
         {cards.map((card) => (
           <AggregateCard
             key={card.id}
+            //@ts-ignore
             number={card.number}
             numberDescription={card.numberDescription}
             icon={card.icon}
@@ -131,7 +136,7 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
           />
         ))}
       </div>
-      <ServiceTable lands={brokerLands} />
+      <ServiceTable Job_Listings={projectListings} />
     </div>
   );
 

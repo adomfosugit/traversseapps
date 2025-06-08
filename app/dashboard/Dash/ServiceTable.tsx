@@ -38,7 +38,7 @@ const ServiceTable = ({ Job_Listings }: IServiceTableProps) => {
                 <td className="px-6 py-4 flex text-blue-600 hover:underline">
                   <EyeIcon className="w-4 h-4 my-auto mr-2" />{' '}
                   <a
-                    href={`/`}
+                    href={`/dashboard/${job?.$id}`}
                     className="font-medium "
                   >
                     View Details

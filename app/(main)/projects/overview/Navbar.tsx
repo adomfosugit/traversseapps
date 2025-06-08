@@ -1,7 +1,6 @@
 import Logo from "@/components/Website/Logo";
 import Navigator from "./Navigator";
 import Auth from "./Auth";
-import { get } from "http";
 import { getLoggedInUser } from "@/lib/Appwrite/api";
 import { NavigationMenu } from "@/components/NavigationMenu";
 

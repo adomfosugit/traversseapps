@@ -47,7 +47,7 @@ export default async function RootLayout({children}: Readonly<{children: React.R
      <>
       <main className="mx-36 mt-9 ">
 
-     
+        <Navbar />
         <Toaster />
         {children}
         <BidModal />

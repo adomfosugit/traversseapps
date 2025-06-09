@@ -1,9 +1,8 @@
-
 import Header2 from '@/app/dashboard/Dash/Header2'
 import LandCard from '@/components/LandCard1'
 import { Button } from '@/components/ui/button'
 import { AssignSurveyorJob, getJobListingbyID, getLandById, getLoggedInUser } from '@/lib/Appwrite/api'
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 type PageParams = {
   params: { slug: string },
   searchParams?: { q?: string }
@@ -45,22 +44,40 @@ const page = async({ params, searchParams }: PageParams) => {
           title='Site Visit' 
           subText='Visit Site Location to inspect and make report'
         />
-        {/* @ts-ignore */}
-        <Button onClick={handleAccept()}>Accept</Button>
+       
+        {
+          /* @ts-ignore */
+          JobProjectDetails?.Available && (<Button onClick={handleAccept()}>Accept</Button>)
+        }
+          {
+            JobProjectDetails?.SurveyorInCharge == user.email ? (<p className='font-bold text-green-400 ring-1 ring-green-400 p-3 rounded-xl '>Assigned to you</p>) : ''
+          }
+
 
         </div>
        
-        
-        {/* @ts-ignore */}
+        <Tabs defaultValue="details" className="">
+        <TabsList>
+          <TabsTrigger value="details">Project Details</TabsTrigger>
+          <TabsTrigger value="Submission">submission</TabsTrigger>
+        </TabsList>
+        <TabsContent value="details" className='flex flex-col gap-y-4'>
+           {/* @ts-ignore */}
         <div >       <LandCard land={LandDetails}  agreedPrice={LandDetails?.Price}/></div>
         <div className='flex flex-col gap-y-4' >
-          <p className = 'font-bold text-black text-xl'>Instruction For Surveyor</p>
+          <p className = 'font-bold text-black text-xl mt-3'>Instruction For Surveyor</p>
 
           <div className='bg-gray-200 w-[700px] ring-2 rounded-xl ring-primary'>
 
           <p className='text-sm text-primary p-5'>{JobProjectDetails?.SiteVisitNote} </p>
           </div>
         </div>
+        </TabsContent>
+        <TabsContent value="submission">Change your password here.</TabsContent>
+      </Tabs>
+        
+       
+       
 
       </main>
 

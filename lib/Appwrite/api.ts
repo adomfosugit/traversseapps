@@ -489,6 +489,21 @@ export async function getJobListing(Profession:string){
     console.log(error)
   }
 } 
+export async function getJobListingForSurveyor(Email:string){
+  try {
+    const { database } = await createAdminClient()
+    const JobData = await database.listDocuments(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      [Query.contains("SurveyorInCharge", Email)]  
+    
+    )
+      
+    return JobData.documents
+  } catch (error) {
+    console.log(error)
+  }
+} 
 export async function getJobListingbyID(id:string){
   try {
     const { database } = await createAdminClient()

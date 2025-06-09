@@ -10,7 +10,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Toaster } from "@/components/ui/toaster";
 import BidModal from "@/components/Modal/BidModal";
 import CounterBidModal from "@/components/Modal/CounterBid";
-import Navbar from "../(main)/projects/overview/Navbar";
+import Navbar from "./Dash/Navbar";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

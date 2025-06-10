@@ -425,7 +425,7 @@ export async function createLandProject(AcceptedBid: string, BidderEmail:string)
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
-export async function createJob(land: string) {
+export async function createJob(land: string, project:string) {
   try {
     const { database } = await createAdminClient();
 
@@ -437,7 +437,8 @@ export async function createJob(land: string) {
       {
         Job_Executer : 'Surveyor',
         LandID : land,
-        Available : true
+        Available : true,
+        JobAssigned : project
 
       }
     );
@@ -489,6 +490,44 @@ export async function getJobListing(Profession:string){
     console.log(error)
   }
 } 
+export async function getJobListingByUserProjectID(id:string){
+  try {
+    const { database } = await createAdminClient()
+    const JobData = await database.listDocuments(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      [Query.equal("jobAssigned", id)]  
+    
+    )
+      
+    return JobData.documents
+  } catch (error) {
+    console.log(error)
+  }
+} 
+
+export async function UpdateJobSiteVisitNote1(id: string, message:string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const jobupload = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      id, 
+      {
+        SiteVisitNote :message
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ jobupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
 export async function getJobListingForSurveyor(Email:string){
   try {
     const { database } = await createAdminClient()
@@ -528,7 +567,7 @@ export async function updateLandProjectSiteVisit(landId: string, projectId: stri
       { Site_visit: true }
     )
 
-    const jobResult = await createJob(landId)
+    const jobResult = await createJob(landId, projectId)
     if (!jobResult.success) {
       throw new Error(jobResult.error)
     }

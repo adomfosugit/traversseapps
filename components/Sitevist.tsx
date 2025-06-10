@@ -15,57 +15,78 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { UpdateJobSiteVisitNote1 } from "@/lib/Appwrite/api"
+import { toast } from '@/hooks/use-toast';
+
+
 
 // Form validation schema
 const formSchema = z.object({
   message: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "Message must be at least 2 characters.",
   }),
 })
 
-export function Sitevisit() {
-  // Initialize the form
+export type TsafeJobAssigned = {
+  Job_Executer: string,
+  LandID: string,
+  Available: string,
+  SiteVisitNote: string,
+  SurveyorInCharge: string,
+  SiteVisitCompletionStatus: boolean,
+  jobAssigned: string,
+}
+
+type Props = {
+  JobAssignedID: string
+  JobSiteVistNote:string
+}
+
+export function Sitevisit({ JobAssignedID,JobSiteVistNote }: Props) {
+  console.log(JobSiteVistNote)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      message: "",
+      message: JobSiteVistNote || "",  
     },
   })
 
-  // Form submission handler
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Handle form submission
-    console.log(values)
-    // Add your form submission logic here
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    
+    const updatemessage  = await UpdateJobSiteVisitNote1(JobAssignedID,values.message)
+    if(updatemessage.success){
+      toast({title: `Site Visit note Submitted Successfully`})
+    }else{
+      toast({title: `${updatemessage.error}`})
+    }
   }
 
   return (
     <div className="w-[800px] p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-sm  mb-6 text-center">Instruction for site visit(optional)</h2>
-      
+      <h2 className="text-sm mb-6 text-center">Instruction for site visit (optional)</h2>
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="message"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="block text-sm font-medium text-gray-700">
-                 Message
+                  Message
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Leave your message...." 
+                    placeholder="Leave your message..." 
                     {...field} 
-                    className="mt-1"
+                    className="mt-1 "
                   />
                 </FormControl>
-             
                 <FormMessage className="text-red-500 text-sm mt-1" />
               </FormItem>
             )}
           />
-          
+
           <div className="flex justify-end">
             <Button 
               type="submit"

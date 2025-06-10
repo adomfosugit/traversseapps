@@ -3,7 +3,7 @@ import BillingDetails from '@/components/BillingDetails'
 import Drawer from '@/components/Drawer'
 import LandCard from '@/components/LandCard1'
 import { Sitevisit } from '@/components/Sitevist'
-import { getLandById, getLandProjectByID, getLoggedInUser } from '@/lib/Appwrite/api'
+import { getJobListingByUserProjectID, getLandById, getLandProjectByID, getLoggedInUser } from '@/lib/Appwrite/api'
 
 type PageParams = {
   params: { slug: string },
@@ -53,10 +53,12 @@ const getHeaderContent = (pageID?: string) => {
 const page = async({ params, searchParams }: PageParams) => {
   const landProjectID = await params
   const user = await getLoggedInUser()
-  const pageID = searchParams?.q
+  const pageID = await searchParams?.q
   const LandProjectDetails = await getLandProjectByID(landProjectID.slug)
   const LandID = LandProjectDetails?.bid.LandId 
   const LandDetails = await getLandById(LandID)
+  const JOBID  = await getJobListingByUserProjectID(landProjectID.slug)
+  console.log(JOBID)
 
   const headerContent = getHeaderContent(pageID)
   
@@ -77,7 +79,9 @@ const page = async({ params, searchParams }: PageParams) => {
         <LandCard land={LandDetails} agreedPrice={LandProjectDetails?.bid.Offer_Price}/>
 
         {pageID === 'Pay_prepurchase' && (LandProjectDetails?.Site_visit ? <div className='ring-2 p-2 ring-green-600 bg-green-200 w-[800px] rounded-xl'> Pre-purchases Fees Paid</div>   :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
-        {pageID === 'Site_visit' && <Sitevisit />}
+        {/* @ts-ignore */}
+        {pageID === 'Site_visit' && <Sitevisit JobAssignedID = {JOBID[0].$id} JobSiteVistNote = {JOBID[0]?.SiteVisitNote} />}
+        
       </main>
     </div>
   )

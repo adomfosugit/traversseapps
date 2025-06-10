@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { UpdateJobSiteVisitNote1 } from "@/lib/Appwrite/api"
 import { toast } from '@/hooks/use-toast';
+import Link from "next/link"
 
 
 
@@ -40,9 +41,10 @@ export type TsafeJobAssigned = {
 type Props = {
   JobAssignedID: string
   JobSiteVistNote:string
+  Report:string
 }
 
-export function Sitevisit({ JobAssignedID,JobSiteVistNote }: Props) {
+export function Sitevisit({ JobAssignedID,JobSiteVistNote,Report }: Props) {
   console.log(JobSiteVistNote)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,7 +64,8 @@ export function Sitevisit({ JobAssignedID,JobSiteVistNote }: Props) {
   }
 
   return (
-    <div className="w-[800px] p-6 bg-white rounded-lg shadow-md">
+    <div className="w-[800px] p-6 bg-white rounded-lg shadow-md flex flex-col gap-y-5">
+       {Report && <Link href={`${Report}/view?project=6771516200333a41d2ef&mode=admin`} className="text-blue-500 hover:underline"> Site Visit Report</Link>}
       <h2 className="text-sm mb-6 text-center">Instruction for site visit (optional)</h2>
 
       <Form {...form}>
@@ -97,6 +100,8 @@ export function Sitevisit({ JobAssignedID,JobSiteVistNote }: Props) {
           </div>
         </form>
       </Form>
+
+     
     </div>
   )
 }

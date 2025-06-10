@@ -3,17 +3,18 @@ import LandCard from '@/components/LandCard1'
 import { Button } from '@/components/ui/button'
 import { AssignSurveyorJob, getJobListingbyID, getLandById, getLoggedInUser } from '@/lib/Appwrite/api'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { SiteVisitForm } from '@/components/SiteVisitForm'
+import { FaFilePdf } from 'react-icons/fa'
+import Link from 'next/link'
+
 type PageParams = {
   params: { slug: string },
   searchParams?: { q?: string }
 }
 
-
-
 const page = async({ params, searchParams }: PageParams) => {
   const JobProjectID = await params
   const user = await getLoggedInUser()
-  //const pageID = searchParams?.q
   const JobProjectDetails = await getJobListingbyID(JobProjectID.slug)
   console.log(JobProjectDetails)
   const landID = JobProjectDetails?.LandID 
@@ -59,7 +60,8 @@ const page = async({ params, searchParams }: PageParams) => {
         <Tabs defaultValue="details" className="">
         <TabsList>
           <TabsTrigger value="details">Project Details</TabsTrigger>
-          <TabsTrigger value="Submission">submission</TabsTrigger>
+          <TabsTrigger value="Submission">Submission</TabsTrigger>
+          <TabsTrigger value="SiteReport">Uploaded Report</TabsTrigger>
         </TabsList>
         <TabsContent value="details" className='flex flex-col gap-y-4'>
            {/* @ts-ignore */}
@@ -73,7 +75,16 @@ const page = async({ params, searchParams }: PageParams) => {
           </div>
         </div>
         </TabsContent>
-        <TabsContent value="submission">Change your password here.</TabsContent>
+        <TabsContent value="Submission">
+          {/* @ts-ignore */}
+          <SiteVisitForm JobProjectID = {JobProjectDetails?.$id}/>
+        </TabsContent>
+        <TabsContent value="SiteReport">
+          <Link href= {`${JobProjectDetails?.SiteVisitReport}/view?project=6771516200333a41d2ef&mode=admin`}>
+            <FaFilePdf className='w-[25px] h-[20px]'/> Site Visit Report
+          </Link>
+          
+        </TabsContent>
       </Tabs>
         
        

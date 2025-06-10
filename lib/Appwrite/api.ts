@@ -528,6 +528,30 @@ export async function UpdateJobSiteVisitNote1(id: string, message:string) {
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+export async function UpdateJobSiteVisitReport(id: string, reporturl:string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const jobupload = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      id, 
+      {
+        SiteVisitReport: reporturl,
+        SiteVisitCompletionStatus:true,
+
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ jobupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
 export async function getJobListingForSurveyor(Email:string){
   try {
     const { database } = await createAdminClient()
@@ -695,7 +719,7 @@ export async function registerLandDoc(landimage: FormData) {
     const { Storage } = await createAdminClient();
     // Upload the file to Appwrite Storage
     const response = await Storage.createFile(
-      NEXT_BUCKET_ID_DOCS!, // Your Appwrite bucket ID
+      NEXT_BUCKET_ID!, // Your Appwrite bucket ID
       ID.unique(), // Generate a unique file ID
       InputFile.fromBuffer(buffer, file.name) // Create InputFile from buffer
     );
@@ -703,6 +727,29 @@ export async function registerLandDoc(landimage: FormData) {
     // Return the file URL
     return {
       url: `https://cloud.appwrite.io/v1/storage/buckets/${NEXT_BUCKET_ID}/files/${response.$id}/`,
+    };
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    return null;
+  }
+}
+export async function uploadDoc(landimage: FormData) {
+  try {
+    const file = landimage.get('landimage') as File;
+
+    // Convert the file to a buffer
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const { Storage } = await createAdminClient();
+    // Upload the file to Appwrite Storage
+    const response = await Storage.createFile(
+      NEXT_BUCKET_ID_DOCS!, // Your Appwrite bucket ID
+      ID.unique(), // Generate a unique file ID
+      InputFile.fromBuffer(buffer, file.name) // Create InputFile from buffer
+    );
+
+    // Return the file URL
+    return {
+      url: `https://cloud.appwrite.io/v1/storage/buckets/${NEXT_BUCKET_ID_DOCS}/files/${response.$id}/`,
     };
   } catch (error) {
     console.error('Error uploading file:', error);

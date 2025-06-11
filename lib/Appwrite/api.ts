@@ -438,7 +438,7 @@ export async function createJob(land: string, project:string) {
         Job_Executer : 'Surveyor',
         LandID : land,
         Available : true,
-        JobAssigned : project
+        jobAssigned : project
 
       }
     );

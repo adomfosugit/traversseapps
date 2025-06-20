@@ -7,13 +7,13 @@ import LandTable, { TSafeLand } from './LandTable';
 import Header2 from './Header2';
 import Header from './Header';
 import ServiceTable from './ServiceTable';
-import { BiDesktop } from 'react-icons/bi';
-//Fix the dashboard works
 
 export type TsafeJoblist = {
   Job_Executer:string;
   LandID: string;
-  Available: boolean;
+  AvailableForSurveyor: boolean;
+  AvailableForPlanner: boolean;
+  AvailableForLawyer: boolean;
   $id:string;
   $createdAt:Date
   SiteVisitCompletionStatus:boolean
@@ -29,6 +29,7 @@ export enum EBrokerProfession {
   SURVEYOR = 'Surveyor',
   SOLICITOR = 'Solicitor',
   ARCHITECT = 'Architect',
+  PLANNER = 'Planner'
 }
 
 const Dashboard = ({brokerLands,brokerProfession, projectListings}:IDashboardProps) => {
@@ -138,7 +139,7 @@ const Dashboard = ({brokerLands,brokerProfession, projectListings}:IDashboardPro
           />
         ))}
       </div>
-      <ServiceTable Job_Listings={projectListings} />
+      <ServiceTable Job_Listings={projectListings}  Profession = {brokerProfession}/>
     </div>
   );
 

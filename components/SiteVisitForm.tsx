@@ -19,52 +19,62 @@ export function SiteVisitForm({ JobProjectID }: { JobProjectID: string }) {
   const form = useForm({
     defaultValues: {
       landimage: undefined,
+      siteplan: undefined,
     },
   })
 
   const onSubmit = async () => {
-    const fileInput = document.querySelector<HTMLInputElement>("#landimage")
+    const landImageFile = document.querySelector<HTMLInputElement>("#landimage")?.files?.[0]
+    const sitePlanFile = document.querySelector<HTMLInputElement>("#siteplan")?.files?.[0]
 
-    if (!fileInput?.files?.[0]) {
-      toast({ title: "No file selected" })
+    if (!landImageFile && !sitePlanFile) {
+      toast({ title: "No files selected" })
       return
     }
 
-    const formData = new FormData()
-    formData.append("landimage", fileInput.files[0])
-
     try {
-      // 1. Upload to Appwrite
-      const uploadResult = await uploadDoc(formData)
+      let landImageUrl = null
+      let sitePlanUrl = null
 
-      if (!uploadResult?.url) {
-        toast({
-          title: "Upload Failed",
-          
-        })
-        return
+      // Upload land image if exists
+      if (landImageFile) {
+        const landImageFormData = new FormData()
+        landImageFormData.append("file", landImageFile)
+        const landImageUploadResult = await uploadDoc(landImageFormData)
+        landImageUrl = landImageUploadResult?.url
       }
 
-      // 2. Update Site Visit Report with the uploaded file URL
-      const updateResult = await UpdateJobSiteVisitReport(JobProjectID, uploadResult.url)
+      // Upload site plan if exists
+      if (sitePlanFile) {
+        const sitePlanFormData = new FormData()
+        sitePlanFormData.append("file", sitePlanFile)
+        const sitePlanUploadResult = await uploadDoc(sitePlanFormData)
+        sitePlanUrl = sitePlanUploadResult?.url
+      }
 
-      // Optional: Check success of the update
+      // Update report with both URLs
+      const updateResult = await UpdateJobSiteVisitReport(
+        JobProjectID, 
+        landImageUrl,
+        sitePlanUrl
+      )
+
       if (updateResult?.success || updateResult) {
         toast({
           title: "Upload Successful",
-          
+          description: "Both files were uploaded successfully",
         })
       } else {
         toast({
           title: "Update Failed",
-          
+          variant: "destructive",
         })
       }
     } catch (err) {
       console.error("Error during submission:", err)
       toast({
         title: "Unexpected Error",
-        
+        variant: "destructive",
       })
     }
   }
@@ -77,12 +87,28 @@ export function SiteVisitForm({ JobProjectID }: { JobProjectID: string }) {
           name="landimage"
           render={() => (
             <FormItem>
-              <FormLabel>Upload Site Visit Report</FormLabel>
+              <FormLabel>Site Visit Images</FormLabel>
               <FormControl>
                 <Input id="landimage" name="landimage" type="file" />
               </FormControl>
               <FormDescription>
-                Attach all images or documents gathered in the report.
+                Attach all images gathered during the site visit.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="siteplan"
+          render={() => (
+            <FormItem>
+              <FormLabel>Site Plan</FormLabel>
+              <FormControl>
+                <Input id="siteplan" name="siteplan" type="file" />
+              </FormControl>
+              <FormDescription>
+                Attach the site plan document.
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,10 +15,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { UpdateJobSiteVisitNote1 } from "@/lib/Appwrite/api"
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/hooks/use-toast'
 import Link from "next/link"
-
-
 
 // Form validation schema
 const formSchema = z.object({
@@ -40,32 +37,30 @@ export type TsafeJobAssigned = {
 
 type Props = {
   JobAssignedID: string
-  JobSiteVistNote:string
-  Report:string
+  JobSiteVistNote: string
+  Report: string
+  SitePlan: string
 }
 
-export function Sitevisit({ JobAssignedID,JobSiteVistNote,Report }: Props) {
-  console.log(JobSiteVistNote)
+export function Sitevisit({ JobAssignedID, JobSiteVistNote, Report, SitePlan }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      message: JobSiteVistNote || "",  
+      message: JobSiteVistNote || "",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    
-    const updatemessage  = await UpdateJobSiteVisitNote1(JobAssignedID,values.message)
-    if(updatemessage.success){
-      toast({title: `Site Visit note Submitted Successfully`})
-    }else{
-      toast({title: `${updatemessage.error}`})
+    const updatemessage = await UpdateJobSiteVisitNote1(JobAssignedID, values.message)
+    if (updatemessage.success) {
+      toast({ title: `Site Visit note Submitted Successfully` })
+    } else {
+      toast({ title: `${updatemessage.error}` })
     }
   }
 
   return (
     <div className="w-[800px] p-6 bg-white rounded-lg shadow-md flex flex-col gap-y-5">
-       {Report && <Link href={`${Report}/view?project=6771516200333a41d2ef&mode=admin`} className="text-blue-500 hover:underline"> Site Visit Report</Link>}
       <h2 className="text-sm mb-6 text-center">Instruction for site visit (optional)</h2>
 
       <Form {...form}>
@@ -79,10 +74,10 @@ export function Sitevisit({ JobAssignedID,JobSiteVistNote,Report }: Props) {
                   Message
                 </FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Leave your message..." 
-                    {...field} 
-                    className="mt-1 "
+                  <Input
+                    placeholder="Leave your message..."
+                    {...field}
+                    className="mt-1"
                   />
                 </FormControl>
                 <FormMessage className="text-red-500 text-sm mt-1" />
@@ -91,7 +86,7 @@ export function Sitevisit({ JobAssignedID,JobSiteVistNote,Report }: Props) {
           />
 
           <div className="flex justify-end">
-            <Button 
+            <Button
               type="submit"
               className="w-full sm:w-auto px-4 py-2"
             >
@@ -101,7 +96,44 @@ export function Sitevisit({ JobAssignedID,JobSiteVistNote,Report }: Props) {
         </form>
       </Form>
 
-     
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+          <thead>
+            <tr className="bg-gray-100 text-left">
+              <th className="px-4 py-2 border-b">Document Name</th>
+              <th className="px-4 py-2 border-b">Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Report && (
+              <tr>
+                <td className="px-4 py-2 border-b">Site Visit Report</td>
+                <td className="px-4 py-2 border-b">
+                  <Link
+                    href={`${Report}/view?project=6771516200333a41d2ef&mode=admin`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    View Report
+                  </Link>
+                </td>
+              </tr>
+            )}
+            {SitePlan && (
+              <tr>
+                <td className="px-4 py-2 border-b">Site Plan</td>
+                <td className="px-4 py-2 border-b">
+                  <Link
+                    href={`${SitePlan}/view?project=6771516200333a41d2ef&mode=admin`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    View Plan
+                  </Link>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

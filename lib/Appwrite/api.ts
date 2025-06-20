@@ -461,7 +461,7 @@ export async function AssignSurveyorJob(id: string, surveyorEmail:string) {
       NEXT_PUBLIC_JOBLISTING!,
       id,
       {
-        Available : false,
+        AvailableForSurveyor : false,
         SurveyorInCharge:surveyorEmail
 
       }
@@ -481,7 +481,7 @@ export async function getJobListing(Profession:string){
     const JobData = await database.listDocuments(
       NEXT_DATABASE_ID!,
       NEXT_PUBLIC_JOBLISTING!,
-      [Query.equal("Job_Executer", Profession)]  
+      [Query.equal(`AvailableFor${Profession}`, true)]  
     
     )
       
@@ -490,6 +490,27 @@ export async function getJobListing(Profession:string){
     console.log(error)
   }
 } 
+export async function getJobListing1(Profession: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    
+    const availableField = `AvailableFor${Profession}`;
+
+    const JobData = await database.listDocuments(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      [
+        Query.equal('AvailableForPlanner', true),
+      ]
+    );
+
+    return JobData.documents;
+  } catch (error) {
+    console.error("Error fetching job listings:", error);
+    return [];
+  }
+}
 export async function getJobListingByUserProjectID(id:string){
   try {
     const { database } = await createAdminClient()
@@ -528,7 +549,7 @@ export async function UpdateJobSiteVisitNote1(id: string, message:string) {
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
-export async function UpdateJobSiteVisitReport(id: string, reporturl:string) {
+export async function UpdateJobSiteVisitReport(id: string, reporturl:string,siteplanurl:string) {
   try {
     const { database } = await createAdminClient();
 
@@ -539,6 +560,7 @@ export async function UpdateJobSiteVisitReport(id: string, reporturl:string) {
       id, 
       {
         SiteVisitReport: reporturl,
+        SitePlan: siteplanurl,
         SiteVisitCompletionStatus:true,
 
       }

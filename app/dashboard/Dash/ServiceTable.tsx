@@ -7,8 +7,9 @@ import { JetBrains_Mono } from 'next/font/google';
 
 interface IServiceTableProps {
   Job_Listings?: TsafeJoblist[] | null;
+  Profession?:string 
 }
-const ServiceTable = ({ Job_Listings }: IServiceTableProps) => {
+const ServiceTable = ({ Job_Listings,Profession }: IServiceTableProps) => {
   return (
     <div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-16">
@@ -31,7 +32,10 @@ const ServiceTable = ({ Job_Listings }: IServiceTableProps) => {
               >
                 <td className="px-6 py-4">{job?.$id}</td>
                 <td className="px-6 py-4">{job?.LandID}</td>
-                <td className={`px-6 py-4 ${job?.Available ? 'text-green-600' : 'text-red-600'}`}> {job?.Available ? 'Available' : 'Unavailable'}</td>
+             {Profession == 'Surveyor' &&  <td className={`px-6 py-4 ${job?.AvailableForSurveyor ? 'text-green-600' : 'text-red-600'}`}> {job?.AvailableForSurveyor ? 'Available' : 'Unavailable'}</td> }
+             {Profession == 'Lawyer' &&  <td className={`px-6 py-4 ${job?.AvailableForLawyer ? 'text-green-600' : 'text-red-600'}`}> {job?.AvailableForLawyer ? 'Available' : 'Unavailable'}</td> }
+             {Profession == 'Planner' &&  <td className={`px-6 py-4 ${job?.AvailableForPlanner ? 'text-green-600' : 'text-red-600'}`}> {job?.AvailableForPlanner ? 'Available' : 'Unavailable'}</td> }
+               
                 <td className="px-6 py-4">
                 {new Intl.DateTimeFormat('en-GB').format(new Date(job?.$createdAt))}
                 </td>

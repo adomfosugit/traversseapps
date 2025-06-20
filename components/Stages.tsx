@@ -26,16 +26,16 @@ export const landPurchaseStages: TDrawerStage[] = [
         path: 'Land_selection',
       },
       {
-        title: 'Pay Pre-Purchase Stage Fees',
+        title: 'Pay For Due Diligence',
         path: 'Pay_prepurchase',
       },
       {
-        title: 'Site Visit',
+        title: 'Site Visit & Survey',
         path: 'Site_visit',
       },
       {
-        title: 'Site Plan Preparation',
-        path: 'Site_plan_preparation',
+        title: 'Planning/Zoning Search',
+        path: 'planning_zoning',
       },
       {
         title: 'Lands Commission Search',

@@ -475,6 +475,30 @@ export async function AssignSurveyorJob(id: string, surveyorEmail:string) {
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+export async function AssignPlannerJob(id: string, PlannerEmail:string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const jobupload = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      id,
+      {
+        AvailableForPlanner : false,
+        PlannerInCharge:PlannerEmail
+
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ jobupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
 export async function getJobListing(Profession:string){
   try {
     const { database } = await createAdminClient()
@@ -501,7 +525,7 @@ export async function getJobListing1(Profession: string) {
       NEXT_DATABASE_ID!,
       NEXT_PUBLIC_JOBLISTING!,
       [
-        Query.equal('AvailableForPlanner', true),
+        Query.equal(`AvailableFor${Profession}`, true),
       ]
     );
 
@@ -563,6 +587,29 @@ export async function UpdateJobSiteVisitReport(id: string, reporturl:string,site
         SitePlan: siteplanurl,
         SiteVisitCompletionStatus:true,
 
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ jobupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
+export async function UpdateJobPlannerReport(id: string, reporturl:string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const jobupload = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      id, 
+      {
+        PlannerReport: reporturl,
+     
       }
     );
 
@@ -755,13 +802,18 @@ export async function registerLandDoc(landimage: FormData) {
     return null;
   }
 }
-export async function uploadDoc(landimage: FormData) {
+
+
+export async function uploadDoc(file: File) {
   try {
-    const file = landimage.get('landimage') as File;
+    if (!file) {
+      throw new Error("No file provided");
+    }
 
     // Convert the file to a buffer
     const buffer = Buffer.from(await file.arrayBuffer());
     const { Storage } = await createAdminClient();
+    
     // Upload the file to Appwrite Storage
     const response = await Storage.createFile(
       NEXT_BUCKET_ID_DOCS!, // Your Appwrite bucket ID
@@ -772,14 +824,13 @@ export async function uploadDoc(landimage: FormData) {
     // Return the file URL
     return {
       url: `https://cloud.appwrite.io/v1/storage/buckets/${NEXT_BUCKET_ID_DOCS}/files/${response.$id}/`,
+      fileId: response.$id
     };
   } catch (error) {
     console.error('Error uploading file:', error);
-    return null;
+    throw error; // Re-throw the error to handle it in the calling function
   }
 }
-
-
 // Messaging Email
 export async function sendTermsConditions( content:string , userId:string ){
   try {

@@ -12,70 +12,79 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { registerLandDoc, UpdateJobSiteVisitReport, uploadDoc } from "@/lib/Appwrite/api"
+import { UpdateJobSiteVisitReport, uploadDoc } from "@/lib/Appwrite/api"
 import { toast } from "@/hooks/use-toast"
+import { useState } from "react"
+
+type FormValues = {
+  landimage: FileList | null;
+  siteplan: FileList | null;
+}
 
 export function SiteVisitForm({ JobProjectID }: { JobProjectID: string }) {
-  const form = useForm({
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const form = useForm<FormValues>({
     defaultValues: {
-      landimage: undefined,
-      siteplan: undefined,
+      landimage: null,
+      siteplan: null,
     },
   })
 
-  const onSubmit = async () => {
-    const landImageFile = document.querySelector<HTMLInputElement>("#landimage")?.files?.[0]
-    const sitePlanFile = document.querySelector<HTMLInputElement>("#siteplan")?.files?.[0]
+  const onSubmit = async (data: FormValues) => {
+    const { landimage, siteplan } = data
 
-    if (!landImageFile && !sitePlanFile) {
-      toast({ title: "No files selected" })
+    if (!landimage?.[0] && !siteplan?.[0]) {
+      toast({ 
+        title: "No files selected",
+        description: "Please select at least one file to upload",
+        variant: "destructive"
+      })
       return
     }
 
+    setIsSubmitting(true)
+    
     try {
       let landImageUrl = null
       let sitePlanUrl = null
 
       // Upload land image if exists
-      if (landImageFile) {
-        const landImageFormData = new FormData()
-        landImageFormData.append("file", landImageFile)
-        const landImageUploadResult = await uploadDoc(landImageFormData)
-        landImageUrl = landImageUploadResult?.url
+      if (landimage?.[0]) {
+        const result = await uploadDoc(landimage[0])
+        landImageUrl = result?.url
       }
 
       // Upload site plan if exists
-      if (sitePlanFile) {
-        const sitePlanFormData = new FormData()
-        sitePlanFormData.append("file", sitePlanFile)
-        const sitePlanUploadResult = await uploadDoc(sitePlanFormData)
-        sitePlanUrl = sitePlanUploadResult?.url
+      if (siteplan?.[0]) {
+        const result = await uploadDoc(siteplan[0])
+        sitePlanUrl = result?.url
       }
 
       // Update report with both URLs
       const updateResult = await UpdateJobSiteVisitReport(
         JobProjectID, 
-        landImageUrl,
-        sitePlanUrl
+        landImageUrl!, 
+        sitePlanUrl!
       )
 
-      if (updateResult?.success || updateResult) {
+      if (updateResult) {
         toast({
           title: "Upload Successful",
-          description: "Both files were uploaded successfully",
+          description: "Files were uploaded successfully",
         })
+        form.reset()
       } else {
-        toast({
-          title: "Update Failed",
-          variant: "destructive",
-        })
+        throw new Error("Update failed")
       }
-    } catch (err) {
-      console.error("Error during submission:", err)
+    } catch (error) {
+      console.error("Error during submission:", error)
       toast({
-        title: "Unexpected Error",
+        title: "Upload Failed",
+        description: "There was an error uploading your files. Please try again.",
         variant: "destructive",
       })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -85,11 +94,16 @@ export function SiteVisitForm({ JobProjectID }: { JobProjectID: string }) {
         <FormField
           control={form.control}
           name="landimage"
-          render={() => (
+          render={({ field: { onChange, value, ...rest } }) => (
             <FormItem>
               <FormLabel>Site Visit Images</FormLabel>
               <FormControl>
-                <Input id="landimage" name="landimage" type="file" />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  {...rest}
+                  onChange={(e) => onChange(e.target.files)}
+                />
               </FormControl>
               <FormDescription>
                 Attach all images gathered during the site visit.
@@ -101,11 +115,16 @@ export function SiteVisitForm({ JobProjectID }: { JobProjectID: string }) {
         <FormField
           control={form.control}
           name="siteplan"
-          render={() => (
+          render={({ field: { onChange, value, ...rest } }) => (
             <FormItem>
               <FormLabel>Site Plan</FormLabel>
               <FormControl>
-                <Input id="siteplan" name="siteplan" type="file" />
+                <Input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.jpg,.png"
+                  {...rest}
+                  onChange={(e) => onChange(e.target.files)}
+                />
               </FormControl>
               <FormDescription>
                 Attach the site plan document.
@@ -114,7 +133,9 @@ export function SiteVisitForm({ JobProjectID }: { JobProjectID: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Uploading..." : "Submit"}
+        </Button>
       </form>
     </Form>
   )

@@ -1,4 +1,4 @@
-import { getBrokerLands, getJobListing, getJobListing1, getLoggedInUser, getserviceProviderData } from "@/lib/Appwrite/api";
+import { getBrokerLands,getJobListing1, getLoggedInUser, getserviceProviderData } from "@/lib/Appwrite/api";
 import Dashboard from "./Dash/Dashboard";
 
 const ServiceProviders = async () => {
@@ -17,7 +17,7 @@ const ServiceProviders = async () => {
   console.log(brokerLands)  
  
   } else {
-  Joblists = await getJobListing(serviceProvider?.profession);
+  Joblists = await getJobListing1(serviceProvider?.profession);
   
   }
   return (

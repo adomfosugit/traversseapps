@@ -7,8 +7,12 @@ import TableNav from '../Dash/TableNav';
 
 interface IServiceTableProps {
   Job_Listings?: TsafeJoblist[] | null;
+  Profession: string
 }
-const ServiceTable = ({ Job_Listings }: IServiceTableProps) => {
+const ServiceTable = ({ Job_Listings, Profession }: IServiceTableProps) => {
+  const isSurveyor = Profession === 'Surveyor';
+  const isPlanner = Profession === 'Planner';
+  const isLawyer = Profession === 'Lawyer'
   return (
     <div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-16">
@@ -31,7 +35,10 @@ const ServiceTable = ({ Job_Listings }: IServiceTableProps) => {
               >
                 <td className="px-6 py-4">{job?.$id}</td>
                 <td className="px-6 py-4">{job?.LandID}</td>
-                <td className={`px-6 py-4 ${job?.SiteVisitCompletionStatus ? 'text-green-600' : 'text-red-600'}`}> {job?.SiteVisitCompletionStatus ? 'Complete' : 'Incomplete'}</td>
+               {isSurveyor && ( <td className={`px-6 py-4 ${job?.SiteVisitCompletionStatus ? 'text-green-600' : 'text-red-600'}`}> {job?.SiteVisitCompletionStatus ? 'Complete' : 'Incomplete'}</td>) }
+               {isPlanner && ( <td className={`px-6 py-4 ${job?.LCSearchCompletionStatus ? 'text-green-600' : 'text-red-600'}`}> {job?.LCSearchCompletionStatus ? 'Complete' : 'Incomplete'}</td>) }
+               {isLawyer && ( <td className={`px-6 py-4 ${job?.ZoningReportComplete ? 'text-green-600' : 'text-red-600'}`}> {job?.ZoningReportComplete ? 'Complete' : 'Incomplete'}</td>) }
+               
                 <td className="px-6 py-4">
                 {new Intl.DateTimeFormat('en-GB').format(new Date(job?.$createdAt))}
                 </td>

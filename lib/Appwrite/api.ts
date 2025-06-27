@@ -475,6 +475,30 @@ export async function AssignSurveyorJob(id: string, surveyorEmail:string) {
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+export async function AssignLawyerJob(id: string, surveyorEmail:string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const jobupload = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      id,
+      {
+        AvailableForLawyer : false,
+        LawyerInCharge:surveyorEmail
+
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ jobupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
 export async function AssignPlannerJob(id: string, PlannerEmail:string) {
   try {
     const { database } = await createAdminClient();
@@ -609,6 +633,7 @@ export async function UpdateJobPlannerReport(id: string, reporturl:string) {
       id, 
       {
         PlannerReport: reporturl,
+        ZoningReportComplete:true
      
       }
     );
@@ -621,13 +646,37 @@ export async function UpdateJobPlannerReport(id: string, reporturl:string) {
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
-export async function getJobListingForSurveyor(Email:string){
+export async function UpdateJobLawyerReport(id: string, reporturl:string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid document in the bids collection
+    const jobupload = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_PUBLIC_JOBLISTING!,
+      id, 
+      {
+        LawyerSearchReport: reporturl,
+        LCSearchCompletionStatus:true
+     
+      }
+    );
+
+    // Return success and data
+    return { success: true, data: parseStringify({ jobupload }) };
+  } catch (error) {
+    console.log(error);
+    //@ts-ignore
+    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
+export async function getJobListingForSurveyor(Email:string,   Profession:string){
   try {
     const { database } = await createAdminClient()
     const JobData = await database.listDocuments(
       NEXT_DATABASE_ID!,
       NEXT_PUBLIC_JOBLISTING!,
-      [Query.contains("SurveyorInCharge", Email)]  
+      [Query.contains(`${Profession}InCharge`, Email)]  
     
     )
       

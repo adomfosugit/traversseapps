@@ -8,6 +8,7 @@ import { FaFilePdf } from 'react-icons/fa'
 import Link from 'next/link'
 import { ZoningSubForm } from '@/components/ZoningSubmit'
 import AcceptJobButton from '@/components/AcceptButton'
+import { LCSearchSubForm } from '@/components/SeachReport'
 
 type PageParams = {
   params: { slug: string },
@@ -23,36 +24,13 @@ const page = async({ params, searchParams }: PageParams) => {
   const LandDetails = await getLandById(landID)
   console.log(LandDetails)
   const serviceProvider  = await getserviceProviderData(user.email)
-  console.log(serviceProvider)
-  const handleAccept = async () => {
-    
-    const result = await AssignSurveyorJob(JobProjectID.slug, user?.email);
-   
 
-    if (result.success) {
-      console.log('Job has been assigned to you successfully')
-      // optionally refetch or redirect here
-    } else {
-      console.log(`${result.error}`);
-    }
-  };
-  const handleAcceptPlanner = async () => {
-    
-    const result = await AssignPlannerJob(JobProjectID.slug, user?.email);
-   
 
-    if (result.success) {
-      console.log('Job has been assigned to you successfully')
-      // optionally refetch or redirect here
-    } else {
-      console.log(`${result.error}`);
-    }
-  };
-  
 
   // Role flags
   const isSurveyor = serviceProvider?.profession === 'Surveyor';
   const isPlanner = serviceProvider?.profession === 'Planner';
+  const isLawyer = serviceProvider?.profession === 'Lawyer'
 
   return (
     
@@ -60,20 +38,21 @@ const page = async({ params, searchParams }: PageParams) => {
       <main className='flex flex-col gap-y-10 max-w-4xl mx-auto '>
 
         <div className='flex flex-row justify-between items-center'>
-        <Header2 
-          backText='Back' 
-          title='Site Visit' 
-          subText='Visit Site Location to inspect and make report'
-        />
+        {isSurveyor && ( <Header2 backText='Back' title='Site Visit' subText='Visit Site Location to inspect and make report'/>)}
+        {isPlanner && ( <Header2 backText='Back' title='Zoning Search' subText='Search te land zoning'/>)}
+        {isLawyer && ( <Header2 backText='Back' title='Lands Commission Search' subText='Search the land at lands Commission'/>)}
+
       {/* Conditional Accept Button */}
-      {(isSurveyor || isPlanner) && (
+      {(isSurveyor || isPlanner || isLawyer) && (
         <AcceptJobButton
         jobId={JobProjectID.slug}
-    userEmail={user.email}
-    role={isPlanner ? 'Planner' : 'Surveyor'}
-    isAlreadyAssigned={
+        userEmail={user.email}
+        /* @ts-ignore */
+        role={isPlanner ? 'Planner' : isSurveyor ? 'Surveyor' : isLawyer ? 'Lawyer' :''}
+        isAlreadyAssigned={
       (isPlanner && JobProjectDetails?.PlannerInCharge === user.email) ||
-      (isSurveyor && JobProjectDetails?.SurveyorInCharge === user.email)
+      (isSurveyor && JobProjectDetails?.SurveyorInCharge === user.email) ||
+      (isLawyer && JobProjectDetails?.LawyerInCharge === user.email)
     }
   />
 )}
@@ -88,16 +67,29 @@ const page = async({ params, searchParams }: PageParams) => {
           </p>
         )}
         
+        {isLawyer && JobProjectDetails?.LawyerInCharge === user.email && (
+          <p className='font-bold text-blue-400 ring-1 ring-blue-400 p-3 rounded-xl'>
+            Assigned to you (Lawyer)
+          </p>
+        )}
+        
 
 
         </div>
        
         <Tabs defaultValue="details" className="">
         <TabsList>
-          <TabsTrigger value="details">Project Details</TabsTrigger>
-          <TabsTrigger value="Submission">Submission</TabsTrigger>
-          <TabsTrigger value="SiteReport">Uploaded Report</TabsTrigger>
-        </TabsList>
+        <TabsTrigger value="details">Project Details</TabsTrigger>
+
+    {(isSurveyor && JobProjectDetails?.SurveyorInCharge === user.email) ||
+      (isPlanner && JobProjectDetails?.PlannerInCharge === user.email) ||
+      (isLawyer && JobProjectDetails?.LawyerInCharge === user.email) ? (
+      <>
+      <TabsTrigger value="Submission">Submission</TabsTrigger>
+      <TabsTrigger value="SiteReport">Uploaded Report</TabsTrigger>
+    </>
+  ) : null}
+</TabsList>
         <TabsContent value="details" className='flex flex-col gap-y-4'>
            {/* @ts-ignore */}
         <div >       <LandCard land={LandDetails}  agreedPrice={LandDetails?.Price}/></div>
@@ -118,6 +110,8 @@ const page = async({ params, searchParams }: PageParams) => {
          {isSurveyor && <SiteVisitForm JobProjectID = {JobProjectDetails?.$id}/>} 
           {/* @ts-ignore */}
          {isPlanner && <ZoningSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+          {/* @ts-ignore */}
+         {isLawyer && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
         </TabsContent>
         <TabsContent value="SiteReport">
         <div className="mt-4">
@@ -237,6 +231,44 @@ const page = async({ params, searchParams }: PageParams) => {
             <span className="text-gray-400">No file available</span>
           )}
         </td>
+      </tr>
+    </>
+  )}
+  {isLawyer && (
+    <>
+      <tr>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <div className="flex items-center">
+            <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+            <span className="text-sm font-medium text-gray-900">Lands Commision Search Report</span>
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          {JobProjectDetails?.LawyerSearchReport ? (
+            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+              Submitted
+            </span>
+          ) : (
+            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+              Not Submitted
+            </span>
+          )}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          {JobProjectDetails?.PlannerReport ? (
+            <Link
+              href={`${JobProjectDetails.LawyerSearchReport}/view?project=6771516200333a41d2ef&mode=admin`}
+              className="text-blue-600 hover:text-blue-900"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View PDF
+            </Link>
+          ) : (
+            <span className="text-gray-400">No file available</span>
+          )}
+        </td>
+        
       </tr>
     </>
   )}

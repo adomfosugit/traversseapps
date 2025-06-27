@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { AssignPlannerJob, AssignSurveyorJob } from '@/lib/Appwrite/api'
+import { AssignPlannerJob, AssignSurveyorJob, AssignLawyerJob } from '@/lib/Appwrite/api'
 import { toast } from '@/hooks/use-toast'
 
 type Props = {
   jobId: string
   userEmail: string
-  role: 'Planner' | 'Surveyor'
+  role: 'Planner' | 'Surveyor' | 'Lawyer'
   isAlreadyAssigned: boolean
 }
 
@@ -18,10 +18,17 @@ const AcceptJobButton = ({ jobId, userEmail, role, isAlreadyAssigned }: Props) =
   const handleAccept = async () => {
     setLoading(true)
     try {
-      const result =
-        role === 'Planner'
-          ? await AssignPlannerJob(jobId, userEmail)
-          : await AssignSurveyorJob(jobId, userEmail)
+      let result
+
+      if (role === 'Planner') {
+        result = await AssignPlannerJob(jobId, userEmail)
+      } else if (role === 'Surveyor') {
+        result = await AssignSurveyorJob(jobId, userEmail)
+      } else if (role === 'Lawyer') {
+        result = await AssignLawyerJob(jobId, userEmail)
+      } else {
+        throw new Error('Invalid role')
+      }
 
       if (result.success) {
         toast({
@@ -50,7 +57,13 @@ const AcceptJobButton = ({ jobId, userEmail, role, isAlreadyAssigned }: Props) =
 
   return (
     <Button onClick={handleAccept} disabled={loading}>
-      {loading ? 'Accepting...' : role === 'Planner' ? 'Accept as Planner' : 'Accept'}
+      {loading
+        ? 'Accepting...'
+        : role === 'Planner'
+        ? 'Accept as Planner'
+        : role === 'Surveyor'
+        ? 'Accept as Surveyor'
+        : 'Accept as Lawyer'}
     </Button>
   )
 }

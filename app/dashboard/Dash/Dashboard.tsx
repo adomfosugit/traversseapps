@@ -17,6 +17,9 @@ export type TsafeJoblist = {
   $id:string;
   $createdAt:Date
   SiteVisitCompletionStatus:boolean
+  LCSearchCompletionStatus:boolean
+  ZoningReportComplete:boolean
+  jobAssigned:string
 }
 interface IDashboardProps {
   brokerLands?: TSafeLand[] | null;

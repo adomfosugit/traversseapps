@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { UpdateJobPlannerReport, uploadDoc } from "@/lib/Appwrite/api"
+import { UpdateJobPlannerReport, UpdateJobPlannerReport1, uploadDoc } from "@/lib/Appwrite/api"
 import { toast } from "@/hooks/use-toast"
 import { useState } from "react"
 
@@ -49,7 +49,7 @@ export function ZoningSubForm({ JobProjectID }: { JobProjectID: string }) {
 
       if (!fileUrl) throw new Error("Upload failed")
 
-      const updateResult = await UpdateJobPlannerReport(JobProjectID, fileUrl)
+      const updateResult = await UpdateJobPlannerReport1(JobProjectID, fileUrl)
 
       if (updateResult) {
         toast({

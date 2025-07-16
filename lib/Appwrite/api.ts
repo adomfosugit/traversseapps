@@ -7,6 +7,7 @@ import { cookies, headers } from "next/headers";
 import { parseStringify } from "@/lib/utils";
 import { NewUser, SNewUser } from "@/Types";
 import { redirect } from "next/navigation";
+import { availableMemory } from "process";
 interface LandFormValues {
   location: { lat: number; lng: number } | null; 
   landArea: number; 
@@ -610,6 +611,8 @@ export async function UpdateJobSiteVisitReport(id: string, reporturl:string,site
         SiteVisitReport: reporturl,
         SitePlan: siteplanurl,
         SiteVisitCompletionStatus:true,
+        AvailableForPlanner:true,
+        AvailableForLawyer:true,
 
       }
     );
@@ -644,6 +647,44 @@ export async function UpdateJobPlannerReport(id: string, reporturl:string) {
     console.log(error);
     //@ts-ignore
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
+  }
+}
+export async function UpdateJobPlannerReport1(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, zoningUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          PlannerReport: reporturl,
+          ZoningReportComplete: true
+        }
+      ),
+      updateUserProjectStatusZoning(id)
+    ]);
+
+    if (!zoningUpdate.success) {
+      throw new Error("Failed to update zoning status");
+    }
+
+    // Return success and both operation results
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        zoningUpdate: zoningUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating documents." 
+    };
   }
 }
 export async function UpdateJobLawyerReport(id: string, reporturl:string) {
@@ -698,6 +739,47 @@ export async function getJobListingbyID(id:string){
     console.log(error)
   }
 } 
+
+export async function UpdateJobSiteVisitReport1(id: string, reporturl: string, siteplanurl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, zoningUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          SiteVisitReport: reporturl,
+          SitePlan: siteplanurl,
+          SiteVisitCompletionStatus: true,
+          AvailableForPlanner: true,
+          AvailableForLawyer: true,
+        }
+      ),
+      updateUserProjectStatusZoning(id)
+    ]);
+
+    if (!zoningUpdate.success) {
+      throw new Error("Failed to update zoning status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        zoningUpdate: zoningUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating documents." 
+    };
+  }
+}
 export async function updateLandProjectSiteVisit(landId: string, projectId: string) {
   try {
     const { database } = await createAdminClient()
@@ -752,6 +834,26 @@ export async function updateBidStatus1(bidId: string, decision: boolean, BidderE
     return { success: true, data: updatedBid, landProject: landProjectResult };
   } catch (error) {
     console.error('Error updating bid status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateUserProjectStatusZoning(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Step 1: Update the bid's Owner_Decision
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+        planning_zoning: true
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating zoning status:', error);
     return { success: false, error };
   }
 }

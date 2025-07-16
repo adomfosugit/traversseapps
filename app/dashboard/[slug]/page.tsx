@@ -39,7 +39,7 @@ const page = async({ params, searchParams }: PageParams) => {
 
         <div className='flex flex-row justify-between items-center'>
         {isSurveyor && ( <Header2 backText='Back' title='Site Visit' subText='Visit Site Location to inspect and make report'/>)}
-        {isPlanner && ( <Header2 backText='Back' title='Zoning Search' subText='Search te land zoning'/>)}
+        {isPlanner && ( <Header2 backText='Back' title='Zoning Search' subText='Search the land zoning'/>)}
         {isLawyer && ( <Header2 backText='Back' title='Lands Commission Search' subText='Search the land at lands Commission'/>)}
 
       {/* Conditional Accept Button */}
@@ -61,11 +61,7 @@ const page = async({ params, searchParams }: PageParams) => {
             Assigned to you (Surveyor)
           </p>
         )}
-        {isPlanner && JobProjectDetails?.PlannerInCharge === user.email && (
-          <p className='font-bold text-blue-400 ring-1 ring-blue-400 p-3 rounded-xl'>
-            Assigned to you (Planner)
-          </p>
-        )}
+        {isPlanner && JobProjectDetails?.PlannerInCharge === user.email && (<p className='font-bold text-blue-400 ring-1 ring-blue-400 p-3 rounded-xl'>Assigned to you (Planner)</p> )}
         
         {isLawyer && JobProjectDetails?.LawyerInCharge === user.email && (
           <p className='font-bold text-blue-400 ring-1 ring-blue-400 p-3 rounded-xl'>
@@ -92,7 +88,11 @@ const page = async({ params, searchParams }: PageParams) => {
 </TabsList>
         <TabsContent value="details" className='flex flex-col gap-y-4'>
            {/* @ts-ignore */}
-        <div >       <LandCard land={LandDetails}  agreedPrice={LandDetails?.Price}/></div>
+        <div><LandCard land={LandDetails}  agreedPrice={LandDetails?.Price}/></div>
+
+        {(isPlanner || isSurveyor) && ( <Link href={`${JobProjectDetails?.SitePlan}`}> View Site Plan</Link>)}
+       
+      
      {isSurveyor && (
           <div className='flex flex-col gap-y-4' >
           <p className = 'font-bold text-black text-xl mt-3'>Instruction For Surveyor</p>

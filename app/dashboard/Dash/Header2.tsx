@@ -54,8 +54,8 @@ const Header2 = ({
       )}
       <div className="flex flex-row justify-between">
         <div className="mr-6">
-          <p className="font-medium text-xl">{title}</p>
-          <p className="text-sm text-gray-400 mt-2">{subText}</p>
+          <p className="font-medium text-xl text-nowrap">{title}</p>
+          <p className="text-sm text-gray-400 mt-2 text-nowrap">{subText}</p>
         </div>
         <div className="w-1/4 flex flex-row items-center gap-4">
           {secondaryAction && secondaryActionText && (

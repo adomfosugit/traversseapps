@@ -438,7 +438,7 @@ export async function createJob(land: string, project:string) {
       {
         Job_Executer : 'Surveyor',
         LandID : land,
-        Available : true,
+        AvailableForSurveyor : true,
         jobAssigned : project
 
       }
@@ -840,8 +840,6 @@ export async function updateBidStatus1(bidId: string, decision: boolean, BidderE
 export async function updateUserProjectStatusZoning(Id: string) {
   try {
     const { database } = await createAdminClient();
-
-    // Step 1: Update the bid's Owner_Decision
     const updatedBid = await database.updateDocument(
       NEXT_DATABASE_ID!,
       NEXT_LAND_PROJECT!,

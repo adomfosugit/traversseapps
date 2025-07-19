@@ -90,7 +90,7 @@ const page = async({ params, searchParams }: PageParams) => {
            {/* @ts-ignore */}
         <div><LandCard land={LandDetails}  agreedPrice={LandDetails?.Price}/></div>
 
-        {(isPlanner || isSurveyor) && ( <Link href={`${JobProjectDetails?.SitePlan}`}> View Site Plan</Link>)}
+        {(isPlanner || isSurveyor) && ( <Link href={`${JobProjectDetails?.SitePlan}/view?project=6771516200333a41d2ef&mode=admin`}> View Site Plan</Link>)}
        
       
      {isSurveyor && (
@@ -136,7 +136,7 @@ const page = async({ params, searchParams }: PageParams) => {
           </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
-          {JobProjectDetails?.SiteVisitReport ? (
+        {JobProjectDetails?.SiteVisitReport ? (
             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
               Submitted
             </span>
@@ -240,7 +240,7 @@ const page = async({ params, searchParams }: PageParams) => {
         <td className="px-6 py-4 whitespace-nowrap">
           <div className="flex items-center">
             <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
-            <span className="text-sm font-medium text-gray-900">Lands Commision Search Report</span>
+            <span className="text-sm font-medium text-gray-900">Lands Commission Search Report</span>
           </div>
         </td>
         <td className="px-6 py-4 whitespace-nowrap">

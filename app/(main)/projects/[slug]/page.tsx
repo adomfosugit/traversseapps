@@ -81,7 +81,10 @@ const page = async({ params, searchParams }: PageParams) => {
         {pageID === 'Pay_prepurchase' && (LandProjectDetails?.Site_visit ? <div className='ring-2 p-2 ring-green-600 bg-green-200 w-[800px] rounded-xl'> Pre-purchases Fees Paid</div>   :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
         {/* @ts-ignore */}
         {pageID === 'Site_visit' && <Sitevisit JobAssignedID = {JOBID[0].$id} JobSiteVistNote = {JOBID[0]?.SiteVisitNote} Report = {JOBID[0]?.SiteVisitReport } SitePlan = {JOBID[0]?.SitePlan}/>}
-        
+          {/* @ts-ignore */}
+        {pageID === 'LC_search' && <Link href= {`${JOBID[0]?.LawyerSearchReport}/view?project=6771516200333a41d2ef&mode=admin`}> Lands Commission Search Report</Link>}
+          {/* @ts-ignore */}
+        {pageID === 'legal_advice' && <p> legal Advice Schedule a meeting with the lawyer (Meeting link)</p>}
       </main>
     </div>
   )

@@ -434,7 +434,7 @@ export async function createJob(land: string, project:string) {
     const jobupload = await database.createDocument(
       NEXT_DATABASE_ID!,
       NEXT_PUBLIC_JOBLISTING!,
-      ID.unique(),
+      project,
       {
         Job_Executer : 'Surveyor',
         LandID : land,

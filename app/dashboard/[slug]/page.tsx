@@ -90,7 +90,7 @@ const page = async({ params, searchParams }: PageParams) => {
            {/* @ts-ignore */}
         <div><LandCard land={LandDetails}  agreedPrice={LandDetails?.Price}/></div>
 
-        {(isPlanner || isSurveyor) && ( <Link href={`${JobProjectDetails?.SitePlan}/view?project=6771516200333a41d2ef&mode=admin`}> View Site Plan</Link>)}
+        {(isPlanner || isSurveyor || isLawyer) && ( <Link href={`${JobProjectDetails?.SitePlan}/view?project=6771516200333a41d2ef&mode=admin`}> View Site Plan</Link>)}
        
       
      {isSurveyor && (

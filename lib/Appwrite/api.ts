@@ -711,6 +711,44 @@ export async function UpdateJobLawyerReport(id: string, reporturl:string) {
     return { success: false, error: error?.message || "An error occurred while submitting the bid." };
   }
 }
+export async function UpdateJobLawyerReport1(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          LawyerSearchReport: reporturl,
+          LCSearchCompletionStatus: true
+        }
+      ),
+      updateUserProjectStatusLegal(id) // <-- new helper function
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to update legal search status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
+
 export async function getJobListingForSurveyor(Email:string,   Profession:string){
   try {
     const { database } = await createAdminClient()
@@ -845,7 +883,26 @@ export async function updateUserProjectStatusZoning(Id: string) {
       NEXT_LAND_PROJECT!,
       Id,
       {
-        planning_zoning: true
+        planning_zoning: true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating zoning status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateUserProjectStatusLegal(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+        LC_search: true,
+        legal_advice:true,
       }
     );
 

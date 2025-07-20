@@ -4,6 +4,7 @@ import Drawer from '@/components/Drawer'
 import LandCard from '@/components/LandCard1'
 import { Sitevisit } from '@/components/Sitevist'
 import { getJobListingByUserProjectID, getLandById, getLandProjectByID, getLoggedInUser } from '@/lib/Appwrite/api'
+import Link from 'next/link'
 
 type PageParams = {
   params: { slug: string },
@@ -22,10 +23,10 @@ const getHeaderContent = (pageID?: string) => {
         title: 'Pay Pre- Purchase Stage Fees',
         subText: 'Pre-purchase payment goes toward site inspection, interim site plan preparation, as well as all due diligence and legal advice pertaining to your on your transaction '
       }
-    case 'Site_plan_preparation':
+    case 'planning_zoning':
       return {
-        title: 'Site Plan Preparation',
-        subText: 'An interim site plan provides verified boundaries of your land listing '
+        title: 'Planning and Zoning',
+        subText: 'Land Zoning '
       }
     case 'LC_search':
       return {
@@ -66,7 +67,7 @@ const page = async({ params, searchParams }: PageParams) => {
   return (
     <div className='flex gap-x-5'>
       <aside className="hidden lg:flex w-1/4 text-sm">
-        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,Site_plan_preparation: LandProjectDetails?.Site_plan_preparation,LC_search: LandProjectDetails?.LC_search,legal_advice: LandProjectDetails?.legal_advice,}} />
+        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search,legal_advice: LandProjectDetails?.legal_advice,}} />
       </aside> 
       <main className='flex flex-col mx-auto gap-y-10'>
         <Header2 
@@ -81,6 +82,8 @@ const page = async({ params, searchParams }: PageParams) => {
         {pageID === 'Pay_prepurchase' && (LandProjectDetails?.Site_visit ? <div className='ring-2 p-2 ring-green-600 bg-green-200 w-[800px] rounded-xl'> Pre-purchases Fees Paid</div>   :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
         {/* @ts-ignore */}
         {pageID === 'Site_visit' && <Sitevisit JobAssignedID = {JOBID[0].$id} JobSiteVistNote = {JOBID[0]?.SiteVisitNote} Report = {JOBID[0]?.SiteVisitReport } SitePlan = {JOBID[0]?.SitePlan}/>}
+          {/* @ts-ignore */}
+        {pageID === 'planning_zoning' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Zoning Report</Link>}
           {/* @ts-ignore */}
         {pageID === 'LC_search' && <Link href= {`${JOBID[0]?.LawyerSearchReport}/view?project=6771516200333a41d2ef&mode=admin`}> Lands Commission Search Report</Link>}
           {/* @ts-ignore */}

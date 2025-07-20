@@ -16,6 +16,7 @@ interface ISubMenuProps {
 }
 
 const SubMenu = ({ item, path, highlight }: ISubMenuProps) => {
+
   const [subNav, setSubNav] = useState(false);
   const showSubNav = () => setSubNav(!subNav);
   
@@ -40,6 +41,7 @@ const SubMenu = ({ item, path, highlight }: ISubMenuProps) => {
       {subNav &&
         item.subNavigation?.map((subItem, index) => {
           const isEnabled = !!highlight[subItem.path];
+        
 
           return (
             <Link
@@ -61,6 +63,7 @@ const SubMenu = ({ item, path, highlight }: ISubMenuProps) => {
           );
         })}
     </>
+    
   );
 };
 

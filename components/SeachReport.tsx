@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { UpdateJobLawyerReport, UpdateJobPlannerReport, uploadDoc } from "@/lib/Appwrite/api"
+import { UpdateJobLawyerReport1, uploadDoc } from "@/lib/Appwrite/api"
 import { toast } from "@/hooks/use-toast"
 import { useState } from "react"
 
@@ -49,7 +49,7 @@ export function LCSearchSubForm({ JobProjectID }: { JobProjectID: string }) {
 
       if (!fileUrl) throw new Error("Upload failed")
 
-      const updateResult = await UpdateJobLawyerReport(JobProjectID, fileUrl)
+      const updateResult = await UpdateJobLawyerReport1(JobProjectID, fileUrl)
 
       if (updateResult) {
         toast({

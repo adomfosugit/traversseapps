@@ -9,6 +9,7 @@ type Path = {
 }
 
 const Drawer = ({path,stages}:Path) => {
+  console.log(stages)
   
   const landStages = landPurchaseStages;
   return (

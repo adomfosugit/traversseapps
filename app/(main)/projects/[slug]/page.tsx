@@ -43,6 +43,26 @@ const getHeaderContent = (pageID?: string) => {
         title: 'Surveyor Site Visit',
         subText: 'A surveyor’s report establishes the boundaries of your choosen land and enables preparation of a site plan for due diligence '
       }
+    case 'Land_Payment_Purchase':
+      return {
+        title: 'Land Payment and Purchase',
+        subText: 'purchase payment goes toward land payments, conveyancing, & cadastral site plan pre interim site plan preparation'
+      }
+    case 'Sales_Purchase':
+      return {
+        title: 'Sales & Purchase Agreement',
+        subText: 'The S&PA outlines the terms of the transaction between you and the seller. The S&PA requires your signature and the signature of a witness '
+      }
+    case 'Conveyance':
+      return {
+        title: 'Conveyance',
+        subText: 'A deed of lease, sub -lease, or assignment based on the agreement laid out in the sales and purchase agreement'
+      }
+    case 'Oath_Proof':
+      return {
+        title: 'Oath of Proof',
+        subText: 'Oath of Proof'
+      }
     default:
       return {
         title: 'Project Overview',
@@ -67,7 +87,8 @@ const page = async({ params, searchParams }: PageParams) => {
   return (
     <div className='flex gap-x-5'>
       <aside className="hidden lg:flex w-1/4 text-sm">
-        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search,legal_advice: LandProjectDetails?.legal_advice,}} />
+        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search,
+          legal_advice: LandProjectDetails?.legal_advice,Land_Payment_Purchase: LandProjectDetails?.Land_Payment_Purchase,Sales_Purchase: LandProjectDetails?.Sales_Purchase,Conveyance: LandProjectDetails?.Conveyance,Oath_Proof: LandProjectDetails?.Oath_Proof, Mail_Document_Sign_off: LandProjectDetails?.Mail_Document_Sign_off, Stamp_Duty: LandProjectDetails?.Stamp_Duty,Concurrence_Processing: LandProjectDetails?.Concurrence_Processing,Parcel_preparation: LandProjectDetails?.Parcel_preparation,Land_Title_Certificate: LandProjectDetails?.Land_Title_Certificate, }} />
       </aside> 
       <main className='flex flex-col mx-auto gap-y-10'>
         <Header2 
@@ -87,7 +108,22 @@ const page = async({ params, searchParams }: PageParams) => {
           {/* @ts-ignore */}
         {pageID === 'LC_search' && <Link href= {`${JOBID[0]?.LawyerSearchReport}/view?project=6771516200333a41d2ef&mode=admin`}> Lands Commission Search Report</Link>}
           {/* @ts-ignore */}
-        {pageID === 'legal_advice' && <p> legal Advice Schedule a meeting with the lawyer (Meeting link)</p>}
+        {pageID === 'legal_advice' && <p> Lawyer Legal advice uploaded should show here(TBWO)</p>}
+          {/* @ts-ignore */}
+        {pageID === 'Land_Payment_Purchase' && (LandProjectDetails?.Funds_transfer ? <div className='ring-2 p-2 ring-green-600 bg-green-200 w-[800px] rounded-xl'> Land fund Fees Paid</div>   :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
+        {/* @ts-ignore */}
+        {pageID === 'Sales_Purchase' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Sales and Purchas Agreement</Link>}
+        {/* @ts-ignore */}
+        {pageID === 'Conveyance' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Sales and Purchas Agreement</Link>}
+        {/* @ts-ignore */}
+        {pageID === 'Oath_Proof' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Oath of Proof</Link>}
+        {/* @ts-ignore */}
+        {pageID === 'Mail_Document_Sign_off' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Mail Document Sign Off</Link>}
+      
+      {/* Land Registration continues here */}
+      
+      
+      
       </main>
     </div>
   )

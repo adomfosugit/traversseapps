@@ -1,5 +1,4 @@
 'use server'
-
 import { createSessionClient,createAdminClient } from "./Config";
 import {ID, OAuthProvider, Query} from 'node-appwrite'
 import {InputFile} from 'node-appwrite/file'
@@ -7,7 +6,7 @@ import { cookies, headers } from "next/headers";
 import { parseStringify } from "@/lib/utils";
 import { NewUser, SNewUser } from "@/Types";
 import { redirect } from "next/navigation";
-import { availableMemory } from "process";
+
 interface LandFormValues {
   location: { lat: number; lng: number } | null; 
   landArea: number; 
@@ -28,7 +27,7 @@ interface LandFormValues {
   letigationencumberance:string
 }
 // Authentication 
-const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_LAND_PROJECT,NEXT_USER_COLLECTION_ID,NEXT_LAND_COLLECTION_ID,NEXT_BIDDER_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS, NEXT_PUBLIC_JOBLISTING} = process.env
+const {NEXT_DATABASE_ID,  NEXT_SERVICEPROVIDER_COLLECTION_ID, NEXT_LAND_PROJECT,NEXT_LAND_COLLECTION_ID,NEXT_BIDDER_COLLECTION_ID,NEXT_BUCKET_ID,NEXT_BUCKET_ID_DOCS, NEXT_PUBLIC_JOBLISTING} = process.env
 export async function createUserAccount(user:SNewUser){ 
   let promise;
   try {
@@ -97,7 +96,7 @@ export async function createSUserAccount(user:NewUser){
     return { success: false, error: error?.message || "An unknown error occurred" }; 
   }   
 }
-// add succews and failure urls to this
+// add success and failure urls to this
 export async function loginWithGoogle() {
     const { account } = await createAdminClient();
     const head = await headers()
@@ -110,7 +109,6 @@ export async function loginWithGoogle() {
 };
 
  
-
 export async function signInAccount(Email: string, Password: string) {
   try {
     const { account } = await createAdminClient();
@@ -132,6 +130,8 @@ export async function signInAccount(Email: string, Password: string) {
     return { success: false, error: error?.message || "An unknown error occurred" };  // Explicitly return error
   }
 }
+
+
 
 export async function createAccountRecovery(Email:string){ 
   try {
@@ -289,6 +289,9 @@ export async function uploadLand(data: LandFormValues) {
   }
 }
 
+
+
+//Bid Logic
 type BidType = {
   landOwnerId: string;
   landId: string;
@@ -303,11 +306,6 @@ type BidType = {
 export async function submitBid(data: BidType) {
   try {
     const { database } = await createAdminClient();
-
-    // Generate a unique ID for the bid first
-    
-
-    // Step 1: Create the bid document in the bids collection
     const bidDocument = await database.createDocument(
       NEXT_DATABASE_ID!,
       NEXT_BIDDER_COLLECTION_ID!,

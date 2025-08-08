@@ -31,6 +31,9 @@ const page = async({ params, searchParams }: PageParams) => {
   const isSurveyor = serviceProvider?.profession === 'Surveyor';
   const isPlanner = serviceProvider?.profession === 'Planner';
   const isLawyer = serviceProvider?.profession === 'Lawyer'
+  const purchase_stage = JobProjectDetails?.Purchase_Stage_Paid
+  const Registraion_stage = JobProjectDetails?.Registration_stage
+ 
 
   return (
     
@@ -112,6 +115,10 @@ const page = async({ params, searchParams }: PageParams) => {
          {isPlanner && <ZoningSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
           {/* @ts-ignore */}
          {isLawyer && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+          {/* @ts-ignore */}
+         {(isLawyer && purchase_stage) && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+          {/* @ts-ignore */}
+         {(isLawyer && Registraion_stage) && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
         </TabsContent>
         <TabsContent value="SiteReport">
         <div className="mt-4">

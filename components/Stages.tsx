@@ -45,7 +45,7 @@ export const landPurchaseStages: TDrawerStage[] = [
         title: 'Legal Advice',
         path: 'legal_advice',
       },
-     
+   
     ],
   },
   {
@@ -57,23 +57,23 @@ export const landPurchaseStages: TDrawerStage[] = [
     subNavigation: [
       {
         title: 'Land Payment & Purchase Stage Fees',
-        path: '',
+        path: 'Land_Payment_Purchase',
       },
       {
         title: 'Sales and Purchase Agreement',
-        path: '',
+        path: 'Sales_Purchase',
       },
       {
         title: 'Conveynace',
-        path: '',
+        path: 'Conveyance',
       },
       {
         title: 'Oath of Proof',
-        path: '',
+        path: 'Oath_Proof',
       },
       {
         title: 'Mail & Document Sign Off',
-        path: '',
+        path: 'Mail_Document_Sign_off',
       },
     ],
   },
@@ -86,19 +86,19 @@ export const landPurchaseStages: TDrawerStage[] = [
     subNavigation: [
       {
         title: 'Stamp Duty',
-        path: '',
+        path: 'Stamp_Duty',
       },
       {
         title: 'Consent/Concurrence Processing',
-        path: '',
+        path: 'Concurrence_Processing',
       },
       {
         title: 'Parcel Land Preparation',
-        path: '',
+        path: 'Parcel_preparation',
       },
       {
         title: 'Land Title Certificate Issuance',
-        path: '',
+        path: 'Land_Title_Certificate',
       },
     ],
   },

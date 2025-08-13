@@ -9,6 +9,8 @@ import Link from 'next/link'
 import { ZoningSubForm } from '@/components/ZoningSubmit'
 import AcceptJobButton from '@/components/AcceptButton'
 import { LCSearchSubForm } from '@/components/SeachReport'
+import { SalesandPurchaseForm } from '@/components/SalesandPurchase'
+import { ConveyanceForm } from '@/components/ConveyanceForm'
 
 type PageParams = {
   params: { slug: string },
@@ -33,6 +35,7 @@ const page = async({ params, searchParams }: PageParams) => {
   const isLawyer = serviceProvider?.profession === 'Lawyer'
   const purchase_stage = JobProjectDetails?.Purchase_Stage_Paid
   const Registraion_stage = JobProjectDetails?.Registration_stage
+  
  
 
   return (
@@ -116,7 +119,11 @@ const page = async({ params, searchParams }: PageParams) => {
           {/* @ts-ignore */}
          {isLawyer && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
           {/* @ts-ignore */}
-         {(isLawyer && purchase_stage) && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+         {(isLawyer && purchase_stage) && <SalesandPurchaseForm JobProjectID = {JobProjectDetails?.$id}/>} 
+          {/* @ts-ignore */}
+         {(isLawyer && purchase_stage) && <ConveyanceForm JobProjectID = {JobProjectDetails?.$id}/>} 
+          {/* @ts-ignore */}
+         {(isLawyer && purchase_stage) && <OathofProofForm JobProjectID = {JobProjectDetails?.$id}/>} 
           {/* @ts-ignore */}
          {(isLawyer && Registraion_stage) && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
         </TabsContent>

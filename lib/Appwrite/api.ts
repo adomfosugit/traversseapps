@@ -685,30 +685,7 @@ export async function UpdateJobPlannerReport1(id: string, reporturl: string) {
     };
   }
 }
-export async function UpdateJobLawyerReport(id: string, reporturl:string) {
-  try {
-    const { database } = await createAdminClient();
 
-    // Step 1: Update the bid document in the bids collection
-    const jobupload = await database.updateDocument(
-      NEXT_DATABASE_ID!,
-      NEXT_PUBLIC_JOBLISTING!,
-      id, 
-      {
-        LawyerSearchReport: reporturl,
-        LCSearchCompletionStatus:true
-     
-      }
-    );
-
-    // Return success and data
-    return { success: true, data: parseStringify({ jobupload }) };
-  } catch (error) {
-    console.log(error);
-    //@ts-ignore
-    return { success: false, error: error?.message || "An error occurred while submitting the bid." };
-  }
-}
 export async function UpdateJobLawyerReport1(id: string, reporturl: string) {
   try {
     const { database } = await createAdminClient();
@@ -725,6 +702,121 @@ export async function UpdateJobLawyerReport1(id: string, reporturl: string) {
         }
       ),
       updateUserProjectStatusLegal(id) // <-- new helper function
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to update legal search status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
+
+export async function UpdatePurchaseStage(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          
+          SalesandPurchaseAgreement: reporturl,
+          SPAComplete: true
+        }
+      ),
+      updateUserProjectStatussalespurchase(id) 
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to update legal search status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
+export async function UpdateConveyance(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          
+          Conveyance: reporturl,
+       
+        }
+      ),
+      updateUserProjectStatusConveyance(id) 
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to update legal search status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
+export async function UpdateOathofProof(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          
+          OathofProof: reporturl,
+       
+        }
+      ),
+      updateUserProjectStatusOathofProof(id) 
     ]);
 
     if (!lawyerStatusUpdate.success) {
@@ -907,6 +999,62 @@ export async function updateUserProjectStatusLegal(Id: string) {
     return { success: true, data: updatedBid, };
   } catch (error) {
     console.error('Error updating zoning status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateUserProjectStatusConveyance(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+      
+        Conveyance:true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating conveyance status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateUserProjectStatusOathofProof(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+      
+        Oath_Proof:true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating conveyance status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateUserProjectStatussalespurchase(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+        Sales_Purchase:true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating sales and purchase status:', error);
     return { success: false, error };
   }
 }

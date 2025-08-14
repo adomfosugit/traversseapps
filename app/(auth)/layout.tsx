@@ -32,10 +32,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
      <div className="w-full min-h-screen bg-slate-50 flex">
-        <div className="w-2/3 flex   max-w-3xl mx-auto">
+        <div className="w-full md:w-2/3 flex   max-w-3xl mx-auto">
         <Toaster />
         {children}
-
         </div>
         <div className=" hidden lg:flex lg:flex-col lg:w-1/3  items-center justify-center min-h-screen border-r border-primary shadow-2xl gap-y-2 bg-neutral-400 opacity-80">
           <Image  src='/assets/logo.svg' alt="logo" width={100} height={50} className="flex-shrink-0"/>

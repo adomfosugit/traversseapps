@@ -11,6 +11,10 @@ import AcceptJobButton from '@/components/AcceptButton'
 import { LCSearchSubForm } from '@/components/SeachReport'
 import { SalesandPurchaseForm } from '@/components/SalesandPurchase'
 import { ConveyanceForm } from '@/components/ConveyanceForm'
+import { StampDutySubForm } from '@/components/StampDuty'
+import { ConsentSubForm } from '@/components/ConsentSubForm'
+import { ParcelSubForm } from '@/components/ParcelSubForm'
+import { LandTitleSubForm } from '@/components/LandTitleSubForm'
 
 type PageParams = {
   params: { slug: string },
@@ -125,7 +129,13 @@ const page = async({ params, searchParams }: PageParams) => {
           {/* @ts-ignore */}
          {(isLawyer && purchase_stage) && <OathofProofForm JobProjectID = {JobProjectDetails?.$id}/>} 
           {/* @ts-ignore */}
-         {(isLawyer && Registraion_stage) && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+         {(isLawyer && Registraion_stage) && <StampDutySubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+          {/* @ts-ignore */}
+         {(isLawyer && Registraion_stage) && <ConsentSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+          {/* @ts-ignore */}
+         {(isLawyer && Registraion_stage) && <ParcelSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+          {/* @ts-ignore */}
+         {(isLawyer && Registraion_stage) && <LandTitleSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
         </TabsContent>
         <TabsContent value="SiteReport">
         <div className="mt-4">

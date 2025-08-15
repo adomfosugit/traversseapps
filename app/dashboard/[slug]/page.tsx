@@ -15,6 +15,7 @@ import { StampDutySubForm } from '@/components/StampDuty'
 import { ConsentSubForm } from '@/components/ConsentSubForm'
 import { ParcelSubForm } from '@/components/ParcelSubForm'
 import { LandTitleSubForm } from '@/components/LandTitleSubForm'
+import { OathofProofForm } from '@/components/OathofProof'
 
 type PageParams = {
   params: { slug: string },

@@ -80,7 +80,7 @@ export function ParcelSubForm({ JobProjectID }: { JobProjectID: string }) {
           name="zoningReport"
           render={({ field: { onChange, ...rest } }) => (
             <FormItem>
-              <FormLabel>Lands Commision Search Results</FormLabel>
+              <FormLabel>Parcel Form</FormLabel>
               <FormControl>
               <input
         type="file"

@@ -80,7 +80,7 @@ export function ConsentSubForm({ JobProjectID }: { JobProjectID: string }) {
           name="zoningReport"
           render={({ field: { onChange, ...rest } }) => (
             <FormItem>
-              <FormLabel>Lands Commision Search Results</FormLabel>
+              <FormLabel>Consent Form</FormLabel>
               <FormControl>
               <input
         type="file"

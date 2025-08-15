@@ -80,7 +80,7 @@ export function StampDutySubForm({ JobProjectID }: { JobProjectID: string }) {
           name="zoningReport"
           render={({ field: { onChange, ...rest } }) => (
             <FormItem>
-              <FormLabel>Lands Commision Search Results</FormLabel>
+              <FormLabel>Stamp Duty</FormLabel>
               <FormControl>
               <input
         type="file"

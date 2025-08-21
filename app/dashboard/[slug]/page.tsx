@@ -1,7 +1,7 @@
 import Header2 from '@/app/dashboard/Dash/Header2'
 import LandCard from '@/components/LandCard1'
-import { Button } from '@/components/ui/button'
-import { AssignPlannerJob, AssignSurveyorJob, getJobListingbyID, getLandById, getLoggedInUser, getserviceProviderData } from '@/lib/Appwrite/api'
+
+import {  getJobListingbyID, getLandById, getLoggedInUser, getserviceProviderData } from '@/lib/Appwrite/api'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SiteVisitForm } from '@/components/SiteVisitForm'
 import { FaFilePdf } from 'react-icons/fa'
@@ -259,7 +259,7 @@ const page = async({ params, searchParams }: PageParams) => {
       </tr>
     </>
   )}
-  {isLawyer && (
+   {/*{isLawyer && (
     <>
       <tr>
         <td className="px-6 py-4 whitespace-nowrap">
@@ -296,7 +296,292 @@ const page = async({ params, searchParams }: PageParams) => {
         
       </tr>
     </>
-  )}
+  )}  */}
+
+{isLawyer && (
+  <>
+    {/* Lands Commission Search Report */}
+    <tr>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+          <span className="text-sm font-medium text-gray-900">Lands Commission Search Report</span>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {JobProjectDetails?.LawyerSearchReport ? (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Submitted
+          </span>
+        ) : (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Not Submitted
+          </span>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {JobProjectDetails?.LawyerSearchReport ? (
+          <Link
+            href={`${JobProjectDetails.LawyerSearchReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            className="text-blue-600 hover:text-blue-900"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </Link>
+        ) : (
+          <span className="text-gray-400">No file available</span>
+        )}
+      </td>
+    </tr>
+
+    {/* Sales & Purchase Agreement */}
+    <tr>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+          <span className="text-sm font-medium text-gray-900">Sales & Purchase Agreement</span>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {JobProjectDetails?.SalesPurchaseReport ? (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Submitted
+          </span>
+        ) : (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Not Submitted
+          </span>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {JobProjectDetails?.SalesPurchaseReport ? (
+          <Link
+            href={`${JobProjectDetails.SalesPurchaseReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            className="text-blue-600 hover:text-blue-900"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </Link>
+        ) : (
+          <span className="text-gray-400">No file available</span>
+        )}
+      </td>
+    </tr>
+
+    {/* Conveyance */}
+    <tr>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+          <span className="text-sm font-medium text-gray-900">Conveyance</span>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {JobProjectDetails?.ConveyanceReport ? (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Submitted
+          </span>
+        ) : (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Not Submitted
+          </span>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {JobProjectDetails?.ConveyanceReport ? (
+          <Link
+            href={`${JobProjectDetails.ConveyanceReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            className="text-blue-600 hover:text-blue-900"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </Link>
+        ) : (
+          <span className="text-gray-400">No file available</span>
+        )}
+      </td>
+    </tr>
+
+    {/* Oath of Proof */}
+    <tr>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+          <span className="text-sm font-medium text-gray-900">Oath of Proof</span>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {JobProjectDetails?.OathProofReport ? (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Submitted
+          </span>
+        ) : (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Not Submitted
+          </span>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {JobProjectDetails?.OathProofReport ? (
+          <Link
+            href={`${JobProjectDetails.OathProofReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            className="text-blue-600 hover:text-blue-900"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </Link>
+        ) : (
+          <span className="text-gray-400">No file available</span>
+        )}
+      </td>
+    </tr>
+
+    {/* Stamp Duty */}
+    <tr>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+          <span className="text-sm font-medium text-gray-900">Stamp Duty</span>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {JobProjectDetails?.StampDutyReport ? (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Submitted
+          </span>
+        ) : (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Not Submitted
+          </span>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {JobProjectDetails?.StampDutyReport ? (
+          <Link
+            href={`${JobProjectDetails.StampDutyReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            className="text-blue-600 hover:text-blue-900"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </Link>
+        ) : (
+          <span className="text-gray-400">No file available</span>
+        )}
+      </td>
+    </tr>
+
+    {/* Consent */}
+    <tr>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+          <span className="text-sm font-medium text-gray-900">Consent</span>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {JobProjectDetails?.ConsentReport ? (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Submitted
+          </span>
+        ) : (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Not Submitted
+          </span>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {JobProjectDetails?.ConsentReport ? (
+          <Link
+            href={`${JobProjectDetails.ConsentReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            className="text-blue-600 hover:text-blue-900"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </Link>
+        ) : (
+          <span className="text-gray-400">No file available</span>
+        )}
+      </td>
+    </tr>
+
+    {/* Parcel */}
+    <tr>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+          <span className="text-sm font-medium text-gray-900">Parcel Report</span>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {JobProjectDetails?.ParcelReport ? (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Submitted
+          </span>
+        ) : (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Not Submitted
+          </span>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {JobProjectDetails?.ParcelReport ? (
+          <Link
+            href={`${JobProjectDetails.ParcelReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            className="text-blue-600 hover:text-blue-900"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </Link>
+        ) : (
+          <span className="text-gray-400">No file available</span>
+        )}
+      </td>
+    </tr>
+
+    {/* Land Title */}
+    <tr>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
+          <span className="text-sm font-medium text-gray-900">Land Title</span>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {JobProjectDetails?.LandTitleReport ? (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Submitted
+          </span>
+        ) : (
+          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+            Not Submitted
+          </span>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {JobProjectDetails?.LandTitleReport ? (
+          <Link
+            href={`${JobProjectDetails.LandTitleReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            className="text-blue-600 hover:text-blue-900"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View PDF
+          </Link>
+        ) : (
+          <span className="text-gray-400">No file available</span>
+        )}
+      </td>
+    </tr>
+  </>
+)}
+
 </tbody>
 
     </table>

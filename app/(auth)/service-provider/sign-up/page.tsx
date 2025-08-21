@@ -5,7 +5,7 @@ type Props = {}
 
 const page = (props: Props) => {
   return (
-    <div className='flex justify-center items-center mx-auto'>
+    <div className='w-full min-h-screen '>
       <ServiceSignUp />
     </div>
   )

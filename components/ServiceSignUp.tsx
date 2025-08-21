@@ -14,6 +14,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from './ui/command';
 import { cn } from '@/lib/utils';
+import { DistrictData } from '@/constants';
 
 type Props = {}
 
@@ -33,10 +34,12 @@ const formSchema = z
       .string({ required_error: "Phone number is required" })
       .regex(phoneRegex, "Invalid phone number format"),
     Country: z.string({ required_error: "Country is required" }),
+    District: z.string({ required_error: "District is required" }),
     officialAddress: z.string({ required_error: "Official address is required" }),
     profession: z.string({ required_error: "Profession is required" }),
     membershipID: z.string({ required_error: "Membership ID is required" }),
     membershipAffiliation: z.string({ required_error: "Membership affiliation is required" }),
+    ID_CARD: z.string({ required_error: "Upload required" }),
   })
   .refine((data) => data.Password === data.repeatPassword, {
     message: "Passwords do not match",
@@ -47,9 +50,15 @@ export type TSelectOptions = {
     id: string;
     value: string;
 };
+export type TSelectDistrictOptions = {
+    ID: string;
+    REGION: string;
+    DISTRICT: string
+};
 
 const ServiceSignUp = (props: Props) => {
   const [countryInputValue, setCountryInputValue] = useState<string>("")
+  const [districtInputValue, setDistrictInputValue] = useState<string>("")
   const [professionInputValue, setProfessionInputValue] = useState<string>("")
   const [membershipInputValue, setMembershipInputValue] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -68,6 +77,8 @@ const ServiceSignUp = (props: Props) => {
       profession: "",
       membershipID: "",
       membershipAffiliation: "",
+      District: "",
+      ID_CARD:"",
     },
   })
  
@@ -125,6 +136,7 @@ const ServiceSignUp = (props: Props) => {
     { id: 'GIE', value: 'Ghana Institute of Engineers' }, // Fixed: GE -> GIE
     { id: 'NA', value: 'Not Applicable' }, // Fixed: None -> Not
   ];
+  const District: TSelectDistrictOptions[] = DistrictData
 
   return (
     <div className='min-h-screen  p-4 md:p-8'>
@@ -282,8 +294,73 @@ const ServiceSignUp = (props: Props) => {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="District"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>District</FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                className={cn(
+                                  "w-full justify-between",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value
+                                  ? District.find((place) => place.DISTRICT === field.value)?.DISTRICT
+                                  : "Select District"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput
+                                placeholder="Search District..."
+                                value={districtInputValue}
+                                onValueChange={setDistrictInputValue}
+                              />
+                              <CommandList>
+                                <CommandGroup>
+                                  {District.map((place) => (
+                                    <CommandItem
+                                      value={place.DISTRICT}
+                                      key={place.ID}
+                                      onSelect={() => {
+                                        form.setValue("District", place.DISTRICT)
+                                        setCountryInputValue("")
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          place.DISTRICT === field.value ? "opacity-100" : "opacity-0"
+                                        )}
+                                      />
+                                      {place.DISTRICT}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
+                </div>
+
+
+
+                
                 <FormField
                   control={form.control}
                   name="officialAddress"
@@ -297,7 +374,7 @@ const ServiceSignUp = (props: Props) => {
                     </FormItem>
                   )}
                 />
-              </div>
+              
 
               {/* Professional Information */}
               <div className='space-y-4'>

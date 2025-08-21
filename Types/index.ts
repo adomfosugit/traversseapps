@@ -11,6 +11,8 @@ export type SNewUser = {
     bankName?:string;
     accountName?:string;
     accountNumber?:string;
+    District?: string;
+    ID_CARD?:string;
 }
 export type NewUser = {
     Email : string;

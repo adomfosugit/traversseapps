@@ -52,6 +52,8 @@ export async function createUserAccount(user:SNewUser){
         Bank_Name:user.bankName,
         Account_number:user.accountNumber,
         Account_name:user.accountName,
+        District: user.District,
+        ID_CARD: user.ID_CARD
 
       }
     

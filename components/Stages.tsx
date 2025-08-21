@@ -55,14 +55,16 @@ export const landPurchaseStages: TDrawerStage[] = [
     icon: <StageIcon iconNumber="2" />,
     iconDone: <StageIcon iconNumber="2" />,
     subNavigation: [
-      {
-        title: 'Land Payment & Purchase Stage Fees',
-        path: 'Land_Payment_Purchase',
-      },
+      
       {
         title: 'Sales and Purchase Agreement',
         path: 'Sales_Purchase',
       },
+      {
+        title: 'Purchase Stage Fees',
+        path: 'Land_Payment_Purchase',
+      },
+     
       {
         title: 'Conveynace',
         path: 'Conveyance',

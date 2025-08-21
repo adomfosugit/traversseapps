@@ -112,13 +112,13 @@ const page = async({ params, searchParams }: PageParams) => {
           {/* @ts-ignore */}
         {pageID === 'Land_Payment_Purchase' && (LandProjectDetails?.Funds_transfer ? <div className='ring-2 p-2 ring-green-600 bg-green-200 w-[800px] rounded-xl'> Land fund Fees Paid</div>   :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
         {/* @ts-ignore */}
-        {pageID === 'Sales_Purchase' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Sales and Purchas Agreement</Link>}
+        {pageID === 'Sales_Purchase' && <Link  className = 'text-blue-400 text-link '  href= {`${JOBID[0]?.SalesandPurchaseAgreement}/view?project=6771516200333a41d2ef&mode=admin`}> Sales and Purchase Agreement</Link>}
         {/* @ts-ignore */}
-        {pageID === 'Conveyance' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Sales and Purchas Agreement</Link>}
+        {pageID === 'Conveyance' && <Link className = 'text-blue-400 text-link '   href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Conveyance</Link>}
         {/* @ts-ignore */}
-        {pageID === 'Oath_Proof' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Oath of Proof</Link>}
+        {pageID === 'Oath_Proof' && <Link className = 'text-blue-400 text-link '  href= {`${JOBID[0]?.Conveyance}/view?project=6771516200333a41d2ef&mode=admin`}> Oath of Proof</Link>}
         {/* @ts-ignore */}
-        {pageID === 'Mail_Document_Sign_off' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Mail Document Sign Off</Link>}
+        {pageID === 'Mail_Document_Sign_off' && <Link className = 'text-blue-400 text-link '  href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Mail Document Sign Off</Link>}
       
       {/* Land Registration continues here */}
       

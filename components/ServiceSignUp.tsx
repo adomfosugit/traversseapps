@@ -15,6 +15,8 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from './ui/command';
 import { cn } from '@/lib/utils';
 import { DistrictData } from '@/constants';
+import ImageUpload from './form-items/ImageUpload';
+import IDUpload from './form-items/IDUpload';
 
 type Props = {}
 
@@ -25,14 +27,10 @@ const phoneRegex = new RegExp(
 const formSchema = z
   .object({
     Name: z.string({ required_error: "Name Required" }).min(1, "Name is required"),
-    Email: z
-      .string({ required_error: "Email required" })
-      .email("Please Enter a Valid Email"),
+    Email: z.string({ required_error: "Email required" }).email("Please Enter a Valid Email"),
     Password: z.string({ required_error: "Password is required" }).min(8, "Password must be at least 8 characters long"),
     repeatPassword: z.string({ required_error: "Please confirm your password" }).min(8, "Password must be at least 8 characters long"),
-    Phone: z
-      .string({ required_error: "Phone number is required" })
-      .regex(phoneRegex, "Invalid phone number format"),
+    Phone: z.string({ required_error: "Phone number is required" }).regex(phoneRegex, "Invalid phone number format"),
     Country: z.string({ required_error: "Country is required" }),
     District: z.string({ required_error: "District is required" }),
     officialAddress: z.string({ required_error: "Official address is required" }),
@@ -51,7 +49,7 @@ export type TSelectOptions = {
     value: string;
 };
 export type TSelectDistrictOptions = {
-    ID: string;
+    ID: number;
     REGION: string;
     DISTRICT: string
 };
@@ -82,9 +80,11 @@ const ServiceSignUp = (props: Props) => {
     },
   })
  
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true)
+      console.log(values)
       const responseuser = await createUserAccount(values)
       
       if (!responseuser) { 
@@ -516,6 +516,25 @@ const ServiceSignUp = (props: Props) => {
                       </FormItem>
                     )}
                   />
+                </div>
+                <div>
+                <FormField
+  control={form.control}
+  name="ID_CARD"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>ID Card Upload</FormLabel>
+      <FormControl>
+        <IDUpload
+          value={field.value}
+          onChange={(value) => field.onChange(value)}
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
                 </div>
               </div>
              

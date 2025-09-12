@@ -257,7 +257,7 @@ const page = async({ params, searchParams }: PageParams) => {
           )}
         </td>
       </tr>
-    </>
+    </>c
   )}
    {/*{isLawyer && (
     <>

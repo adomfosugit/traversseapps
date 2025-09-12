@@ -12,8 +12,9 @@ interface IImageUploadProps {
 
 const ImageUpload = ({ value, onChange }: IImageUploadProps) => {
   const [isUploading, setIsUploading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
-  const handleUpload = async (files: FileList) => {
+  const handleUpload = async (files: FileList | File[]) => {
     setIsUploading(true);
     const uploadedUrls: string[] = [];
 
@@ -35,17 +36,38 @@ const ImageUpload = ({ value, onChange }: IImageUploadProps) => {
       console.error('Upload failed:', error);
     } finally {
       setIsUploading(false);
+      setIsDragging(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleUpload(e.dataTransfer.files);
+      e.dataTransfer.clearData();
     }
   };
 
   return (
     <div
-      className="relative cursor-pointer hover:opacity-70 transition border-dashed border-2 p-20 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-400"
+      className={`relative cursor-pointer transition border-dashed border-2 p-20 flex flex-col justify-center items-center gap-4 
+        ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-neutral-300 text-neutral-400 hover:opacity-70'}
+      `}
       onClick={() => document.getElementById('file-input')?.click()}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setIsDragging(true);
+      }}
+      onDragLeave={() => setIsDragging(false)}
+      onDrop={handleDrop}
     >
       <TbPhotoPlus size={50} />
       {value.length === 0 && (
-        <div className="font-semibold text-lg">Click to upload</div>
+        <div className="font-semibold text-lg">
+          {isDragging ? 'Drop files here' : 'Click or drag files to upload'}
+        </div>
       )}
       <input
         id="file-input"

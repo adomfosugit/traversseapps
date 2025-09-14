@@ -74,8 +74,8 @@ const ServiceProviderProfile = async() => {
           {/* Membership Information */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <div className="flex items-center mb-6">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
@@ -83,14 +83,33 @@ const ServiceProviderProfile = async() => {
             </div>
             
             <div className="space-y-6">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-green-700">Status</span>
-                  <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">
-                    Active
-                  </span>
-                </div>
-              </div>
+            <div
+  className={`${
+    providerData?.VerifiedServiceProvider
+      ? "bg-green-50 border border-green-200"
+      : "bg-red-50 border border-red-200"
+  } rounded-lg p-4`}
+>
+  <div className="flex items-center justify-between mb-2">
+    <span
+      className={`text-sm font-medium ${
+        providerData?.VerifiedServiceProvider ? "text-green-700" : "text-red-700"
+      }`}
+    >
+      Status
+    </span>
+    <span
+      className={`${
+        providerData?.VerifiedServiceProvider
+          ? "bg-green-100 text-green-800"
+          : "bg-red-100 text-red-800"
+      } text-xs font-semibold px-2 py-1 rounded-full`}
+    >
+      {providerData?.VerifiedServiceProvider ? "Verified" : "Pending"}
+    </span>
+  </div>
+</div>
+
               
               <div className="space-y-4">
                 <div>
@@ -98,7 +117,7 @@ const ServiceProviderProfile = async() => {
                     Membership ID
                   </label>
                   <p className="text-gray-900 font-mono text-sm bg-gray-50 px-3 py-2 rounded-lg">
-                    {providerData?.membershipID || 'Not assigned'}
+                    {providerData?.membershipID || 'Pending'}
                   </p>
                 </div>
                 

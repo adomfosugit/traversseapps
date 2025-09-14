@@ -344,7 +344,7 @@ const page = async({ params, searchParams }: PageParams) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {JobProjectDetails?.SalesPurchaseReport ? (
+        {JobProjectDetails?.SalesandPurchaseAgreement ? (
           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
             Submitted
           </span>
@@ -355,9 +355,9 @@ const page = async({ params, searchParams }: PageParams) => {
         )}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {JobProjectDetails?.SalesPurchaseReport ? (
+        {JobProjectDetails?.SalesandPurchaseAgreement ? (
           <Link
-            href={`${JobProjectDetails.SalesPurchaseReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            href={`${JobProjectDetails.SalesandPurchaseAgreement}/view?project=6771516200333a41d2ef&mode=admin`}
             className="text-blue-600 hover:text-blue-900"
             target="_blank"
             rel="noopener noreferrer"
@@ -379,7 +379,7 @@ const page = async({ params, searchParams }: PageParams) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {JobProjectDetails?.ConveyanceReport ? (
+        {JobProjectDetails?.Conveyance ? (
           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
             Submitted
           </span>
@@ -390,9 +390,9 @@ const page = async({ params, searchParams }: PageParams) => {
         )}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {JobProjectDetails?.ConveyanceReport ? (
+        {JobProjectDetails?.Conveyance ? (
           <Link
-            href={`${JobProjectDetails.ConveyanceReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            href={`${JobProjectDetails.Conveyance}/view?project=6771516200333a41d2ef&mode=admin`}
             className="text-blue-600 hover:text-blue-900"
             target="_blank"
             rel="noopener noreferrer"
@@ -414,7 +414,7 @@ const page = async({ params, searchParams }: PageParams) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {JobProjectDetails?.OathProofReport ? (
+        {JobProjectDetails?.OathofProof ? (
           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
             Submitted
           </span>
@@ -425,9 +425,9 @@ const page = async({ params, searchParams }: PageParams) => {
         )}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {JobProjectDetails?.OathProofReport ? (
+        {JobProjectDetails?.OathofProof ? (
           <Link
-            href={`${JobProjectDetails.OathProofReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            href={`${JobProjectDetails.OathofProof}/view?project=6771516200333a41d2ef&mode=admin`}
             className="text-blue-600 hover:text-blue-900"
             target="_blank"
             rel="noopener noreferrer"
@@ -449,7 +449,7 @@ const page = async({ params, searchParams }: PageParams) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {JobProjectDetails?.StampDutyReport ? (
+        {JobProjectDetails?.StampDuty ? (
           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
             Submitted
           </span>
@@ -460,9 +460,9 @@ const page = async({ params, searchParams }: PageParams) => {
         )}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {JobProjectDetails?.StampDutyReport ? (
+        {JobProjectDetails?.StampDuty ? (
           <Link
-            href={`${JobProjectDetails.StampDutyReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            href={`${JobProjectDetails.StampDuty}/view?project=6771516200333a41d2ef&mode=admin`}
             className="text-blue-600 hover:text-blue-900"
             target="_blank"
             rel="noopener noreferrer"
@@ -484,7 +484,7 @@ const page = async({ params, searchParams }: PageParams) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {JobProjectDetails?.ConsentReport ? (
+        {JobProjectDetails?.Consent ? (
           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
             Submitted
           </span>
@@ -495,9 +495,9 @@ const page = async({ params, searchParams }: PageParams) => {
         )}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {JobProjectDetails?.ConsentReport ? (
+        {JobProjectDetails?.Consent ? (
           <Link
-            href={`${JobProjectDetails.ConsentReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            href={`${JobProjectDetails.Consent}/view?project=6771516200333a41d2ef&mode=admin`}
             className="text-blue-600 hover:text-blue-900"
             target="_blank"
             rel="noopener noreferrer"
@@ -519,7 +519,7 @@ const page = async({ params, searchParams }: PageParams) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {JobProjectDetails?.ParcelReport ? (
+        {JobProjectDetails?.Parcel ? (
           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
             Submitted
           </span>
@@ -530,9 +530,9 @@ const page = async({ params, searchParams }: PageParams) => {
         )}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {JobProjectDetails?.ParcelReport ? (
+        {JobProjectDetails?.Parcel ? (
           <Link
-            href={`${JobProjectDetails.ParcelReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            href={`${JobProjectDetails.Parcel}/view?project=6771516200333a41d2ef&mode=admin`}
             className="text-blue-600 hover:text-blue-900"
             target="_blank"
             rel="noopener noreferrer"
@@ -554,7 +554,7 @@ const page = async({ params, searchParams }: PageParams) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {JobProjectDetails?.LandTitleReport ? (
+        {JobProjectDetails?.LandTitleCertificate ? (
           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
             Submitted
           </span>
@@ -565,9 +565,9 @@ const page = async({ params, searchParams }: PageParams) => {
         )}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {JobProjectDetails?.LandTitleReport ? (
+        {JobProjectDetails?.LandTitleCertificate ? (
           <Link
-            href={`${JobProjectDetails.LandTitleReport}/view?project=6771516200333a41d2ef&mode=admin`}
+            href={`${JobProjectDetails.LandTitleCertificate}/view?project=6771516200333a41d2ef&mode=admin`}
             className="text-blue-600 hover:text-blue-900"
             target="_blank"
             rel="noopener noreferrer"

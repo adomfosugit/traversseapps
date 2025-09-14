@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { UpdateJobLawyerReport1, UpdateOathofProof, UpdatePurchaseStage, uploadDoc } from "@/lib/Appwrite/api"
+import { UpdateJobLawyerReport1, UpdateOathofProof, UpdateParcelSub, UpdatePurchaseStage, uploadDoc } from "@/lib/Appwrite/api"
 import { toast } from "@/hooks/use-toast"
 import { useState } from "react"
 
@@ -49,7 +49,7 @@ export function ParcelSubForm({ JobProjectID }: { JobProjectID: string }) {
 
       if (!fileUrl) throw new Error("Upload failed")
 
-      const updateResult = await UpdateOathofProof(JobProjectID, fileUrl)
+      const updateResult = await UpdateParcelSub(JobProjectID, fileUrl)
 
       if (updateResult) {
         toast({

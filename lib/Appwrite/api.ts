@@ -739,7 +739,7 @@ export async function UpdatePurchaseStage(id: string, reporturl: string) {
         {
           
           SalesandPurchaseAgreement: reporturl,
-          SPAComplete: true
+          Sales_Purchase: true
         }
       ),
       updateUserProjectStatussalespurchase(id) 
@@ -819,6 +819,158 @@ export async function UpdateOathofProof(id: string, reporturl: string) {
         }
       ),
       updateUserProjectStatusOathofProof(id) 
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to update legal search status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
+export async function UpdateStampDuty(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          
+          StampDuty: reporturl,
+       
+        }
+      ),
+      updateUserStampDuty(id) 
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to update legal search status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
+export async function UpdateConsent(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          
+          Consent: reporturl,
+       
+        }
+      ),
+      updateUserConsent(id) 
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to update legal search status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
+export async function UpdateParcelSub(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          
+          Parcel: reporturl,
+       
+        }
+      ),
+      updateUserConsent(id) 
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to update legal search status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
+export async function UpdateLandCert(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          
+          LandTitleCertificate: reporturl,
+       
+        }
+      ),
+      updateUserConsent(id) 
     ]);
 
     if (!lawyerStatusUpdate.success) {
@@ -1033,6 +1185,82 @@ export async function updateUserProjectStatusOathofProof(Id: string) {
       {
       
         Oath_Proof:true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating conveyance status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateUserStampDuty(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+      
+        Stamp_Duty:true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating conveyance status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateUserConsent(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+      
+        Concurrence_Processing:true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating conveyance status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateParcel(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+      
+        Parcel_preparation:true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating conveyance status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateUserLandTitle(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+      
+        Land_Title_Certificate:true,
       }
     );
 

@@ -14,6 +14,23 @@ export type SNewUser = {
     District?: string;
     ID_CARD?:string;
 }
+export type ServiceUser = {
+    $id:string
+    Email : string;
+    Password:string;
+    Name:string;
+    Phone:string, 
+    Country:string,
+    officialAddress:string,
+    profession:string,
+    membershipID:string
+    membershipAffiliation:string;
+    bankName?:string;
+    accountName?:string;
+    accountNumber?:string;
+    District?: string;
+    ID_CARD?:string;
+}
 export type NewUser = {
     Email : string;
     Password:string;

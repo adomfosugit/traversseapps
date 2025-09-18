@@ -1384,3 +1384,28 @@ export const DistrictData = [
     "DISTRICT": "Suaman District"
   }
 ]
+export const banksInGhana = [
+  "Absa Bank Ghana Limited",
+  "Access Bank (Ghana) Plc",
+  "Agricultural Development Bank Plc",
+  "Bank of Africa Ghana Limited",
+  "CalBank PLC",
+  "Consolidated Bank Ghana Limited",
+  "Ecobank Ghana Plc",
+  "FBNBank (Ghana) Limited",
+  "Fidelity Bank Ghana Limited",
+  "First Atlantic Bank Limited",
+  "First National Bank (Ghana) Limited",
+  "GCB Bank Plc",
+  "Guaranty Trust Bank (Ghana) Limited",
+  "National Investment Bank Limited",
+  "OmniBSIC Bank Ghana Limited",
+  "Prudential Bank Limited",
+  "Republic Bank (Ghana) PLC",
+  "Societe General Ghana Plc",
+  "Stanbic Bank Ghana Limited",
+  "Standard Chartered Bank Ghana Plc",
+  "United Bank for Africa (Ghana) Limited",
+  "Universal Merchant Bank Limited",
+  "Zenith Bank (Ghana) Limited",
+];

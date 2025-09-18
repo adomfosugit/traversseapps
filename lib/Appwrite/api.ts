@@ -4,7 +4,7 @@ import {ID, OAuthProvider, Query} from 'node-appwrite'
 import {InputFile} from 'node-appwrite/file'
 import { cookies, headers } from "next/headers";
 import { parseStringify } from "@/lib/utils";
-import { NewUser, SNewUser } from "@/Types";
+import { NewUser, ServiceUser, SNewUser } from "@/Types";
 import { redirect } from "next/navigation";
 
 interface LandFormValues {
@@ -75,6 +75,7 @@ export async function createUserAccount(user:SNewUser){
     console.log(error)
   }   
 }
+
 export async function createSUserAccount(user:NewUser){ 
 
   try {
@@ -223,32 +224,7 @@ export async function getLandById(id:string){
     console.log(error)
   }
 } 
-export async function createserviceProvider(Name:string, Email:string, Password:string, Phone:string, Country:string, officialAddress:string, profession:string, membershipID:string){
-  try {
-    const { database } = await createAdminClient()
-    const serviceprovider = await database.createDocument(
-        NEXT_DATABASE_ID!,
-        NEXT_SERVICEPROVIDER_COLLECTION_ID!,
-        ID.unique(),
-        {
-          Name:Name,
-          Email:Email,
-          Password:Password,
-          Phone:Phone,
-          Country:Country,
-          officialAddress:officialAddress,
-          profession:profession,
-          membershipID:membershipID,
-          VerifiedServiceProvider: false
-        }
-      
-    )
- 
-    return parseStringify(serviceprovider);
-  } catch (error) {
-    console.log(error)
-  }
-}
+
 
 export async function uploadLand(data: LandFormValues) {
   const { location, landArea, landtype, interestType, imageSrc, price, title, description, DeedCert, thirdpartyinterest, thirdpartyifyes, Indenture, searchresult, transtype, landstatus, userEmail,letigationencumberance } = data;
@@ -363,6 +339,38 @@ export async function updateBidStatus(bidId: string, decision: boolean) {
     return { success: true, data: updatedBid };
   } catch (error) {
     console.error('Error updating bid status:', error);
+    return { success: false, error };
+  }
+}
+export async function updateServiceProvider(FormData:ServiceUser) {
+  try {
+    const { database } = await createAdminClient();
+    
+    const updatedUser = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_SERVICEPROVIDER_COLLECTION_ID!,
+      FormData.$id,
+      {
+        
+        
+        Phone:FormData.Phone,
+        
+        officialAddress:FormData.officialAddress,
+        
+        membershipID:FormData.membershipID,
+      
+        Professional_Membership:FormData.membershipAffiliation,
+        Bank_Name: FormData.bankName,
+        Account_number:FormData.accountNumber,
+        Account_name:FormData.accountName,
+        District: FormData.District,
+        
+      }
+    );
+
+    return { success: true, data: updatedUser };
+  } catch (error) {
+    console.error('Error updating User status:', error);
     return { success: false, error };
   }
 }

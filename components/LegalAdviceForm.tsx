@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useForm } from "react-hook-form"
@@ -13,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-import { UpdateJobLawyerReport1, uploadDoc } from "@/lib/Appwrite/api"
+import { UpdateJobLawyerLegalAdvice, UpdateJobLawyerReport1, uploadDoc } from "@/lib/Appwrite/api"
 import { toast } from "@/hooks/use-toast"
 import { useState } from "react"
 import { Upload, FileText, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
@@ -23,7 +22,7 @@ type FormValues = {
   zoningReport: FileList | null;
 }
 
-export function LCSearchSubForm({ JobProjectID ,Document}: { JobProjectID: string, Document:string }) {
+export function LegalAdviceForm({ JobProjectID }: { JobProjectID: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
@@ -54,12 +53,12 @@ export function LCSearchSubForm({ JobProjectID ,Document}: { JobProjectID: strin
 
       if (!fileUrl) throw new Error("Upload failed")
 
-      const updateResult = await UpdateJobLawyerReport1(JobProjectID, fileUrl)
+      const updateResult = await UpdateJobLawyerLegalAdvice(JobProjectID, fileUrl)
 
       if (updateResult) {
         toast({
           title: "Upload Successful",
-          description: "Lands Commission search report uploaded successfully",
+          description: "Legal Advice uploaded successfully",
         })
         form.reset()
         setUploadedFile(null)
@@ -111,11 +110,11 @@ export function LCSearchSubForm({ JobProjectID ,Document}: { JobProjectID: strin
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg border">
       <div className="mb-6">
-        <h2 className=" font-semibold text-primary mb-2">
-          Lands Commission Search Report
+        <h2 className="font-semibold text-primary mb-2">
+          Legal Advice
         </h2>
         <p className="text-gray-600 text-sm">
-          Upload your Land Search results document
+          Upload your advice to client
         </p>
       </div>
 
@@ -126,8 +125,8 @@ export function LCSearchSubForm({ JobProjectID ,Document}: { JobProjectID: strin
             name="zoningReport"
             render={({ field: { onChange, ...rest } }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-blue-700">
-                  Document Upload  
+                <FormLabel className="text-base font-medium text-blue-700">
+                  Document Upload
                 </FormLabel>
                 <FormControl>
                   <div

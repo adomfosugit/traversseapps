@@ -733,6 +733,43 @@ export async function UpdateJobLawyerReport1(id: string, reporturl: string) {
     };
   }
 }
+export async function UpdateJobLawyerLegalAdvice(id: string, reporturl: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupload, lawyerStatusUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+          LegalAdvice: reporturl,
+          prepurchase_stage: false
+        }
+      ),
+      updateUserProjectStatusLegal(id) // <-- Change this function to trigger mail to the user indicating lawyer search and report is complete
+    ]);
+
+    if (!lawyerStatusUpdate.success) {
+      throw new Error("Failed to upd status");
+    }
+
+    return { 
+      success: true, 
+      data: {
+        jobUpdate: parseStringify(jobupload),
+        legalStatusUpdate: lawyerStatusUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating lawyer report." 
+    };
+  }
+}
 
 export async function UpdatePurchaseStage(id: string, reporturl: string) {
   try {
@@ -1164,6 +1201,25 @@ export async function updateUserProjectStatusLegal(Id: string) {
     return { success: false, error };
   }
 }
+{/* export async function updateUserStatus(Id: string) {
+  try {
+    const { database } = await createAdminClient();
+    const updatedBid = await database.updateDocument(
+      NEXT_DATABASE_ID!,
+      NEXT_LAND_PROJECT!,
+      Id,
+      {
+        LC_search: true,
+        legal_advice:true,
+      }
+    );
+
+    return { success: true, data: updatedBid, };
+  } catch (error) {
+    console.error('Error updating zoning status:', error);
+    return { success: false, error };
+  }
+} */}
 export async function updateUserProjectStatusConveyance(Id: string) {
   try {
     const { database } = await createAdminClient();

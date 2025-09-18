@@ -16,6 +16,7 @@ import { ConsentSubForm } from '@/components/ConsentSubForm'
 import { ParcelSubForm } from '@/components/ParcelSubForm'
 import { LandTitleSubForm } from '@/components/LandTitleSubForm'
 import { OathofProofForm } from '@/components/OathofProof'
+import { LegalAdviceForm } from '@/components/LegalAdviceForm'
 
 type PageParams = {
   params: { slug: string },
@@ -38,6 +39,7 @@ const page = async({ params, searchParams }: PageParams) => {
   const isSurveyor = serviceProvider?.profession === 'Surveyor';
   const isPlanner = serviceProvider?.profession === 'Planner';
   const isLawyer = serviceProvider?.profession === 'Lawyer'
+  const prepurchase_stage = JobProjectDetails?.prepurchase_stage
   const purchase_stage = JobProjectDetails?.Purchase_Stage_Paid
   const Registraion_stage = JobProjectDetails?.Registration_stage
   
@@ -121,8 +123,21 @@ const page = async({ params, searchParams }: PageParams) => {
          {isSurveyor && <SiteVisitForm JobProjectID = {JobProjectDetails?.$id}/>} 
           {/* @ts-ignore */}
          {isPlanner && <ZoningSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
-          {/* @ts-ignore */}
-         {isLawyer && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}/>} 
+         <div className='flex flex-col md:flex-row gap-x-3 '>
+                      {/* @ts-ignore */}
+              <div>
+                {(isLawyer && prepurchase_stage) && <LCSearchSubForm JobProjectID = {JobProjectDetails?.$id}  Document = {JobProjectDetails.LawyerSearchReport} />} 
+              </div> 
+
+              <div>
+                   {/* @ts-ignore */}
+         {(isLawyer && prepurchase_stage) && <LegalAdviceForm JobProjectID = {JobProjectDetails?.$id}/>} 
+
+              </div>
+         
+
+         </div>
+
           {/* @ts-ignore */}
          {(isLawyer && purchase_stage) && <SalesandPurchaseForm JobProjectID = {JobProjectDetails?.$id}/>} 
           {/* @ts-ignore */}
@@ -259,44 +274,7 @@ const page = async({ params, searchParams }: PageParams) => {
       </tr>
     </>
   )}
-   {/*{isLawyer && (
-    <>
-      <tr>
-        <td className="px-6 py-4 whitespace-nowrap">
-          <div className="flex items-center">
-            <FaFilePdf className="w-5 h-5 text-red-500 mr-2" />
-            <span className="text-sm font-medium text-gray-900">Lands Commission Search Report</span>
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-nowrap">
-          {JobProjectDetails?.LawyerSearchReport ? (
-            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-              Submitted
-            </span>
-          ) : (
-            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-              Not Submitted
-            </span>
-          )}
-        </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {JobProjectDetails?.PlannerReport ? (
-            <Link
-              href={`${JobProjectDetails.LawyerSearchReport}/view?project=6771516200333a41d2ef&mode=admin`}
-              className="text-blue-600 hover:text-blue-900"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View PDF
-            </Link>
-          ) : (
-            <span className="text-gray-400">No file available</span>
-          )}
-        </td>
-        
-      </tr>
-    </>
-  )}  */}
+
 
 {isLawyer && (
   <>

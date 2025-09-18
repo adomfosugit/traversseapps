@@ -138,12 +138,28 @@ const page = async({ params, searchParams }: PageParams) => {
 
          </div>
 
-          {/* @ts-ignore */}
-         {(isLawyer && purchase_stage) && <SalesandPurchaseForm JobProjectID = {JobProjectDetails?.$id}/>} 
-          {/* @ts-ignore */}
-         {(isLawyer && purchase_stage) && <ConveyanceForm JobProjectID = {JobProjectDetails?.$id}/>} 
-          {/* @ts-ignore */}
-         {(isLawyer && purchase_stage) && <OathofProofForm JobProjectID = {JobProjectDetails?.$id}/>} 
+
+        <div className = "flex flex-col md:flex-row gap-x-3 ">
+            <div>
+              {/* @ts-ignore */}
+         {(isLawyer && purchase_stage) && <SalesandPurchaseForm JobProjectID = {JobProjectDetails?.$id}/>}
+             </div>  
+
+             <div>
+      {/* @ts-ignore */}
+      {(isLawyer && purchase_stage) && <ConveyanceForm JobProjectID = {JobProjectDetails?.$id}/>} 
+
+             </div>
+         
+         <div>
+
+         {/* @ts-ignore */}
+      {(isLawyer && purchase_stage) && <OathofProofForm JobProjectID = {JobProjectDetails?.$id}/>} 
+         </div>
+         
+
+      </div>
+         
           {/* @ts-ignore */}
          {(isLawyer && Registraion_stage) && <StampDutySubForm JobProjectID = {JobProjectDetails?.$id}/>} 
           {/* @ts-ignore */}

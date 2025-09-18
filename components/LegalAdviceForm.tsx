@@ -193,7 +193,7 @@ export function LegalAdviceForm({ JobProjectID }: { JobProjectID: string }) {
                   </div>
                 </FormControl>
                 <FormDescription className="text-sm text-gray-600">
-                  Upload a PDF document or image file containing the Lands Commission search results.
+                  Upload a PDF document with legal advice for client.
                   Maximum file size: 10MB.
                 </FormDescription>
                 <FormMessage />

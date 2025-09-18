@@ -194,7 +194,7 @@ export function LCSearchSubForm({ JobProjectID ,Document}: { JobProjectID: strin
                   </div>
                 </FormControl>
                 <FormDescription className="text-sm text-gray-600">
-                  Upload a PDF document or image file containing the Lands Commission search results.
+                  Upload a PDF document containing the Lands Commission search results.
                   Maximum file size: 10MB.
                 </FormDescription>
                 <FormMessage />

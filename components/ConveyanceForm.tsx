@@ -111,9 +111,7 @@ export function ConveyanceForm({ JobProjectID }: { JobProjectID: string }) {
         <h2 className="font-semibold text-primary mb-2">
           Conveyance Document
         </h2>
-        <p className="text-gray-600 text-sm">
-          Upload your Conveyance form document
-        </p>
+      
       </div>
 
       <Form {...form}>

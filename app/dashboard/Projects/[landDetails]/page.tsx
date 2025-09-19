@@ -18,6 +18,7 @@ const page = async ({
   }
 
   const land = await getLandById(landId);
+
   const currentUser = await getLoggedInUser();
   console.log(land)
 

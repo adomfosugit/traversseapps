@@ -25,9 +25,9 @@ export type ServiceUser = {
     profession:string,
     membershipID:string
     membershipAffiliation:string;
-    bankName?:string;
-    accountName?:string;
-    accountNumber?:string;
+    Bank_Name?:string;
+    Account_name?:string;
+    Account_number?:string;
     District?: string;
     ID_CARD?:string;
 }

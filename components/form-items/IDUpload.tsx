@@ -78,7 +78,7 @@ const IDUpload = ({ value, onChange }: IImageUploadProps) => {
 
       {/* Instruction text */}
       <p className="w-full text-wrap text-muted-foreground text-xs">
-        Drag and drop or click to {value ? 'replace' : 'upload'}
+        Drag and drop or click to {value ? 'replace' : 'upload'} .jpg, .png or .jpeg files
       </p>
 
       <input

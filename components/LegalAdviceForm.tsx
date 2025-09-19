@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-import { UpdateJobLawyerLegalAdvice, UpdateJobLawyerReport1, uploadDoc } from "@/lib/Appwrite/api"
+import { EmailUserJobCompletion, UpdateJobLawyerLegalAdvice, UpdateJobLawyerReport1, uploadDoc } from "@/lib/Appwrite/api"
 import { toast } from "@/hooks/use-toast"
 import { useState } from "react"
 import { Upload, FileText, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
@@ -32,7 +32,7 @@ export function LegalAdviceForm({ JobProjectID }: { JobProjectID: string }) {
       zoningReport: null,
     },
   })
-
+{/*
   const onSubmit = async (data: FormValues) => {
     const { zoningReport } = data
 
@@ -76,7 +76,67 @@ export function LegalAdviceForm({ JobProjectID }: { JobProjectID: string }) {
       setIsSubmitting(false)
     }
   }
+*/}
 
+
+  const onSubmit = async (data: FormValues) => {
+    const { zoningReport } = data
+  
+    if (!zoningReport?.[0]) {
+      toast({
+        title: "No file selected",
+        description: "Please select a file to upload",
+        variant: "destructive"
+      })
+      return
+    }
+  
+    setIsSubmitting(true)
+  
+    try {
+      const uploadResult = await uploadDoc(zoningReport[0])
+      const fileUrl = uploadResult?.url
+  
+      if (!fileUrl) throw new Error("Upload failed")
+  
+      const updateResult = await UpdateJobLawyerLegalAdvice(JobProjectID, fileUrl)
+  
+      if (updateResult) {
+        // Send email notification to user
+        try {
+          await EmailUserJobCompletion(
+           
+            
+            "Pre-Puchase Stage Documents Uploaded - Ready for Review",
+            "68c42e8100165e5605f6",
+
+            "All documents regarding your pre-puchase stage diligence has been uploaded to your portal. Please log in to your account to view the details.",
+          )
+        } catch (emailError) {
+          console.error("Failed to send email notification:", emailError)
+          // Don't fail the entire operation if email fails
+        }
+  
+        toast({
+          title: "Upload Successful",
+          description: "Legal Advice uploaded successfully and user has been notified",
+        })
+        form.reset()
+        setUploadedFile(null)
+      } else {
+        throw new Error("Failed to update job report")
+      }
+    } catch (error) {
+      console.error("Error during submission:", error)
+      toast({
+        title: "Upload Failed",
+        description: "There was an error uploading your file. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
   const handleFileChange = (files: FileList | null, onChange: (files: FileList | null) => void) => {
     onChange(files)
     if (files && files[0]) {
@@ -113,9 +173,7 @@ export function LegalAdviceForm({ JobProjectID }: { JobProjectID: string }) {
         <h2 className="font-semibold text-primary mb-2">
           Legal Advice
         </h2>
-        <p className="text-gray-600 text-sm">
-          Upload your advice to client
-        </p>
+       
       </div>
 
       <Form {...form}>

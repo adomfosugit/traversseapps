@@ -360,9 +360,9 @@ export async function updateServiceProvider(FormData:ServiceUser) {
         membershipID:FormData.membershipID,
       
         Professional_Membership:FormData.membershipAffiliation,
-        Bank_Name: FormData.bankName,
-        Account_number:FormData.accountNumber,
-        Account_name:FormData.accountName,
+        Bank_Name: FormData.Bank_Name,
+        Account_number:FormData.Account_number,
+        Account_name:FormData.Account_name,
         District: FormData.District,
         
       }
@@ -1478,12 +1478,12 @@ export async function uploadDoc(file: File) {
   }
 }
 // Messaging Email
-export async function sendTermsConditions( content:string , userId:string ){
+export async function EmailUserJobCompletion( content:string , userId:string, emailTopic:string ){
   try {
     const { messages } = await createAdminClient()
     const termsMessage = await messages.createEmail(
       ID.unique(),
-      'Investment Plan ',
+      emailTopic,
       content,
       [],[userId],[],[],[],[], false,true
       
@@ -1493,4 +1493,5 @@ export async function sendTermsConditions( content:string , userId:string ){
     
   }
 }
+
 

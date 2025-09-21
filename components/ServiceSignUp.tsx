@@ -126,7 +126,7 @@ const ServiceSignUp = (props: Props) => {
     { id: 'LB', value: 'Land broker' },
     { id: 'LAD', value: 'Land Administrator' },
     { id: 'CE', value: 'Civil Engineer' },
-    { id: 'UP', value: 'Urban Planner' },
+    { id: 'UP', value: 'Planner' },
   ];
 
   const membershipData: TSelectOptions[] = [

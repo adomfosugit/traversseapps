@@ -104,7 +104,12 @@ export async function loginWithGoogle() {
     const { account } = await createAdminClient();
     const head = await headers()
     const origin = head.get("origin");
-    const redirectUrl = await account.createOAuth2Token( OAuthProvider.Google, `${origin}/api/oauth`,`${origin}/user-entry/sign-up`);
+   // const redirectUrl = await account.createOAuth2Token( OAuthProvider.Google, `${origin}/api/oauth`,`${origin}/user-entry/sign-up`);
+   const redirectUrl = await account.createOAuth2Token(
+    OAuthProvider.Google,
+    `${origin}/api/oauth`,            
+    `${origin}/user-entry/sign-up`    
+  );
     console.log(redirectUrl)
     return redirect (redirectUrl);
   
@@ -444,7 +449,7 @@ export async function createJob(land: string, project:string) {
       NEXT_PUBLIC_JOBLISTING!,
       project,
       {
-        Job_Executer : 'Surveyor',
+      
         LandID : land,
         AvailableForSurveyor : true,
         jobAssigned : project

@@ -46,7 +46,7 @@ const PaymentCard = ({ name, email, land, project }: Props) => {
     },
   }
 
-  return (
+  return ( 
     <div className='p-12'>
       <Card className="w-[600px] h-[550px] bg-gray-100">
         <CardHeader className='my-10'>

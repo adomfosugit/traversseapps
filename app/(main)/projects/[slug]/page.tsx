@@ -85,8 +85,8 @@ const page = async({ params, searchParams }: PageParams) => {
   
 
   return (
-    <div className='flex gap-x-5'>
-      <aside className="hidden lg:flex w-1/4 text-sm">
+    <div className='flex gap-x-20'>
+      <aside className="hidden lg:flex w-1/4 text-sm ">
         <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search,
           legal_advice: LandProjectDetails?.legal_advice,Land_Payment_Purchase: LandProjectDetails?.Land_Payment_Purchase,Sales_Purchase: LandProjectDetails?.Sales_Purchase,Conveyance: LandProjectDetails?.Conveyance,Oath_Proof: LandProjectDetails?.Oath_Proof, Mail_Document_Sign_off: LandProjectDetails?.Mail_Document_Sign_off, Stamp_Duty: LandProjectDetails?.Stamp_Duty,Concurrence_Processing: LandProjectDetails?.Concurrence_Processing,Parcel_preparation: LandProjectDetails?.Parcel_preparation,Land_Title_Certificate: LandProjectDetails?.Land_Title_Certificate, }} />
       </aside> 
@@ -100,7 +100,9 @@ const page = async({ params, searchParams }: PageParams) => {
         {/* @ts-ignore */}
         <LandCard land={LandDetails} agreedPrice={LandProjectDetails?.bid.Offer_Price}/>
 
-        {pageID === 'Pay_prepurchase' && (LandProjectDetails?.Site_visit ? <div className='ring-2 p-2 ring-green-600 bg-green-200 w-[800px] rounded-xl'> Pre-purchases Fees Paid</div>   :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
+        {pageID === 'Pay_prepurchase' && (LandProjectDetails?.Site_visit ?  <div className="flex items-center justify-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full border border-2 border-green-200 w-3/4">
+      <p className='text-center'> Pre-Purchase Stage Payment Complete ✓</p>
+    </div>  :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
         {/* @ts-ignore */}
         {pageID === 'Site_visit' && <Sitevisit JobAssignedID = {JOBID[0].$id} JobSiteVistNote = {JOBID[0]?.SiteVisitNote} Report = {JOBID[0]?.SiteVisitReport } SitePlan = {JOBID[0]?.SitePlan}/>}
           {/* @ts-ignore */}

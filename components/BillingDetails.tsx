@@ -14,7 +14,7 @@ type Props = {
 const BillingDetails = ({user, landID, projectID}: Props) => {
 
   return (
-    <div className='mt-20 flex flex-row w-full '>
+    <div className=' flex flex-row w-full '>
             <div className='flex flex-row  '>
             {/*<BillingDetailsForm /> */}
             <PaymentCard email = {user.email} name = {user.name} land = {landID} project = {projectID}/>

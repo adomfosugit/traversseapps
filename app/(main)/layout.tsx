@@ -32,7 +32,7 @@ export default async function RootLayout({children}: Readonly<{children: React.R
  
   const getUser = await getLoggedInUser()
   if(!getUser){
-      redirect('/user-entry/sign-in')
+      redirect('/user-entry/sign-up')
   }
   return (
     <html lang="en">

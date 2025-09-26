@@ -137,7 +137,7 @@ const UserSignIn = (props: Props) => {
           Create an account
         </Link>
       </div>
-      <div className="py-5 flex justify-center items-center">
+      {/*<div className="py-5 flex justify-center items-center">
         <Button 
           variant={"outline"} 
           onClick={handleGoogleSignIn} 
@@ -177,10 +177,10 @@ const UserSignIn = (props: Props) => {
               </svg>
               Continue with Google
             </>
-          )}
+          )} 
         </Button>
-      </div>
-    </div>
+      </div> */}
+    </div> 
   );
 };
 

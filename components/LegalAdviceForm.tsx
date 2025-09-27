@@ -32,51 +32,7 @@ export function LegalAdviceForm({ JobProjectID }: { JobProjectID: string }) {
       zoningReport: null,
     },
   })
-{/*
-  const onSubmit = async (data: FormValues) => {
-    const { zoningReport } = data
 
-    if (!zoningReport?.[0]) {
-      toast({
-        title: "No file selected",
-        description: "Please select a file to upload",
-        variant: "destructive"
-      })
-      return
-    }
-
-    setIsSubmitting(true)
-
-    try {
-      const uploadResult = await uploadDoc(zoningReport[0])
-      const fileUrl = uploadResult?.url
-
-      if (!fileUrl) throw new Error("Upload failed")
-
-      const updateResult = await UpdateJobLawyerLegalAdvice(JobProjectID, fileUrl)
-
-      if (updateResult) {
-        toast({
-          title: "Upload Successful",
-          description: "Legal Advice uploaded successfully",
-        })
-        form.reset()
-        setUploadedFile(null)
-      } else {
-        throw new Error("Failed to update job report")
-      }
-    } catch (error) {
-      console.error("Error during submission:", error)
-      toast({
-        title: "Upload Failed",
-        description: "There was an error uploading your file. Please try again.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-*/}
 
 
   const onSubmit = async (data: FormValues) => {
@@ -108,7 +64,7 @@ export function LegalAdviceForm({ JobProjectID }: { JobProjectID: string }) {
            
             
             "Pre-Puchase Stage Documents Uploaded - Ready for Review",
-            "68c42e8100165e5605f6",
+            "68d02d63001217b34a57",
 
             "All documents regarding your pre-puchase stage diligence has been uploaded to your portal. Please log in to your account to view the details.",
           )

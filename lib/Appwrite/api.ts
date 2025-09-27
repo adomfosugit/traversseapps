@@ -1123,7 +1123,7 @@ export async function UpdateUserProceedLandpurchase(id: string) {
         id, 
         {
         
-          prepurchase_stage: true,
+          prepurchase_stage: false,
        
         }
       ),

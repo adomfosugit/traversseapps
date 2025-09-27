@@ -17,6 +17,9 @@ import { Input } from "@/components/ui/input"
 import { UpdateJobSiteVisitNote1 } from "@/lib/Appwrite/api"
 import { toast } from '@/hooks/use-toast'
 import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
+import { FileText, MapPin, Send, ExternalLink } from "lucide-react"
 
 // Form validation schema
 const formSchema = z.object({
@@ -59,81 +62,138 @@ export function Sitevisit({ JobAssignedID, JobSiteVistNote, Report, SitePlan }: 
     }
   }
 
+  const documents = [
+    {
+      name: "Site Visit Report",
+      link: Report,
+      icon: FileText,
+      available: !!Report,
+      description: "(Surveyor)"
+    },
+    {
+      name: "Site Plan",
+      link: SitePlan,
+      icon: MapPin,
+      available: !!SitePlan,
+      description: "(Surveyor)"
+    }
+  ]
+
+  const availableDocuments = documents.filter(doc => doc.available)
+
   return (
-    <div className="w-[800px] p-6 bg-white rounded-lg shadow-md flex flex-col gap-y-5">
-      <h2 className="text-sm mb-6 text-center">Instruction for site visit (optional)</h2>
+    <div className="w-3/4 max-w-4xl space-y-2">
+      {/* Instructions Card */}
+      <Card className=" border-primary">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-semibold text-blue-900 flex items-center">
+            
+            Site Visit Instructions
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      Special Instructions or Notes (Optional)
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Provide any specific instructions for the site visit team..."
+                        className="min-h-[100px] resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="message"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="block text-sm font-medium text-gray-700">
-                  Message
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Leave your message..."
-                    {...field}
-                    className="mt-1"
-                  />
-                </FormControl>
-                <FormMessage className="text-red-500 text-sm mt-1" />
-              </FormItem>
-            )}
-          />
+              <div className="flex justify-end">
+                <Button
+                  type="submit"
+                  className="bg-primary hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
+                >
+                
+                  <span>Submit Instructions</span>
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
 
-          <div className="flex justify-end">
-            <Button
-              type="submit"
-              className="w-full sm:w-auto px-4 py-2"
-            >
-              Submit
-            </Button>
-          </div>
-        </form>
-      </Form>
-
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-          <thead>
-            <tr className="bg-gray-100 text-left">
-              <th className="px-4 py-2 border-b">Document Name</th>
-              <th className="px-4 py-2 border-b">Link</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Report && (
-              <tr>
-                <td className="px-4 py-2 border-b">Site Visit Report</td>
-                <td className="px-4 py-2 border-b">
-                  <Link
-                    href={`${Report}/view?project=6771516200333a41d2ef&mode=admin`}
-                    className="text-blue-500 hover:underline"
+      {/* Documents Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-900 flex items-center">
+            <FileText className="w-5 h-5 mr-2" />
+            Site Visit Documents
+          </CardTitle>
+          <p className="text-sm text-gray-600 mt-1">
+            {availableDocuments.length > 0 
+              ? `${availableDocuments.length} document(s) available for review`
+              : "Documents will appear here once the site visit is completed"
+            }
+          </p>
+        </CardHeader>
+        <CardContent>
+          {availableDocuments.length > 0 ? (
+            <div className="grid gap-4 md:grid-cols-2">
+              {availableDocuments.map((doc, index) => {
+                const IconComponent = doc.icon
+                return (
+                  <div
+                    key={index}
+                    className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200 bg-gradient-to-r from-gray-50 to-white"
                   >
-                    View Report
-                  </Link>
-                </td>
-              </tr>
-            )}
-            {SitePlan && (
-              <tr>
-                <td className="px-4 py-2 border-b">Site Plan</td>
-                <td className="px-4 py-2 border-b">
-                  <Link
-                    href={`${SitePlan}/view?project=6771516200333a41d2ef&mode=admin`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    View Plan
-                  </Link>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-3">
+                       
+                        <div className="flex flex-row space-x-1 min-w-0">
+                          <h4 className="font-medium text-gray-900 mb-1">
+                            {doc.name}
+                          </h4>
+                          <p className=" font-bold text-primary text-gray-600 leading-relaxed">
+                            {doc.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 flex justify-center">
+                      <Link
+                        href={`${doc.link}/view?project=6771516200333a41d2ef&mode=admin`}
+                        className="inline-flex items-center space-x-2 bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+                      >
+                        <span>View Document</span>
+                        <ExternalLink className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No Documents Available Yet
+              </h3>
+              <p className="text-gray-600 max-w-md mx-auto">
+                Documents will be uploaded here once the site visit and survey work is completed by our team.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

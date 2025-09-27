@@ -750,7 +750,6 @@ export async function UpdateJobLawyerLegalAdvice(id: string, reporturl: string) 
         id, 
         {
           LegalAdvice: reporturl,
-          prepurchase_stage: false
         }
       ),
       updateUserProjectStatusLegal(id) // <-- Change this function to trigger mail to the user indicating lawyer search and report is complete
@@ -1112,6 +1111,53 @@ export async function UpdateJobSiteVisitReport1(id: string, reporturl: string, s
     };
   }
 }
+export async function UpdateUserProceedLandpurchase(id: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupdate, userProjectUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+        
+          prepurchase_stage: true,
+       
+        }
+      ),
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_LAND_PROJECT!,
+        id, 
+        {
+        
+          Status:"Purchase",
+          Sales_Purchase:true
+       
+        }
+      ),
+     
+    ]);
+
+ 
+
+    return { 
+      success: true, 
+      data: {
+        jobupdate: parseStringify(jobupdate),
+       userProjectUpdate: userProjectUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating documents." 
+    };
+  }
+}
 export async function updateLandProjectSiteVisit(landId: string, projectId: string) {
   try {
     const { database } = await createAdminClient()
@@ -1206,25 +1252,7 @@ export async function updateUserProjectStatusLegal(Id: string) {
     return { success: false, error };
   }
 }
-{/* export async function updateUserStatus(Id: string) {
-  try {
-    const { database } = await createAdminClient();
-    const updatedBid = await database.updateDocument(
-      NEXT_DATABASE_ID!,
-      NEXT_LAND_PROJECT!,
-      Id,
-      {
-        LC_search: true,
-        legal_advice:true,
-      }
-    );
 
-    return { success: true, data: updatedBid, };
-  } catch (error) {
-    console.error('Error updating zoning status:', error);
-    return { success: false, error };
-  }
-} */}
 export async function updateUserProjectStatusConveyance(Id: string) {
   try {
     const { database } = await createAdminClient();

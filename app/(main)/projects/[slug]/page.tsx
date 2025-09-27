@@ -1,15 +1,18 @@
 import Header2 from '@/app/dashboard/Dash/Header2'
 import BillingDetails from '@/components/BillingDetails'
+import Consent from '@/components/Consent'
 import Drawer from '@/components/Drawer'
 import LandCard from '@/components/LandCard1'
 import { Sitevisit } from '@/components/Sitevist'
 import { getJobListingByUserProjectID, getLandById, getLandProjectByID, getLoggedInUser } from '@/lib/Appwrite/api'
 import Link from 'next/link'
+import { Models } from 'node-appwrite'
 
 type PageParams = {
   params: { slug: string },
   searchParams?: { q?: string }
 }
+
 
 const getHeaderContent = (pageID?: string) => {
   switch(pageID) {
@@ -78,7 +81,7 @@ const page = async({ params, searchParams }: PageParams) => {
   const LandProjectDetails = await getLandProjectByID(landProjectID.slug)
   const LandID = LandProjectDetails?.bid.LandId 
   const LandDetails = await getLandById(LandID)
-  const JOBID  = await getJobListingByUserProjectID(landProjectID.slug)
+  const JOBID = await getJobListingByUserProjectID(landProjectID.slug)
   console.log(JOBID)
 
   const headerContent = getHeaderContent(pageID)
@@ -90,42 +93,199 @@ const page = async({ params, searchParams }: PageParams) => {
         <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search,
           legal_advice: LandProjectDetails?.legal_advice,Land_Payment_Purchase: LandProjectDetails?.Land_Payment_Purchase,Sales_Purchase: LandProjectDetails?.Sales_Purchase,Conveyance: LandProjectDetails?.Conveyance,Oath_Proof: LandProjectDetails?.Oath_Proof, Mail_Document_Sign_off: LandProjectDetails?.Mail_Document_Sign_off, Stamp_Duty: LandProjectDetails?.Stamp_Duty,Concurrence_Processing: LandProjectDetails?.Concurrence_Processing,Parcel_preparation: LandProjectDetails?.Parcel_preparation,Land_Title_Certificate: LandProjectDetails?.Land_Title_Certificate, }} />
       </aside> 
-      <main className='flex flex-col mx-auto gap-y-10'>
+      <main className='flex flex-col mx-auto gap-y-3'>
+                                                          
+          <div className='flex w-3/4 justify-end mt-1'>
+              {/* @ ts-ignore */}
+              {LandProjectDetails?.legal_advice != null ?   <Consent id= {JOBID[0].$id}/> : <p></p>}
+          </div>
         <Header2 
           backText='Back' 
           title={headerContent.title} 
           subText={headerContent.subText} 
+         
         />
         
         {/* @ts-ignore */}
         <LandCard land={LandDetails} agreedPrice={LandProjectDetails?.bid.Offer_Price}/>
 
-        {pageID === 'Pay_prepurchase' && (LandProjectDetails?.Site_visit ?  <div className="flex items-center justify-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full border border-2 border-green-200 w-3/4">
-      <p className='text-center'> Pre-Purchase Stage Payment Complete ✓</p>
-    </div>  :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
-        {/* @ts-ignore */}
-        {pageID === 'Site_visit' && <Sitevisit JobAssignedID = {JOBID[0].$id} JobSiteVistNote = {JOBID[0]?.SiteVisitNote} Report = {JOBID[0]?.SiteVisitReport } SitePlan = {JOBID[0]?.SitePlan}/>}
-          {/* @ts-ignore */}
-        {pageID === 'planning_zoning' && <Link href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Zoning Report</Link>}
-          {/* @ts-ignore */}
-        {pageID === 'LC_search' && <Link href= {`${JOBID[0]?.LawyerSearchReport}/view?project=6771516200333a41d2ef&mode=admin`}> Lands Commission Search Report</Link>}
-          {/* @ts-ignore */}
-        {pageID === 'legal_advice' && <p> Lawyer Legal advice uploaded should show here(TBWO)</p>}
-          {/* @ts-ignore */}
-        {pageID === 'Land_Payment_Purchase' && (LandProjectDetails?.Funds_transfer ? <div className='ring-2 p-2 ring-green-600 bg-green-200 w-[800px] rounded-xl'> Land fund Fees Paid</div>   :   <BillingDetails user = {user} landID = {LandID} projectID = {landProjectID.slug} />)}
-        {/* @ts-ignore */}
-        {pageID === 'Sales_Purchase' && <Link  className = 'text-blue-400 text-link '  href= {`${JOBID[0]?.SalesandPurchaseAgreement}/view?project=6771516200333a41d2ef&mode=admin`}> Sales and Purchase Agreement</Link>}
-        {/* @ts-ignore */}
-        {pageID === 'Conveyance' && <Link className = 'text-blue-400 text-link '   href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Conveyance</Link>}
-        {/* @ts-ignore */}
-        {pageID === 'Oath_Proof' && <Link className = 'text-blue-400 text-link '  href= {`${JOBID[0]?.Conveyance}/view?project=6771516200333a41d2ef&mode=admin`}> Oath of Proof</Link>}
-        {/* @ts-ignore */}
-        {pageID === 'Mail_Document_Sign_off' && <Link className = 'text-blue-400 text-link '  href= {`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}> Mail Document Sign Off</Link>}
-      
-      {/* Land Registration continues here */}
-      
-      
-      
+        {pageID === 'Pay_prepurchase' && (LandProjectDetails?.Site_visit ? 
+  <div className="flex items-center justify-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full border border-2 border-green-200 w-3/4">
+    <p className='text-center'>Pre-Purchase Stage Payment Complete ✓</p>
+  </div> : 
+  <BillingDetails user={user} landID={LandID} projectID={landProjectID.slug} />
+)}
+
+{/* @ts-ignore */}
+{pageID === 'Site_visit' && <Sitevisit JobAssignedID={JOBID[0].$id} JobSiteVistNote={JOBID[0]?.SiteVisitNote} Report={JOBID[0]?.SiteVisitReport} SitePlan={JOBID[0]?.SitePlan}/>}
+
+{pageID === 'planning_zoning' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Urban Planner</p>
+          <h3 className="font-semibold text-gray-900">Zoning Report</h3>
+        </div>
+      </div>
+      <Link 
+        /* @ts-ignore */
+        href={`${JOBID[0]?.PlannerReport}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Report</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+
+{/* @ts-ignore */}
+{pageID === 'LC_search' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Lawyer</p>
+          <h3 className="font-semibold text-gray-900">Lands Commission Search Report</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.LawyerSearchReport}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Report</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+{pageID === 'legal_advice' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Lawyer</p>
+          <h3 className="font-semibold text-gray-900">Legal Advice</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.LegalAdvice}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Report</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+
+
+{/* @ts-ignore */}
+{pageID === 'Land_Payment_Purchase' && (LandProjectDetails?.Funds_transfer ? 
+  <div className="flex items-center justify-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full border border-2 border-green-200 w-3/4">
+    <p className='text-center'>Land Fund Fees Paid ✓</p>
+  </div> : 
+  <BillingDetails user={user} landID={LandID} projectID={landProjectID.slug} />
+)}
+
+{/* @ts-ignore */}
+{pageID === 'Sales_Purchase' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Legal Department</p>
+          <h3 className="font-semibold text-gray-900">Sales and Purchase Agreement</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.SalesandPurchaseAgreement}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Document</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+
+{/* @ts-ignore */}
+{pageID === 'Conveyance' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Legal Department</p>
+          <h3 className="font-semibold text-gray-900">Conveyance Document</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.Conveyance}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Document</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+
+{/* @ts-ignore */}
+{pageID === 'Oath_Proof' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Legal Department</p>
+          <h3 className="font-semibold text-gray-900">Oath of Proof</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.OathProof}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Document</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+
+{/* @ts-ignore */}
+{pageID === 'Mail_Document_Sign_off' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Administration</p>
+          <h3 className="font-semibold text-gray-900">Mail Document Sign Off</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.MailDocumentSignOff}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Document</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
       </main>
     </div>
   )

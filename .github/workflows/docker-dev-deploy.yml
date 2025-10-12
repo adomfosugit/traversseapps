@@ -6,7 +6,7 @@ on:
       - dev
 
 env:
-  DOCKER_IMAGE_NAME: kumateck/traverse-dev-web
+  DOCKER_IMAGE_NAME: tonyog/traverse-dev-web
   CONTAINER_NAME: traverse-dev-web
   HOST_PORT: 3001
   CONTAINER_PORT: 3000

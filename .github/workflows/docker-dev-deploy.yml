@@ -7,7 +7,7 @@ on:
 
 env:
   DOCKER_IMAGE_NAME: kumateck/traverse-dev-web
-  CONTAINER_NAME: test-dev-web
+  CONTAINER_NAME: traverse-dev-web
   HOST_PORT: 3001
   CONTAINER_PORT: 3000
 
@@ -32,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          file: test.Dockerfile
+          file: Dockerfile
           tags: ${{ env.DOCKER_IMAGE_NAME }}:latest
           no-cache: true
 

@@ -51,7 +51,7 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
-ENV NEXT_PUBLIC_BASE_URL=http://139.84.242.115:8080/
+ENV NEXT_PUBLIC_BASE_URL=traverse_api
 
 # ✅ Start the Next.js application
 CMD ["node", "server.js"]

@@ -50,7 +50,9 @@ jobs:
           DOCKER_IMAGE_NAME: ${{ env.DOCKER_IMAGE_NAME }}
           CONTAINER_NAME: ${{ env.CONTAINER_NAME }}
           HOST_PORT: ${{ env.HOST_PORT }}
-          CONTAINER_PORT: ${{ env.CONTAINER_PORT }}          
+          CONTAINER_PORT: ${{ env.CONTAINER_PORT }}   
+          NEXT_APPWRITE_KEY: $${{ secrets.NEXT_APPWRITE_KEY }}
+          NEXT_PUBLIC_GOOGLE_ACCESS_TOKEN: ${{ secrets.NEXT_PUBLIC_GOOGLE_ACCESS_TOKEN }}     
         run: |
           mkdir -p ~/.ssh
           echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
@@ -77,5 +79,7 @@ jobs:
 
             echo "Running the new Docker container with env vars"
             docker run -d --restart always --net sail -p "${HOST_PORT}:${CONTAINER_PORT}" --name "${CONTAINER_NAME}" \
-              "${DOCKER_IMAGE_NAME}:latest"
+            --env NEXT_APPWRITE_KEY="${NEXT_APPWRITE_KEY}" \
+            --env NEXT_PUBLIC_GOOGLE_ACCESS_TOKEN="${NEXT_PUBLIC_GOOGLE_ACCESS_TOKEN}" \
+            "${DOCKER_IMAGE_NAME}:latest"
           EOF

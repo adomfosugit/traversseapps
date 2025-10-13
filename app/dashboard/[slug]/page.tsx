@@ -35,7 +35,7 @@ const page = async({ params, searchParams }: PageParams) => {
 
 
 
-  // Role flags
+  // Role flags specify roles
   const isSurveyor = serviceProvider?.profession === 'Surveyor';
   const isPlanner = serviceProvider?.profession === 'Planner';
   const isLawyer = serviceProvider?.profession === 'Lawyer'

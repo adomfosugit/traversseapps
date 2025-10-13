@@ -1,0 +1,18 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+    container_name: traverse_web
+    networks:
+      - sail
+    restart: unless-stopped
+
+networks:
+  sail:
+    external: true
+

@@ -23,29 +23,29 @@ export const landPurchaseStages: TDrawerStage[] = [
     subNavigation: [
       {
         title: 'Land Selection',
-        path: '',
+        path: 'Land_selection',
       },
       {
-        title: 'Pay Pre-Purchase Stage Fees',
-        path: '',
+        title: 'Pay For Due Diligence',
+        path: 'Pay_prepurchase',
       },
       {
-        title: 'Site Visit',
-        path: '',
+        title: 'Site Visit & Survey',
+        path: 'Site_visit',
       },
       {
-        title: 'Site Plan Preparation',
-        path: '',
+        title: 'Planning/Zoning Search',
+        path: 'planning_zoning',
       },
       {
         title: 'Lands Commission Search',
-        path: '',
+        path: 'LC_search',
       },
       {
         title: 'Legal Advice',
-        path: '',
+        path: 'legal_advice',
       },
-     
+   
     ],
   },
   {
@@ -55,25 +55,27 @@ export const landPurchaseStages: TDrawerStage[] = [
     icon: <StageIcon iconNumber="2" />,
     iconDone: <StageIcon iconNumber="2" />,
     subNavigation: [
-      {
-        title: 'Land Payment & Purchase Stage Fees',
-        path: '',
-      },
+      
       {
         title: 'Sales and Purchase Agreement',
-        path: '',
+        path: 'Sales_Purchase',
       },
       {
+        title: 'Purchase Stage Fees',
+        path: 'Land_Payment_Purchase',
+      },
+     
+      {
         title: 'Conveynace',
-        path: '',
+        path: 'Conveyance',
       },
       {
         title: 'Oath of Proof',
-        path: '',
+        path: 'Oath_Proof',
       },
       {
         title: 'Mail & Document Sign Off',
-        path: '',
+        path: 'Mail_Document_Sign_off',
       },
     ],
   },
@@ -86,19 +88,19 @@ export const landPurchaseStages: TDrawerStage[] = [
     subNavigation: [
       {
         title: 'Stamp Duty',
-        path: '',
+        path: 'Stamp_Duty',
       },
       {
         title: 'Consent/Concurrence Processing',
-        path: '',
+        path: 'Concurrence_Processing',
       },
       {
         title: 'Parcel Land Preparation',
-        path: '',
+        path: 'Parcel_preparation',
       },
       {
         title: 'Land Title Certificate Issuance',
-        path: '',
+        path: 'Land_Title_Certificate',
       },
     ],
   },

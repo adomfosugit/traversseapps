@@ -7,6 +7,8 @@ import Navbar from "./projects/overview/Navbar";
 import { getLoggedInUser } from "@/lib/Appwrite/api";
 import { redirect } from "next/navigation";
 import BidModal from "@/components/Modal/BidModal";
+import { Toaster } from "@/components/ui/toaster";
+import CounterBidModal from "@/components/Modal/CounterBid";
 
 
 const geistSans = Geist({
@@ -25,20 +27,23 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) 
+export default async function RootLayout({children}: Readonly<{children: React.ReactNode;}>) 
 {
  
   const getUser = await getLoggedInUser()
   if(!getUser){
-      redirect('/user-entry/sign-in')
+      redirect('/user-entry/sign-up')
   }
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      >   
+
         <Navbar />
+        <Toaster />
         <BidModal/>
+        <CounterBidModal />
         {children}
 
       </body>

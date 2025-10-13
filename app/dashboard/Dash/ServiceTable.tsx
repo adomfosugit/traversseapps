@@ -1,45 +1,51 @@
 import { EyeIcon } from '@heroicons/react/24/outline';
 import TableNav from './TableNav';
 import { TSafeLand } from './LandTable';
+import { TsafeJoblist } from './Dashboard';
+import { JetBrains_Mono } from 'next/font/google';
+
 
 interface IServiceTableProps {
-  lands?: TSafeLand[] | null;
+  Job_Listings?: TsafeJoblist[] | null;
+  Profession?:string 
 }
-const ServiceTable = ({ lands }: IServiceTableProps) => {
+const ServiceTable = ({ Job_Listings,Profession }: IServiceTableProps) => {
   return (
     <div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-16">
         <table className="w-full text-sm text-left text-gray-500 ">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50  ">
             <tr>
-              <th scope="col" className="px-6 py-3">
-                Recent Activities
-              </th>
-              <th scope="col" className="px-6 py-3"></th>
-              <th scope="col" className="px-6 py-3"></th>
-              <th scope="col" className="px-6 py-3"></th>
-              <th scope="col" className="px-6 py-3"></th>
+            
+              <th scope="col" className="px-6 py-3">ID</th>
+              <th scope="col" className="px-6 py-3">LandID</th>
+              <th scope="col" className="px-6 py-3">Status</th>
+              <th scope="col" className="px-6 py-3">Created At</th>
+              <th scope="col" className="px-6 py-3"> Details</th>
             </tr>
           </thead>
           <tbody>
-            {lands?.map((land) => (
+            {Job_Listings?.map((job) => (
               <tr
-                key={land?.Listing_Title}
+                key={job.$id}
                 className="bg-white border-b hover:bg-gray-50"
               >
-                <td className="px-6 py-4">{land?.Listing_Title}</td>
-                <td className="px-6 py-4">{land?.Type_of_interest}</td>
-                <td className="px-6 py-4">{land?.Land_Area} </td>
+                <td className="px-6 py-4">{job?.$id}</td>
+                <td className="px-6 py-4">{job?.LandID}</td>
+             {Profession == 'Surveyor' &&  <td className={`px-6 py-4 ${job?.AvailableForSurveyor ? 'text-green-600' : 'text-red-600'}`}> {job?.AvailableForSurveyor ? 'Available' : 'Unavailable'}</td> }
+             {Profession == 'Lawyer' &&  <td className={`px-6 py-4 ${job?.AvailableForLawyer ? 'text-green-600' : 'text-red-600'}`}> {job?.AvailableForLawyer ? 'Available' : 'Unavailable'}</td> }
+             {Profession == 'Planner' &&  <td className={`px-6 py-4 ${job?.AvailableForPlanner ? 'text-green-600' : 'text-red-600'}`}> {job?.AvailableForPlanner ? 'Available' : 'Unavailable'}</td> }
+               
                 <td className="px-6 py-4">
-                 24/01/2024
+                {new Intl.DateTimeFormat('en-GB').format(new Date(job?.$createdAt))}
                 </td>
                 <td className="px-6 py-4 flex text-blue-600 hover:underline">
                   <EyeIcon className="w-4 h-4 my-auto mr-2" />{' '}
                   <a
-                    href={`/`}
+                    href={`/dashboard/${job?.$id}`}
                     className="font-medium "
                   >
-                    View land
+                    View Details
                   </a>
                 </td>
               </tr>

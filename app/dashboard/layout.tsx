@@ -8,6 +8,10 @@ import { redirect } from "next/navigation";
 import LandModal from "@/components/Modal/LandModal";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Toaster } from "@/components/ui/toaster";
+import BidModal from "@/components/Modal/BidModal";
+import CounterBidModal from "@/components/Modal/CounterBid";
+import Navbar from "./Dash/Navbar";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +28,7 @@ export const metadata: Metadata = {
   description: "Traverse -Revolutinizing building in Africa - Real Estate",
 };
 export const dynamic = "force-dynamic";
-export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) 
+export default async function RootLayout({children}: Readonly<{children: React.ReactNode;}>) 
 {
  
   const getUser = await getLoggedInUser()
@@ -44,11 +48,12 @@ export default async function RootLayout({children,}: Readonly<{children: React.
      <>
       <main className="mx-36 mt-9 ">
 
-
-   
-      <Toaster />
+        <Navbar />
+        <Toaster />
         {children}
+        <BidModal />
         <LandModal />
+        <CounterBidModal />
         </main>
     </> 
  

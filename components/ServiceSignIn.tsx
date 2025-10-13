@@ -8,10 +8,11 @@ import {Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessag
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link';
-
 import { useRouter } from 'next/navigation';
 import { toast } from '@/hooks/use-toast';
 import { loginWithGoogle, signInAccount } from '@/lib/Appwrite/api';
+import { Loader2 } from 'lucide-react';
+
 type Props = {}
 
 const formSchema = z.object({
@@ -22,7 +23,8 @@ const formSchema = z.object({
 const ServiceSignIn = (props: Props) => {
   
   const router = useRouter()
-  const [isLoading, setIsLoading] =  useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,23 +32,45 @@ const ServiceSignIn = (props: Props) => {
       Password: "",
     },
   })
-  
+     
   // 2. Define a submit handler.
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const session = await signInAccount(values.Email,values.Password)
-    if(!session.success){
-    return toast({title: ` ${session.error}`})
-    }
-    router.push('/dashboard')
+    setIsLoading(true)
     
+    try {
+      const session = await signInAccount(values.Email, values.Password)
+      
+      if (!session.success) {
+        toast({
+          title: `${session.error}`,
+          variant: "destructive"
+        })
+        return
+      }
+      
+      toast({
+        title: "Success",
+        description: "Welcome back! Redirecting to dashboard...",
+      })
+      
+      router.push('/dashboard')
+      
+    } catch (error) {
+      console.error("Sign in error:", error)
+      toast({
+        title: "Sign In Failed",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
+
   return (
     <div className='w-full p-12 '>
-
-    <div className=' w-full flex flex-col items-start gap-y-[20px]  '>
- 
-      <div>
+     <div className=' w-full flex flex-col items-start gap-y-[20px]  '>
+        <div>
         <h1 className='text-xl font-semibold'>Welcome Back</h1>
         <h1 className='text-sm text-zinc-500'>Log in to your account</h1>
       </div>
@@ -59,9 +83,13 @@ const ServiceSignIn = (props: Props) => {
             <FormItem>
               <FormLabel className='text-sm'>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input 
+                  placeholder="Email" 
+                  {...field} 
+                  disabled={isLoading}
+                  className={isLoading ? "opacity-50" : ""}
+                />
               </FormControl>
-             
               <FormMessage />
             </FormItem>
           )}
@@ -73,31 +101,60 @@ const ServiceSignIn = (props: Props) => {
             <FormItem>
               <FormLabel className='text-sm'>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Password" {...field} type='password'/>
+                <Input 
+                  placeholder="Password" 
+                  {...field} 
+                  type='password'
+                  disabled={isLoading}
+                  className={isLoading ? "opacity-50" : ""}
+                />
               </FormControl>
               <FormMessage />
-           
             </FormItem>
           )}
         />
+                 
+        <Link 
+          href='/account-recovery' 
+          className={`flex text-red-400 text-xs justify-end hover:cursor-pointer ${
+            isLoading ? 'pointer-events-none opacity-50' : ''
+          }`}
+        >
+          Forgot Password?
+        </Link>
         
-        <Link href='/account-recovery' className='flex text-red-400 text-xs justify-end hover: cursor-pointer'>
-            Forgot Password?</Link>
-        <Button type="submit" className='w-full'>{isLoading ? 
-        <div className='flex-center'>  Loading...</div>
-          : 'Log In'} </Button>
+        <Button 
+          type="submit" 
+          className='w-full' 
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <div className='flex items-center justify-center space-x-2'>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Signing In...</span>
+            </div>
+          ) : (
+            'Log In'
+          )}
+        </Button>
       </form>
     </Form>
       </div>
-      <div className='flex-col  lg:flex text-center text-sm text-neutral-600 p-3 items-center justify-center '>
-        <p className='mr-1'>Don't have an account ?</p> 
-      <Link href= '/service-provider/sign-up' className='text-primary text-small ml-5'>Create an account</Link>
+      <div className={`flex-col lg:flex text-center text-sm text-neutral-600 p-3 items-center justify-center ${
+        isLoading ? 'opacity-50' : ''
+      }`}>
+        <p className='mr-1'>Don't have an account ?</p>
+       <Link 
+         href='/service-provider/sign-up' 
+         className={`text-primary text-small ml-5 ${
+           isLoading ? 'pointer-events-none' : ''
+         }`}
+       >
+         Create an account
+       </Link>
       </div>
- 
-    
-      
+                  
     </div>
-    
   )
 }
 

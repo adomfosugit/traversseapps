@@ -1,8 +1,17 @@
-import Overview from './overview/Overview';
-
-const Projects = () => {
-    //get current user pass the name email and other detail down to the navbar and auth for name display and logout functionality
-  return <Overview />;
+import { getLandProject, getLoggedInUser } from '@/lib/Appwrite/api';
+import { DataTable } from './overview/data-table';
+import { columns } from './overview/columns';
+import Header from './overview/Header';
+const Projects = async() => {
+   const user = await getLoggedInUser()
+   const createdProjects = await getLandProject(`${user.email}`)
+   console.log(createdProjects)
+  return (
+  <div className=' flex max-w-5xl mx-auto flex-col items-center   justify-center py-10  gap-y-2'>
+    <Header />
+    {/* @ts-ignore */}
+    <DataTable data={createdProjects} columns={columns}/>;
+  </div>)
 };
 
 export default Projects;

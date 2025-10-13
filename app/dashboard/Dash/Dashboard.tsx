@@ -8,10 +8,25 @@ import Header2 from './Header2';
 import Header from './Header';
 import ServiceTable from './ServiceTable';
 
-
+export type TsafeJoblist = {
+  Job_Executer:string;
+  LandID: string;
+  AvailableForSurveyor: boolean;
+  AvailableForPlanner: boolean;
+  AvailableForLawyer: boolean;
+  $id:string;
+  $createdAt:Date
+  SiteVisitCompletionStatus:boolean
+  LCSearchCompletionStatus:boolean
+  ZoningReportComplete:boolean
+  jobAssigned:string
+  LawyerPurchaseStage:boolean
+  LawyerRegistrationStage:boolean
+}
 interface IDashboardProps {
   brokerLands?: TSafeLand[] | null;
   brokerProfession?: string;
+  projectListings? : TsafeJoblist[] | null 
 }
 
 export enum EBrokerProfession {
@@ -19,21 +34,24 @@ export enum EBrokerProfession {
   SURVEYOR = 'Surveyor',
   SOLICITOR = 'Solicitor',
   ARCHITECT = 'Architect',
+  PLANNER = 'Planner'
 }
 
-const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
+const Dashboard = ({brokerLands,brokerProfession, projectListings}:IDashboardProps) => {
   const landModal = useLandModal();
+  console.log('project', projectListings)
+  
 
 
   const landCards = [
     {
       id: '1',
-      number: '0',
+      number: brokerLands?.length ,
       description: 'Total no. of lands',
     },
     {
       id: '2',
-      number: '0',
+      number: brokerLands?.reduce((total, land) => total + (land?.bid?.length || 0), 0) || 0,
       description: 'Offers available',
     },
     {
@@ -58,7 +76,7 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
   const cards = [
     {
       id: '1',
-      number: '0',
+      number:  projectListings?.length,
       description: 'Total no. of projects',
     },
     {
@@ -97,6 +115,7 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
         {landCards.map((card) => (
           <AggregateCard
             key={card.id}
+          //  @ts-ignore
             number={card.number}
             numberDescription={card.numberDescription}
             icon={card.icon}
@@ -112,15 +131,12 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
     <div>
       <Header
         title="Home"
-        subText="Your dashboard with information about your work with Traverse"
-    
-
-       
-      />
+        subText="Your dashboard with information about your work with Traverse" />
       <div className="mt-14 grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-4">
         {cards.map((card) => (
           <AggregateCard
             key={card.id}
+            //@ts-ignore
             number={card.number}
             numberDescription={card.numberDescription}
             icon={card.icon}
@@ -128,7 +144,7 @@ const Dashboard = ({brokerLands,brokerProfession}:IDashboardProps) => {
           />
         ))}
       </div>
-      <ServiceTable lands={brokerLands} />
+      <ServiceTable Job_Listings={projectListings}  Profession = {brokerProfession}/>
     </div>
   );
 

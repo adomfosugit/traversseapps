@@ -1,6 +1,7 @@
 import { EyeIcon } from '@heroicons/react/24/outline';
 import TableNav from './TableNav';
 import Link from 'next/link';
+import { TSafeBid } from '@/app/(main)/landlisting/Detail';
 
 
 export type TSafeLand = {
@@ -9,9 +10,12 @@ export type TSafeLand = {
  Longitude: number;
  Land_Area: number;
  Price:number;
+ bid:TSafeBid[];
  ImageSrc:  Array<string> 
  Listing_Title: string;
  $createdAt: string;
+ $id:string;
+ 
 
 }
 interface ILandTableProps {
@@ -55,7 +59,7 @@ const LandTable = ({ lands }: ILandTableProps) => {
                   <EyeIcon className="w-4 h-4 my-auto mr-2" />{' '}
                   <Link
 
-                    href={`/`}
+                    href={`/dashboard/Projects/${land?.$id}`}
                     className="font-medium "
                   >
                     View land

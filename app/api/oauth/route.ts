@@ -1,21 +1,24 @@
 // src/app/oauth/route.js
 import { createAdminClient } from "@/lib/Appwrite/Config";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(request:any) {
+export async function GET(request) {
   const userId = request.nextUrl.searchParams.get("userId");
   const secret = request.nextUrl.searchParams.get("secret");
 
   const { account } = await createAdminClient();
   const session = await account.createSession(userId, secret);
-  const cookieStore = await cookies()
-  cookieStore.set("appwrite-session", session.secret, {
-    path: "/",
+
+  // Create a response and set the cookie on it
+  const response = NextResponse.redirect(`${request.nextUrl.origin}/home`);
+  response.cookies.set({
+    name: "appwrite-session",
+    value: session.secret,
     httpOnly: true,
     sameSite: "strict",
-    secure: true,
+    secure: true, // keep true in production (HTTPS)
+    path: "/",
   });
 
-  return NextResponse.redirect(`${request.nextUrl.origin}/dashboard`);
+  return response;
 }

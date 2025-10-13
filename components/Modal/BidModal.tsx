@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
@@ -55,9 +55,9 @@ const BidModal = () => {
       offer: 0,
     },
   });
-  
+  const router = useRouter()
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-  
+   
     setIsLoading(true);
   
     try {
@@ -67,13 +67,14 @@ const BidModal = () => {
       data.BidderEmail = BidderEmail.email;
       data.landId = landId;
       data.offer = parseFloat(data.offer)
+      data.Owner_Decision = null
   
       // Validate required fields
       if (!data.landOwnerId || !data.originalPrice || !data.landId) {
         toast.error('Error retrieving data, please refresh and try again');
         return;
       }
-  
+      //@ts-ignore
       const submitbid = await submitBid(data);
   
       // Check if the bid submission was successful
@@ -81,8 +82,8 @@ const BidModal = () => {
         toast.error(submitbid.error);
         return;
       }
-  
-      toast.success('Bid submitted successfully!');
+      router.refresh()
+      toast('Bid submitted successfully!');
      
   
     } catch (error) {

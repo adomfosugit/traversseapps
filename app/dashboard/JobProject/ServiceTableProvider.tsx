@@ -37,8 +37,22 @@ const ServiceTable = ({ Job_Listings, Profession }: IServiceTableProps) => {
                 <td className="px-6 py-4">{job?.LandID}</td>
                {isSurveyor && ( <td className={`px-6 py-4 ${job?.SiteVisitCompletionStatus ? 'text-green-600' : 'text-red-600'}`}> {job?.SiteVisitCompletionStatus ? 'Complete' : 'Incomplete'}</td>) }
                {isPlanner && ( <td className={`px-6 py-4 ${job?.LCSearchCompletionStatus ? 'text-green-600' : 'text-red-600'}`}> {job?.LCSearchCompletionStatus ? 'Complete' : 'Incomplete'}</td>) }
-               {isLawyer && ( <td className={`px-6 py-4 ${job?.ZoningReportComplete ? 'text-green-600' : 'text-red-600'}`}> {job?.ZoningReportComplete ? 'Complete' : 'Incomplete'}</td>) }
-               
+            {/*   {isLawyer && ( <td className={`px-6 py-4 ${job?.ZoningReportComplete ? 'text-green-600' : 'text-red-600'}`}> {job?.ZoningReportComplete ? 'Complete' : 'Incomplete'}</td>) } */}
+               {isLawyer && ( 
+                 <td className="px-6 py-4">
+                   <div className="flex flex-col gap-1">
+                     <div className={`text-xs ${job?.ZoningReportComplete ? 'text-green-600' : 'text-red-600'}`}>
+                       Prepurchase: {job?.ZoningReportComplete ? '✓ Complete' : '✗ Incomplete'}
+                     </div>
+                     <div className={`text-xs ${job?.LawyerPurchaseStage ? 'text-green-600' : 'text-red-600'}`}>
+                       Purchase: {job?.LawyerPurchaseStage ? '✓ Complete' : '✗ Incomplete'}
+                     </div>
+                     <div className={`text-xs ${job?.LawyerRegistrationStage ? 'text-green-600' : 'text-red-600'}`}>
+                       Registration: {job?.LawyerRegistrationStage ? '✓ Complete' : '✗ Incomplete'}
+                     </div>
+                   </div>
+                 </td>
+               )} 
                 <td className="px-6 py-4">
                 {new Intl.DateTimeFormat('en-GB').format(new Date(job?.$createdAt))}
                 </td>

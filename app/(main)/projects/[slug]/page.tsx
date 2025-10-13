@@ -83,6 +83,11 @@ const page = async({ params, searchParams }: PageParams) => {
   const LandDetails = await getLandById(LandID)
   const JOBID = await getJobListingByUserProjectID(landProjectID.slug)
   console.log(JOBID)
+   // Add this check
+   const jobListing = JOBID?.[0]
+   if (!jobListing) {
+     return <div>No job listing found</div>
+   }
 
   const headerContent = getHeaderContent(pageID)
   
@@ -90,14 +95,16 @@ const page = async({ params, searchParams }: PageParams) => {
   return (
     <div className='flex gap-x-20'>
       <aside className="hidden lg:flex w-1/4 text-sm ">
-        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search,
-          legal_advice: LandProjectDetails?.legal_advice,Land_Payment_Purchase: LandProjectDetails?.Land_Payment_Purchase,Sales_Purchase: LandProjectDetails?.Sales_Purchase,Conveyance: LandProjectDetails?.Conveyance,Oath_Proof: LandProjectDetails?.Oath_Proof, Mail_Document_Sign_off: LandProjectDetails?.Mail_Document_Sign_off, Stamp_Duty: LandProjectDetails?.Stamp_Duty,Concurrence_Processing: LandProjectDetails?.Concurrence_Processing,Parcel_preparation: LandProjectDetails?.Parcel_preparation,Land_Title_Certificate: LandProjectDetails?.Land_Title_Certificate, }} />
+        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search, legal_advice: LandProjectDetails?.legal_advice,Land_Payment_Purchase: LandProjectDetails?.Land_Payment_Purchase,Sales_Purchase: LandProjectDetails?.Sales_Purchase,Conveyance: LandProjectDetails?.Conveyance,Oath_Proof: LandProjectDetails?.Oath_Proof, Mail_Document_Sign_off: LandProjectDetails?.Mail_Document_Sign_off, Stamp_Duty: LandProjectDetails?.Stamp_Duty,Concurrence_Processing: LandProjectDetails?.Concurrence_Processing,Parcel_preparation: LandProjectDetails?.Parcel_preparation,Land_Title_Certificate: LandProjectDetails?.Land_Title_Certificate, }} />
       </aside> 
       <main className='flex flex-col mx-auto gap-y-3'>
                                                           
           <div className='flex w-3/4 justify-end mt-1'>
               {/* @ ts-ignore */}
-              {LandProjectDetails?.legal_advice != null ?   <Consent id= {JOBID[0].$id}/> : <p></p>}
+
+              {pageID === 'legal_advice' && ( LandProjectDetails?.legal_advice != null   ? <Consent id={JOBID[0]?.$id} />  : <p></p>)}
+
+              
           </div>
         <Header2 
           backText='Back' 

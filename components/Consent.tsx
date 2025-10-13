@@ -49,11 +49,7 @@ const Consent = ({id}:{id:string}) => {
                 <DialogContent className='py-5'>
                   <DialogHeader>
                     <DialogTitle className='text-primary mb-5'>Traverse</DialogTitle>
-                    <p>
-  Please carefully review all submitted documents.  
-  If you are satisfied with the information provided,  
-  click <strong>Proceed</strong> to give your consent and move to the purchase stage.
-</p>
+                    <p>Please carefully review all submitted documents.  If you are satisfied with the information provided,  click <strong>Proceed</strong> to give your consent and move to the purchase stage.</p>
                      <Button variant={'outline'} className='py-5 border-zinc-300 hover:bg-primary hover:text-white hover:border-neutral-50' onClick={handleProceed}>Proceed</Button>
                   </DialogHeader>
                 </DialogContent>

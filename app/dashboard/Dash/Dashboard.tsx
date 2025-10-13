@@ -20,6 +20,8 @@ export type TsafeJoblist = {
   LCSearchCompletionStatus:boolean
   ZoningReportComplete:boolean
   jobAssigned:string
+  LawyerPurchaseStage:boolean
+  LawyerRegistrationStage:boolean
 }
 interface IDashboardProps {
   brokerLands?: TSafeLand[] | null;

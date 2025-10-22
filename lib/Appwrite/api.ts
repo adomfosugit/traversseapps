@@ -788,7 +788,7 @@ export async function UpdatePurchaseStage(id: string, reporturl: string) {
         {
           
           SalesandPurchaseAgreement: reporturl,
-          Sales_Purchase: true
+        
         }
       ),
       updateUserProjectStatussalespurchase(id) 
@@ -1330,6 +1330,7 @@ export async function updateUserProjectStatusOathofProof(Id: string) {
       {
       
         Oath_Proof:true,
+        Mail_Document_Sign_off:true,
       }
     );
 

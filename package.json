@@ -45,6 +45,8 @@
     "npx": "^3.0.0",
     "peer": "^1.0.2",
     "query-string": "^9.1.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-dropzone": "^14.3.8",
     "react-google-autocomplete": "^2.7.4",
     "react-hook-form": "^7.57.0",

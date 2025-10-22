@@ -87,6 +87,10 @@ export const landPurchaseStages: TDrawerStage[] = [
     iconDone: <StageIcon iconNumber="2" />,
     subNavigation: [
       {
+        title: 'Land Registration Fees',
+        path: 'Registration',
+      },
+      {
         title: 'Stamp Duty',
         path: 'Stamp_Duty',
       },

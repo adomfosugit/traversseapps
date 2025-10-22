@@ -1159,6 +1159,57 @@ export async function UpdateUserProceedLandpurchase(id: string) {
     };
   }
 }
+
+
+
+export async function UpdateUserProceedLandRegistration(id: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupdate, userProjectUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+        
+          Purchase_Stage_Approved: false,
+          Registration_stage:true
+       
+        }
+      ),
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_LAND_PROJECT!,
+        id, 
+        {
+        
+          Status:"Land_Registration",
+          Registration:true
+       
+        }
+      ),
+     
+    ]);
+
+ 
+
+    return { 
+      success: true, 
+      data: {
+        jobupdate: parseStringify(jobupdate),
+       userProjectUpdate: userProjectUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating documents." 
+    };
+  }
+}
 export async function UpdateUserLandProceedings(id: string) {
   //Add email to send requests to lawyer to proceed with Conveyance etc
   try {
@@ -1188,7 +1239,6 @@ export async function UpdateUserLandProceedings(id: string) {
       ),
      
     ]);
-
  
 
     return { 
@@ -1206,6 +1256,52 @@ export async function UpdateUserLandProceedings(id: string) {
     };
   }
 }
+
+export async function UpdateUserLandProceedingsRegister(id: string) {
+  //Add email to send requests to lawyer to proceed with Conveyance etc
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupdate, userProjectUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+        
+          RegistrationFees_Paid: true
+       
+        }
+      ),
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_LAND_PROJECT!,
+        id, 
+        {
+        //Check if there a state to change in the user project. 
+          Funds_transfer:true
+       
+        }
+      ),
+     
+    ]);
+    return { 
+      success: true, 
+      data: {
+        jobupdate: parseStringify(jobupdate),
+       userProjectUpdate: userProjectUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating documents." 
+    };
+  }
+}
+
 export async function updateLandProjectSiteVisit(landId: string, projectId: string) {
   try {
     const { database } = await createAdminClient()

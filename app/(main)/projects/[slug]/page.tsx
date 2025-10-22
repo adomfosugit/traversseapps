@@ -4,6 +4,7 @@ import BillingDetails from '@/components/BillingDetails'
 import Consent from '@/components/Consent'
 import Drawer from '@/components/Drawer'
 import LandCard from '@/components/LandCard1'
+import RegistrationBilling from '@/components/RegistrationBilling'
 import { Sitevisit } from '@/components/Sitevist'
 import { getJobListingByUserProjectID, getLandById, getLandProjectByID, getLoggedInUser } from '@/lib/Appwrite/api'
 import Link from 'next/link'
@@ -67,6 +68,31 @@ const getHeaderContent = (pageID?: string) => {
         title: 'Oath of Proof',
         subText: 'Oath of Proof'
       }
+    case 'Registration':
+      return {
+        title: 'Land Registration',
+        subText: 'Registration stage consists of Stamp Duty'
+      }
+    case 'Stamp_Duty':
+      return {
+        title: 'Stamp Duty',
+        subText: 'Registration stage consists of Stamp Duty'
+      }
+    case 'Concurrence_Processing':
+      return {
+        title: 'Concurrence Processing',
+        subText: 'Registration stage consists of Stamp Duty'
+      }
+    case 'Parcel_preparation':
+      return {
+        title: 'Parcel Preparation',
+        subText: 'Registration stage consists of Stamp Duty'
+      }
+    case 'Land_Title_Certificate':
+      return {
+        title: 'Land Title Certificate',
+        subText: 'Registration stage consists of Stamp Duty'
+      }
     default:
       return {
         title: 'Project Overview',
@@ -98,7 +124,7 @@ const page = async({ params, searchParams }: PageParams) => {
   return (
     <div className='flex gap-x-20'>
       <aside className="hidden lg:flex w-1/4 text-sm ">
-        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search, legal_advice: LandProjectDetails?.legal_advice,Land_Payment_Purchase: LandProjectDetails?.Land_Payment_Purchase,Sales_Purchase: LandProjectDetails?.Sales_Purchase,Conveyance: LandProjectDetails?.Conveyance,Oath_Proof: LandProjectDetails?.Oath_Proof, Mail_Document_Sign_off: LandProjectDetails?.Mail_Document_Sign_off, Stamp_Duty: LandProjectDetails?.Stamp_Duty,Concurrence_Processing: LandProjectDetails?.Concurrence_Processing,Parcel_preparation: LandProjectDetails?.Parcel_preparation,Land_Title_Certificate: LandProjectDetails?.Land_Title_Certificate, }} />
+        <Drawer path={landProjectID}  stages={{Land_selection: LandProjectDetails?.Land_selection,Pay_prepurchase: LandProjectDetails?.Pay_prepurchase,Site_visit: LandProjectDetails?.Site_visit,planning_zoning: LandProjectDetails?.planning_zoning,LC_search: LandProjectDetails?.LC_search, legal_advice: LandProjectDetails?.legal_advice,Land_Payment_Purchase: LandProjectDetails?.Land_Payment_Purchase,Sales_Purchase: LandProjectDetails?.Sales_Purchase,Conveyance: LandProjectDetails?.Conveyance,Oath_Proof: LandProjectDetails?.Oath_Proof, Mail_Document_Sign_off: LandProjectDetails?.Mail_Document_Sign_off, Registration:LandProjectDetails?.RegistrationFees, Stamp_Duty: LandProjectDetails?.Stamp_Duty,Concurrence_Processing: LandProjectDetails?.Concurrence_Processing,Parcel_preparation: LandProjectDetails?.Parcel_preparation,Land_Title_Certificate: LandProjectDetails?.Land_Title_Certificate, }} />
       </aside> 
       <main className='flex flex-col mx-auto gap-y-3'>
                                                           
@@ -205,6 +231,7 @@ const page = async({ params, searchParams }: PageParams) => {
   <BankBilling user={user} landID={LandID} projectID={landProjectID.slug} agreedPrice = {offerPrice}/>
 )}
 
+
 {/* @ts-ignore */}
 {pageID === 'Sales_Purchase' && (
   <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
@@ -286,6 +313,99 @@ const page = async({ params, searchParams }: PageParams) => {
       </div>
       <Link 
         href={`${JOBID[0]?.MailDocumentSignOff}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Document</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+
+
+{pageID === 'Registration' && (LandProjectDetails?.RegistrationFeesPaid ? 
+  <div className="flex items-center justify-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full border border-2 border-green-200 w-3/4">
+    <p className='text-center'>Registration Fees Paid ✓</p>
+  </div> : 
+  <RegistrationBilling user={user} landID={LandID} projectID={landProjectID.slug} agreedPrice = {offerPrice}/>
+)}
+
+{pageID === 'Stamp_Duty' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Lawyer</p>
+          <h3 className="font-semibold text-gray-900">Stamp Duty</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.Stamp_Duty}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Document</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+{pageID === 'Concurrence_Processing' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Lawyer</p>
+          <h3 className="font-semibold text-gray-900">Concurrence Processing</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.Concurrence_Processing}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Document</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+{pageID === 'Parcel_preparation' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Lawyer</p>
+          <h3 className="font-semibold text-gray-900">Parcel Preparation</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.Parcel_preparation}/view?project=6771516200333a41d2ef&mode=admin`}
+        className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
+      >
+        <span>View Document</span>
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </Link>
+    </div>
+  </div>
+)}
+{pageID === 'Land_Title_Certificate' && (
+  <div className="w-3/4 border border-2 rounded-xl border-primary p-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div>
+          <p className="text-sm text-primary font-medium">From Lawyer</p>
+          <h3 className="font-semibold text-gray-900">Land title Certificate Issuance</h3>
+        </div>
+      </div>
+      <Link 
+        href={`${JOBID[0]?.Land_Title_Certificate}/view?project=6771516200333a41d2ef&mode=admin`}
         className="bg-primary hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-2"
       >
         <span>View Document</span>

@@ -1124,6 +1124,7 @@ export async function UpdateUserProceedLandpurchase(id: string) {
         {
         
           prepurchase_stage: false,
+          Purchase_Stage_Approved: true
        
         }
       ),
@@ -1135,6 +1136,53 @@ export async function UpdateUserProceedLandpurchase(id: string) {
         
           Status:"Purchase",
           Sales_Purchase:true
+       
+        }
+      ),
+     
+    ]);
+
+ 
+
+    return { 
+      success: true, 
+      data: {
+        jobupdate: parseStringify(jobupdate),
+       userProjectUpdate: userProjectUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating documents." 
+    };
+  }
+}
+export async function UpdateUserLandProceedings(id: string) {
+  //Add email to send requests to lawyer to proceed with Conveyance etc
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupdate, userProjectUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+        
+          Purchase_Stage_Paid: true
+       
+        }
+      ),
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_LAND_PROJECT!,
+        id, 
+        {
+        
+          Funds_transfer:true
        
         }
       ),
@@ -1376,6 +1424,7 @@ export async function updateUserProjectStatussalespurchase(Id: string) {
       Id,
       {
         Sales_Purchase:true,
+        Land_Payment_Purchase:true
       }
     );
 
@@ -1510,6 +1559,12 @@ export async function uploadDoc(file: File) {
     throw error; // Re-throw the error to handle it in the calling function
   }
 }
+
+
+
+
+
+
 // Messaging Email
 export async function EmailUserJobCompletion( content:string , userId:string, emailTopic:string ){
   try {

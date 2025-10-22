@@ -1,5 +1,4 @@
 import React from 'react'
-import BillingDetailsForm from './BillingDetailsForm'
 import PaymentCard from './PaymentCard'
 
 type Props = {

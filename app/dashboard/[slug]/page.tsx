@@ -40,7 +40,7 @@ const page = async({ params, searchParams }: PageParams) => {
   const isPlanner = serviceProvider?.profession === 'Planner';
   const isLawyer = serviceProvider?.profession === 'Lawyer'
   const prepurchase_stage = JobProjectDetails?.prepurchase_stage
-  const purchase_stage = JobProjectDetails?.Purchase_Stage_Paid
+  const purchase_stage = JobProjectDetails?.Purchase_Stage_Approved
   const Registraion_stage = JobProjectDetails?.Registration_stage
   
  

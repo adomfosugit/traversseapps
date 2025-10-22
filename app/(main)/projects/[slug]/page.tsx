@@ -1,4 +1,5 @@
 import Header2 from '@/app/dashboard/Dash/Header2'
+import BankBilling from '@/components/BankBilling'
 import BillingDetails from '@/components/BillingDetails'
 import Consent from '@/components/Consent'
 import Drawer from '@/components/Drawer'
@@ -6,7 +7,7 @@ import LandCard from '@/components/LandCard1'
 import { Sitevisit } from '@/components/Sitevist'
 import { getJobListingByUserProjectID, getLandById, getLandProjectByID, getLoggedInUser } from '@/lib/Appwrite/api'
 import Link from 'next/link'
-import { Models } from 'node-appwrite'
+
 
 type PageParams = {
   params: { slug: string },
@@ -80,10 +81,12 @@ const page = async({ params, searchParams }: PageParams) => {
   const pageID = await searchParams?.q
   const LandProjectDetails = await getLandProjectByID(landProjectID.slug)
   const LandID = LandProjectDetails?.bid.LandId 
+  const offerPrice = LandProjectDetails?.bid.Offer_Price
   const LandDetails = await getLandById(LandID)
   const JOBID = await getJobListingByUserProjectID(landProjectID.slug)
-  console.log(JOBID)
-   // Add this check
+  console.log(offerPrice)
+
+
    const jobListing = JOBID?.[0]
    if (!jobListing) {
      return <div>No job listing found</div>
@@ -199,7 +202,7 @@ const page = async({ params, searchParams }: PageParams) => {
   <div className="flex items-center justify-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full border border-2 border-green-200 w-3/4">
     <p className='text-center'>Land Fund Fees Paid ✓</p>
   </div> : 
-  <BillingDetails user={user} landID={LandID} projectID={landProjectID.slug} />
+  <BankBilling user={user} landID={LandID} projectID={landProjectID.slug} agreedPrice = {offerPrice}/>
 )}
 
 {/* @ts-ignore */}

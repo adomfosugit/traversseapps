@@ -1159,6 +1159,56 @@ export async function UpdateUserProceedLandpurchase(id: string) {
     };
   }
 }
+export async function UpdateUserProceedLandRegister(id: string) {
+  try {
+    const { database } = await createAdminClient();
+
+    // Run both updates in parallel
+    const [jobupdate, userProjectUpdate] = await Promise.all([
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_PUBLIC_JOBLISTING!,
+        id, 
+        {
+        
+          Purchase_Stage_Approved: false,
+          Registration_stage: true,
+
+       
+        }
+      ),
+      database.updateDocument(
+        NEXT_DATABASE_ID!,
+        NEXT_LAND_PROJECT!,
+        id, 
+        {
+        
+          Status:"Land_Registration",
+          RegistrationFees:true,
+        
+       
+        }
+      ),
+     
+    ]);
+
+ 
+
+    return { 
+      success: true, 
+      data: {
+        jobupdate: parseStringify(jobupdate),
+       userProjectUpdate: userProjectUpdate.data
+      } 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An error occurred while updating documents." 
+    };
+  }
+}
 
 
 
@@ -1269,8 +1319,10 @@ export async function UpdateUserLandProceedingsRegister(id: string) {
         NEXT_PUBLIC_JOBLISTING!,
         id, 
         {
-        
-          RegistrationFees_Paid: true
+         //Check if there a state to change in the user project.
+         // RegistrationFees_Paid: true
+         // Dont update any instance at the moment
+         // Alert lawyer to continue job request
        
         }
       ),
@@ -1279,8 +1331,8 @@ export async function UpdateUserLandProceedingsRegister(id: string) {
         NEXT_LAND_PROJECT!,
         id, 
         {
-        //Check if there a state to change in the user project. 
-          Funds_transfer:true
+        
+        RegistrationFees_Paid: true
        
         }
       ),

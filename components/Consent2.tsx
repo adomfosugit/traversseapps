@@ -8,22 +8,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from './ui/button'
-import { UpdateUserProceedLandpurchase } from '@/lib/Appwrite/api'
+import { UpdateUserProceedLandpurchase, UpdateUserProceedLandRegister } from '@/lib/Appwrite/api'
 
 import { toast } from "@/hooks/use-toast"
 
-const Consent = ({id}:{id:string}) => {
+const Consent2 = ({id}:{id:string}) => {
 
         
   const handleProceed = async () => {
     try {
-      const result = await UpdateUserProceedLandpurchase(id)
+      const result = await UpdateUserProceedLandRegister(id)
       console.log(id)
 
       if (result?.success) {
         toast({
           title: 'Success',
-          description: 'You may now proceed to the purchase stage.',
+          description: 'You may now proceed to the Registration stage.',
         })
       } else {
         toast({
@@ -58,4 +58,4 @@ const Consent = ({id}:{id:string}) => {
   )
 }
 
-export default Consent
+export default Consent2

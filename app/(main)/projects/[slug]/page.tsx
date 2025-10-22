@@ -2,6 +2,7 @@ import Header2 from '@/app/dashboard/Dash/Header2'
 import BankBilling from '@/components/BankBilling'
 import BillingDetails from '@/components/BillingDetails'
 import Consent from '@/components/Consent'
+import Consent2 from '@/components/Consent2'
 import Drawer from '@/components/Drawer'
 import LandCard from '@/components/LandCard1'
 import RegistrationBilling from '@/components/RegistrationBilling'
@@ -110,7 +111,7 @@ const page = async({ params, searchParams }: PageParams) => {
   const offerPrice = LandProjectDetails?.bid.Offer_Price
   const LandDetails = await getLandById(LandID)
   const JOBID = await getJobListingByUserProjectID(landProjectID.slug)
-  console.log(offerPrice)
+  console.log(LandProjectDetails)
 
 
    const jobListing = JOBID?.[0]
@@ -132,6 +133,7 @@ const page = async({ params, searchParams }: PageParams) => {
               {/* @ ts-ignore */}
 
               {pageID === 'legal_advice' && ( LandProjectDetails?.legal_advice != null   ? <Consent id={JOBID[0]?.$id} />  : <p></p>)}
+              {pageID === 'Mail_Document_Sign_off' && ( LandProjectDetails?.Mail_Document_Sign_off != null   ? <Consent2 id={JOBID[0]?.$id} />  : <p></p>)}
 
               
           </div>
@@ -325,7 +327,7 @@ const page = async({ params, searchParams }: PageParams) => {
 )}
 
 
-{pageID === 'Registration' && (LandProjectDetails?.RegistrationFeesPaid ? 
+{pageID === 'Registration' && (LandProjectDetails?.RegistrationFees_Paid ? 
   <div className="flex items-center justify-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full border border-2 border-green-200 w-3/4">
     <p className='text-center'>Registration Fees Paid ✓</p>
   </div> : 

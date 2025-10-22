@@ -83,6 +83,9 @@ importers:
       embla-carousel-react:
         specifier: ^8.5.1
         version: 8.6.0(react@18.3.1)
+      gsap:
+        specifier: ^3.13.0
+        version: 3.13.0
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
@@ -1860,6 +1863,9 @@ packages:
 
   grid-index@1.1.0:
     resolution: {integrity: sha512-HZRwumpOGUrHyxO5bqKZL0B0GlUpwtCAzZ42sgxUPniu33R1LSFH5yrIcBCHjkctCAh3mtWKcKd9J4vDDdeVHA==}
+
+  gsap@3.13.0:
+    resolution: {integrity: sha512-QL7MJ2WMjm1PHWsoFrAQH/J8wUeqZvMtHO58qdekHpCfhvhSL4gSiz6vJf5EeMP0LOn3ZCprL2ki/gjED8ghVw==}
 
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
@@ -4927,6 +4933,8 @@ snapshots:
   graphql@16.11.0: {}
 
   grid-index@1.1.0: {}
+
+  gsap@3.13.0: {}
 
   has-flag@4.0.0: {}
 

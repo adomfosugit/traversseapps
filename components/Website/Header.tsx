@@ -7,7 +7,7 @@ type Props = {}
 
 const Header = (props: Props) => {
   return (
-    <div className='border-b-2  px-8 py-2 flex justify-between items-center sticky top-0 z-10 bg-white '>
+    <div className='border-b-2  px-8 py-1 flex justify-between items-center sticky top-0 z-50 bg-white '>
     
         <Logo />
         <Navigation />

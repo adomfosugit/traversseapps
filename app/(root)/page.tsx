@@ -6,7 +6,6 @@ import WayYouBuild from "@/components/WayYouBuild";
 import Testimonials from "@/components/Testimonials";
 import WhereWeOperate from "@/components/WhereWeOperate";
 import FAQ from "@/components/FAQ";
-import { motion } from "motion/react"
 import WayYouBuild2 from "@/components/WayYouBuild2";
 export default function Home() {
   return (
